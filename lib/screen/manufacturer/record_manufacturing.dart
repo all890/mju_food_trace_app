@@ -188,6 +188,13 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Image(
+                      image: AssetImage('images/assembly-line.gif'),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Align(
@@ -242,6 +249,37 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                         "คำเตือน กรุณาตรวจสอบข้อมูลข้างต้นให้เรียบร้อยหลังจากที่ทำการบันทึกจะไม่สามารถแก้ไขข้อมูลได้อีก",
                         style: TextStyle(fontSize: 18, fontFamily: 'Itim',color: Colors.red),
                         
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all<
+                            RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(50.0))),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                        ),
+                        onPressed: () async {
+                    
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text("บันทึก",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Itim'
+                              )
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

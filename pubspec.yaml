@@ -38,6 +38,7 @@ flutter:
     - images/check_correct2.gif
     - images/admin_icon.png
     - images/ftmju_header_logo.png
+    - images/assembly-line.gif
 
   fonts:
     - family: Itim
