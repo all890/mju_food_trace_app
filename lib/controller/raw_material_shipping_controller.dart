@@ -14,7 +14,7 @@ class RawMaterialShippingController{
     var body = json.encode(data);
 
     var url = Uri.parse(baseURL + '/rms/listallsentagri/' + username);
-      http.Response response = await http.post(
+    http.Response response = await http.post(
       url,
       headers: headers,
       body: body
@@ -41,6 +41,30 @@ class RawMaterialShippingController{
     final utf8Body = utf8.decode(response.bodyBytes);
     var jsonResponse = json.decode(utf8Body);
     return jsonResponse;
+
+  }
+
+  Future addRawMaterialShipping (String manuftId, String rawMatShpDate,
+            double rawMatShpQty, String rawMatShpQtyUnit, String plantingId) async {
+    
+    var url = Uri.parse(baseURL + '/rms/add');
+    var data = {
+      "manuftId": manuftId,
+      "rawMatShpDate": rawMatShpDate,
+      "rawMatShpQty": rawMatShpQty,
+      "rawMatShpQtyUnit": rawMatShpQtyUnit,
+      "plantingId": plantingId
+    };
+
+    var body = json.encode(data);
+
+    http.Response response = await http.post(
+      url,
+      headers: headers,
+      body: body
+    );
+
+    return response;
 
   }
 
