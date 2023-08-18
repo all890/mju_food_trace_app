@@ -5,7 +5,8 @@ import 'custom_text_form_field_widget.dart';
 
 class AutoCompleteStateful extends StatefulWidget {
   final List<String> itemList;
-  const AutoCompleteStateful({super.key, required this.itemList});
+  final ValueChanged<String> onItemChanged;
+  const AutoCompleteStateful({super.key, required this.itemList, required this.onItemChanged});
 
   @override
   State<AutoCompleteStateful> createState() => _AutoCompleteStatefulState();
@@ -47,7 +48,7 @@ class _AutoCompleteStatefulState extends State<AutoCompleteStateful> {
     );
         },
         onSelected: (String selection) {
-          debugPrint('You just selected $selection');
+          widget.onItemChanged(selection);
         },
       );
   }

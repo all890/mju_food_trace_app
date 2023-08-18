@@ -11,6 +11,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
+import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
 import '../../constant/constant.dart';
 import '../../controller/planting_controller.dart';
@@ -33,6 +34,7 @@ class SendAgriculturalProducts extends StatefulWidget {
 class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
   PlantingController plantingController = PlantingController();
   ManufacturerController manufacturerController = ManufacturerController();
+  RawMaterialShippingController rawMaterialShippingController = RawMaterialShippingController();
 
   List<String> rawMatShpQtyUnit_items = [
     "หน่วยของปริมาณผลผลิตสุทธิ",
@@ -60,6 +62,7 @@ final List<String> itemList=[]; // Li
   bool? isLoaded;
   Planting? planting;
   String imgPlantingFileName = "";
+  String? selectedManuftName = "";
   var dateFormat = DateFormat('dd-MM-yyyy');
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -82,7 +85,6 @@ final List<String> itemList=[]; // Li
 
     print(manuftNames?.length);
   }
-
 
   void fetchData(String plantingId) async {
     setState(() {
@@ -334,7 +336,12 @@ final List<String> itemList=[]; // Li
                                     ),
                                   ),
                                 ),
-                                  AutoCompleteStateful(itemList:manuftNames??itemList),
+                                  AutoCompleteStateful(
+                                    itemList:manuftNames??itemList,
+                                    onItemChanged: (e) {
+                                      selectedManuftName = e;
+                                    },
+                                  ),
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
@@ -411,13 +418,60 @@ final List<String> itemList=[]; // Li
                                         selected_rawMatShpQtyUnit_items = item),
                                   ),
                                 ),
-                               
-                        
-                               
+                               ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(50.0))),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                ),
+                                onPressed: () async {
 
+                                  String? manuftId = "";
+
+                                  manufacturers?.forEach((manufacturer) {
+                                    if (manufacturer.manuftName == selectedManuftName) {
+                                      manuftId = manufacturer.manuftId;
+                                    }
+                                  });
+
+                                  http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
+                                        manuftId??"",
+                                        rawMatShpDateTextController.text,
+                                        double.parse(rawMatShpQtyTextController.text),
+                                        selected_rawMatShpQtyUnit_items??"",
+                                        planting?.plantingId??"");
+
+                                  if (response.statusCode == 200) {
+                                    print("Add rms successfully!");
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(builder:
+                                            (BuildContext context) {
+                                      return const ListPlantingScreen();
+                                    }));
+                                  } else if (response.statusCode == 480) {
+                                    print("Sum of rawMatShpQty greater than plantingNetQty");
+                                  } else {
+                                    print("Error!");
+                                  }
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text("ส่งผลผลิต",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'Itim'
+                                      )
+                                    ),
+                                  ],
+                                ),
+                              ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

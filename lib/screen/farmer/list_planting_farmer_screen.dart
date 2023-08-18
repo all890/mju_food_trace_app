@@ -26,6 +26,10 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
   bool? isLoaded;
 
   List<Planting>? plantings;
+
+  List<Planting>? didNotSentPlantings = [];
+  List<Planting>? sendPlantings = [];
+
  void showConfirmToDeleteAlert (String plantingId) {
     QuickAlert.show(
       context: context,
@@ -52,10 +56,24 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       isLoaded = false;
     });
     plantings = await plantingController.getListPlantingById(username);
+    splitPlantingBySending();
     setState(() {
       isLoaded = true;
     });
     print(plantings?.length);
+  }
+
+  void splitPlantingBySending () {
+    plantings?.forEach((planting) {
+      if (planting.ptCurrBlockHash == "") {
+        didNotSentPlantings?.add(planting);
+      } else {
+        sendPlantings?.add(planting);
+      }
+    });
+
+    print("Length of didNotSentPlantings : ${didNotSentPlantings?.length}");
+    print("Length of sendPlantings : ${sendPlantings?.length}");
   }
 
   @override
@@ -63,7 +81,6 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
     super.initState();
     fetchData();
   }
-   
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -113,7 +130,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
             Container(
               padding: EdgeInsets.all(10.0),
               child: ListView.builder(
-                itemCount: plantings?.length,
+                itemCount: didNotSentPlantings?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return Card(
@@ -127,21 +144,21 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${plantings?[index].plantName}",
+                            "${didNotSentPlantings?[index].plantName}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 22
                             ),
                           ),
                           Text(
-                            "${plantings?[index].farmer?.farmName}",
+                            "${didNotSentPlantings?[index].farmer?.farmName}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             ),
                           ),
                           Text(
-                            "${plantings?[index].plantDate}",
+                            "${didNotSentPlantings?[index].plantDate}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
@@ -157,7 +174,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                           GestureDetector(
                             onTap: () {
                               print("Delete Pressed!");
-                             showConfirmToDeleteAlert(plantings?[index].plantingId ?? "");
+                             showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
                             },
                             child: Icon(Icons.delete)
                           ),
@@ -166,7 +183,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                               print("Edit Pressed!");
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: plantings?[index].plantingId ?? "")),
+                                MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
                              );
                             },
                             child: Icon(Icons.edit)
@@ -177,7 +194,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                               print("Send Pressed!");
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: plantings?[index].plantingId ?? "")),
+                                MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
                              );
                             },
                             child: Icon(Icons.send)
@@ -193,7 +210,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
             Container(
               padding: EdgeInsets.all(10.0),
               child: ListView.builder(
-                itemCount: 4,
+                itemCount: sendPlantings?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return Card(
@@ -213,21 +230,21 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${plantings?[index]} ${plantings?[index]}",
+                            "${sendPlantings?[index].plantingId}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 22
                             ),
                           ),
                           Text(
-                            "${plantings?[index]}",
+                            "${sendPlantings?[index].plantName}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             ),
                           ),
                           Text(
-                            "${plantings?[index]}",
+                            "${sendPlantings?[index].plantDate}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
@@ -237,10 +254,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       ),
                       trailing: const Icon(Icons.zoom_in),
                       onTap: () {
-                        print("Go to farmer ${plantings?[index].plantingId} details page!");
-                        WidgetsBinding.instance!.addPostFrameCallback((_) {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ViewPlantingDetailsScreen(plantingId: plantings?[index].plantingId??"")));
-                        });
+                        print("Go to farmer ${sendPlantings?[index].plantingId} details page!");
+                        
                       },
                     ),
                   );
