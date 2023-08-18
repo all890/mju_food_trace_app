@@ -197,7 +197,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   child: Text(
                                     "เพิ่มการผลิตสินค้า",
                                     style: TextStyle(
-                                        fontSize: 22, fontFamily: 'Itim'),
+                                        fontSize: 22, fontFamily: 'Itim',color: Color.fromARGB(255, 33, 82, 35)),
                                   ),
                                 ),
                                 const Padding(

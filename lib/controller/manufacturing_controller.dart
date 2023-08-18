@@ -104,5 +104,14 @@ class ManufacturingController {
   }
   return object;
 }
+
+ Future deleteManufacturing (String manufacturingId) async{
+  var url = Uri.parse(baseURL + '/manufacturing/delete/' + manufacturingId);
+
+    http.Response response = await http.get(
+      url
+    );
+    return response;
+  }
   
 }

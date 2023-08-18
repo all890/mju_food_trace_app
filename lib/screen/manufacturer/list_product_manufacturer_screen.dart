@@ -146,66 +146,84 @@ class _ListProductScreenState extends State<ListProductScreen> {
           Container(
             child: Text("ยังไม่มีสินค้าของคุณ")
           ) :
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: ListView.builder(
-              itemCount: products?.length,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: ListTile(
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.place)
-                      ],
-                    ),
-                    title: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${products?[index].productName}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 22
+          
+          Column(
+            children: [
+                const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "รายการสินค้า",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'Itim',
+                                  color: Color.fromARGB(255, 33, 82, 35)),
+                            ),
+                          ),
+              Expanded(
+                child: Container(
+                  
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView.builder(
+                    itemCount: products?.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: ListTile(
+                          leading: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.place)
+                            ],
+                          ),
+                          title: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${products?[index].productName}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 22
+                                ),
+                              ),
+                            ],
+                          ),
+                          trailing: SizedBox(
+                            width: 80,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    print("Edit Pressed!");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: products?[index].productId ?? "")),
+                                    );
+                                  },
+                                  child: Icon(Icons.edit)
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    print("Delete Pressed!");
+                                    showConfirmToDeleteAlert(products?[index].productId ?? "");
+                                  },
+                                  child: Icon(Icons.delete)
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                    trailing: SizedBox(
-                      width: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("Edit Pressed!");
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: products?[index].productId ?? "")),
-                              );
-                            },
-                            child: Icon(Icons.edit)
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print("Delete Pressed!");
-                              showConfirmToDeleteAlert(products?[index].productId ?? "");
-                            },
-                            child: Icon(Icons.delete)
-                          )
-                        ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+                ),
+              ),
+            ],
           )
         ),
       ),

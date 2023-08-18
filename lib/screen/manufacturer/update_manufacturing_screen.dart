@@ -63,7 +63,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
   void fetchData(String manufacturingId) async {
     var username = await SessionManager().get("username");
     setState(() {
-      var isLoaded = false;
+       isLoaded = false;
     });
     var response = await manufacturingController.getManufacturingById(manufacturingId);
     manufacturing = Manufacturing.fromJsonToManufacturing(response);
@@ -172,6 +172,8 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       
     );
         }
+  
+  
 
    @override
   void initState() {
@@ -188,7 +190,20 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: kBackgroundColor,
-          body: Center(
+          body:isLoaded == false
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.green),
+                        ),
+                      ),
+                    ],
+                  ):
+           Center(
             child: SingleChildScrollView(
               child: Center(
                 child: Form(
@@ -526,91 +541,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                       ],
                     ),
                   )
-                         /*     Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: SizedBox(
-                                    height: 53,
-                                    width: 200,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0))),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.green)),
-                                      onPressed: () async {
-                                        if (formKey.currentState!.validate()) {
-                                          //Farmer data insertion
-                                          /*
-                                          Provider.of<FarmersData>(context, listen: false)
-                                                          .addFarmer(
-                                                            farmerNameTextController.text,
-                                                            farmerLastnameTextController.text,
-                                                            farmerEmailTextController.text,
-                                                            farmerMobileNoTextController.text,
-                                                            farmNameTextController.text,
-                                                            double.parse(farmLatitudeTextController.text),
-                                                            double.parse(farmLongitudeTextController.text),
-                                                            farmerUsernameTextController.text,
-                                                            farmerPasswordTextController.text
-                                                          );
-                                          */
-
-                                          //Farmer's data insertion using farmer controller
-                                          var username = await SessionManager()
-                                              .get("username");
-                                          products?.forEach((product) {
-                                            if(product.productName == selected_productName){
-                                              productId = product.productId;
-                                              
-                                            }
-                                     
-                                            
-                                          });
-                                         
-                                          http.Response response =
-                                              await manufacturingController
-                                                  .addManufacturing(
-                                                     manufactureDateTextController.text,
-                                                     expireDateTextController.text,
-                                                     productQtyTextController.text,
-                                                     selected_productUnit_items!,
-                                                     usedRawMatQtyTextController.text,
-                                                     selected_usedRawMatQtyUnit_items!,
-                                                     widget.rawMatShpId,
-                                                      productId??"");
-
-                                          //print("Status code is " + code.toString());
-
-                                          if (response.statusCode == 500) {
-                                            print("Error!");
-                                            //showUsernameDuplicationAlert();
-                                          } else {
-                                            print(
-                                                "Add manufacuring successfully!");
-                                            // showSavePlantingSuccessAlert();
-                                            showSaveManufacuringSuccessAlert();
-                                          }
-                                        }
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text("เพิ่มการผลิตสินค้า",
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: 'Itim')),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ), */
+                       
                               ],
                             ),
                           )
