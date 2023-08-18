@@ -210,7 +210,19 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: kBackgroundColor,
-          body: Center(
+          body: isLoaded == false?
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ),
+              ),
+            ],
+          ) :
+          Center(
             child: SingleChildScrollView(
               child: Center(
                 child: Form(

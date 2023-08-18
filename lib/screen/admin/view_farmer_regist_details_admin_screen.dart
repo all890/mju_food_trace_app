@@ -55,7 +55,6 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
 
   var dateFormat = DateFormat('dd-MM-yyyy');
 
-  Farmer? farmer;
   FarmerCertificate? farmerCertificate;
 
   late GoogleMapController mapController;

@@ -51,7 +51,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
   late GoogleMapController mapController;
   Map<String, Marker> markers = {};
 
-  Manufacturer? manufacturer;
+  ManufacturerCertificate? manufacturerCertificate;
 
   void showUpdateManuftRegistStatusFailAlert () {
     QuickAlert.show(
@@ -95,7 +95,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
       },
       onConfirmBtnTap: () async {
         print("Accept!");
-        var updateManufacturerResponse = await manufacturerController.updateMnRegistStatus(manufacturer?.manuftId ?? "");
+        var updateManufacturerResponse = await manufacturerController.updateMnRegistStatus(manufacturerCertificate?.manufacturer?.manuftId ?? "");
         if (updateManufacturerResponse["code"] == 500) {
           Navigator.pop(context);
           showUpdateManuftRegistStatusFailAlert();
@@ -134,9 +134,9 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
       isLoaded = false;
     });
     var response = await manufacturerController.getManufacturerDetails(manuftId);
-    manufacturer = Manufacturer.fromJsonToManufacturer(response);
-    //String filePath = manufacturer?.manufacturerCertificates?.elementAt(0).mnCertImg ?? "";
-    //imgCertFileName = filePath.substring(filePath.lastIndexOf('/')+1, filePath.length);
+    manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(response);
+    String filePath = manufacturerCertificate?.mnCertImg ?? "";
+    imgCertFileName = filePath.substring(filePath.lastIndexOf('/')+1, filePath.length);
     setTextToData();
     setState(() {
       isLoaded = true;
@@ -144,21 +144,21 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
   }
 
   void setTextToData () {
-    manuftNameTextController.text = manufacturer?.manuftName ?? "";
-    manuftEmailTextController.text = manufacturer?.manuftEmail ?? "";
+    manuftNameTextController.text = manufacturerCertificate?.manufacturer?.manuftName ?? "";
+    manuftEmailTextController.text = manufacturerCertificate?.manufacturer?.manuftEmail ?? "";
 
-    factoryLatitudeTextController.text = manufacturer?.factoryLatitude ?? "";
-    factoryLongitudeTextController.text = manufacturer?.factoryLongitude ?? "";
-    factoryTelNoTextController.text = manufacturer?.factoryTelNo ?? "";
-    factorySupNameTextController.text = manufacturer?.factorySupName ?? "";
-    factorySupLastnameTextController.text = manufacturer?.factorySupLastname ?? "";
+    factoryLatitudeTextController.text = manufacturerCertificate?.manufacturer?.factoryLatitude ?? "";
+    factoryLongitudeTextController.text = manufacturerCertificate?.manufacturer?.factoryLongitude ?? "";
+    factoryTelNoTextController.text = manufacturerCertificate?.manufacturer?.factoryTelNo ?? "";
+    factorySupNameTextController.text = manufacturerCertificate?.manufacturer?.factorySupName ?? "";
+    factorySupLastnameTextController.text = manufacturerCertificate?.manufacturer?.factorySupLastname ?? "";
 
-    //manuftCertImgTextController.text = manufacturer?.manufacturerCertificates?.elementAt(0).mnCertImg ?? "";
-    //manuftCertNoTextController.text = manufacturer?.manufacturerCertificates?.elementAt(0).mnCertNo ?? "";
-    //manuftCertRegDateTextController.text = dateFormat.format(manufacturer?.manufacturerCertificates?.elementAt(0).mnCertRegDate ?? DateTime.now());
-    //manuftCertExpireDateTextController.text = dateFormat.format(manufacturer?.manufacturerCertificates?.elementAt(0).mnCertExpireDate ?? DateTime.now());
+    manuftCertImgTextController.text = manufacturerCertificate?.mnCertImg ?? "";
+    manuftCertNoTextController.text = manufacturerCertificate?.mnCertNo ?? "";
+    manuftCertRegDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
+    manuftCertExpireDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
 
-    manuftUsernameTextController.text = manufacturer?.user!.username ?? "";
+    manuftUsernameTextController.text = manufacturerCertificate?.manufacturer?.user!.username ?? "";
   }
 
   @override
@@ -360,12 +360,12 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                       height: 400,
                       child: GoogleMap(
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(double.parse(manufacturer?.factoryLatitude ?? ""), double.parse(manufacturer?.factoryLongitude ?? "")),
+                          target: LatLng(double.parse(manufacturerCertificate?.manufacturer?.factoryLatitude ?? ""), double.parse(manufacturerCertificate?.manufacturer?.factoryLongitude ?? "")),
                           zoom: 17
                         ),
                         onMapCreated: (controller) {
                           mapController = controller;
-                          addMarker("test", LatLng(double.parse(manufacturer?.factoryLatitude ?? ""), double.parse(manufacturer?.factoryLongitude ?? "")));
+                          addMarker("test", LatLng(double.parse(manufacturerCertificate?.manufacturer?.factoryLatitude ?? ""), double.parse(manufacturerCertificate?.manufacturer?.factoryLongitude ?? "")));
                         },
                         markers: markers.values.toSet(),
                       ),
