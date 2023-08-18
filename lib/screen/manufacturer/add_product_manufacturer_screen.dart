@@ -12,6 +12,8 @@ import '../../widgets/custom_text_form_field_widget.dart';
 import '../register_success_screen.dart';
 import 'package:http/http.dart' as http;
 
+import 'navbar_manufacturer.dart';
+
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
 
@@ -76,7 +78,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: kBackgroundColor,
+          drawer: ManufacturerNavbar(),
+          appBar: AppBar(
+              title: const Text("LIST ALL SENT AGRICULTURAL PRODUCTS"),
+              backgroundColor: Colors.green,
+            ),
+            backgroundColor: kBackgroundColor,
+        
           body: Center(
             child: SingleChildScrollView(
               child: Center(

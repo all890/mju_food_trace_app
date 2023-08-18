@@ -59,7 +59,7 @@ class _ListAllSentAgriculturalProductsScreenState
         child: Scaffold(
             drawer: ManufacturerNavbar(),
             appBar: AppBar(
-              title: const Text("List All Sent Agricultural Products"),
+              title: const Text("LIST ALL SENT AGRICULTURAL PRODUCTS"),
               backgroundColor: Colors.green,
             ),
             backgroundColor: kBackgroundColor,

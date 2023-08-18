@@ -14,24 +14,25 @@ import 'package:mju_food_trace_app/screen/manufacturer/list_manufacturing.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
+import '../../model/manufacturing.dart';
 import '../../model/product.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 
-class AddManufacturingScreen extends StatefulWidget {
-  final String rawMatShpId;
-  const AddManufacturingScreen({Key? key, required this.rawMatShpId})
-      : super(key: key);
+class UpdateManufacturingScreen extends StatefulWidget {
+  final String manufacturingId;
+  const UpdateManufacturingScreen({Key? key, required this.manufacturingId}) : super(key: key);
+  
 
   @override
-  State<AddManufacturingScreen> createState() => _AddManufacturingState();
+  State<UpdateManufacturingScreen> createState() => _UpdateManufacturingScreenState();
 }
 
-class _AddManufacturingState extends State<AddManufacturingScreen> {
-  final ManufacturingController manufacturingController =
-      ManufacturingController();
+class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
+  final ManufacturingController manufacturingController = ManufacturingController();
   final ProductController productController = ProductController();
-  final RawMaterialShippingController rawMaterialShippingController =
-      RawMaterialShippingController();
+
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
@@ -39,7 +40,15 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   DateTime? expireDate;
   bool? isLoaded;
 
-  TextEditingController manufactureDateTextController = TextEditingController();
+  String? selected_productName;
+  List<Product>? products;
+  List<String>? productNames = [];
+  String? productId;
+
+  Manufacturing? manufacturing;
+  Product? product;
+
+ TextEditingController manufactureDateTextController = TextEditingController();
   TextEditingController expireDateTextController = TextEditingController();
 
   TextEditingController productQtyTextController = TextEditingController();
@@ -51,32 +60,18 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   List<String> usedRawMatQtyUnit_items = ["หน่วยของสินค้า", "กรัม", "กิโลกรัม"];
   String? selected_usedRawMatQtyUnit_items = "หน่วยของสินค้า";
 
-  String? selected_productName;
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  RawMaterialShipping? rawMaterialShipping;
-
-  List<Product>? products;
-  List<String>? productNames = [];
-  String? productId;
-
-  void fetchData(String rawMatShpId) async {
+  void fetchData(String manufacturingId) async {
     var username = await SessionManager().get("username");
     setState(() {
       var isLoaded = false;
     });
-    var response = await rawMaterialShippingController
-        .getRawMaterialShippingDetails(rawMatShpId);
-    //var response = await plantingController.getPlantingrDetails(plantingId);
-    rawMaterialShipping =
-        RawMaterialShipping.fromJsonToRawMaterialShipping(response);
+    var response = await manufacturingController.getManufacturingById(manufacturingId);
+    manufacturing = Manufacturing.fromJsonToManufacturing(response);
     products = await productController.getListProduct(username);
     //  print(rawMaterialShipping?.planting?.plantName);
-    plantNameTextController.text =
-        rawMaterialShipping?.planting?.plantName ?? "";
+    
     fetchName();
-    //setTextToData();
+    setTextToData();
     setState(() {
       isLoaded = true;
     });
@@ -88,34 +83,28 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
       productNames?.add(productName);
     });
 
-    selected_productName = productNames?[0];
+    
 
     print(productNames?.length);
   }
+  void setTextToData(){
+    selected_productName = manufacturing?.product?.productName??"";
+    productQtyTextController.text =  (manufacturing?.productQty ?? 0).toString();
+    selected_productUnit_items = manufacturing?.productUnit??"";
+    manufactureDateTextController.text =  dateFormat.format(manufacturing?.manufactureDate?? DateTime.now());
+    expireDateTextController.text = dateFormat.format(manufacturing?.expireDate?? DateTime.now());
+    plantNameTextController.text = manufacturing?.rawMaterialShipping?.planting?.plantName??"";
+    usedRawMatQtyTextController.text =  (manufacturing?.usedRawMatQty ?? 0.0).toString();
+    selected_usedRawMatQtyUnit_items = manufacturing?.usedRawMatQtyUnit??"";
 
-  @override
-  void initState() {
-    super.initState();
-    fetchData(widget.rawMatShpId);
-  }
-  void showFailToSaveManufacuringAlert() {
-    QuickAlert.show(
-      context: context,
-      title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถบันทึกข้อมูลการผลิตสินค้าได้ กรุณาลองใหม่อีกครั้ง",
-      type: QuickAlertType.error,
-      confirmBtnText: "ตกลง",
-      onConfirmBtnTap: () {
-        Navigator.pop(context);
-      }
-    );
   }
 
-   void showSaveManufacuringSuccessAlert() {
+
+   void showUpdateManufacturingSuccessAlert() {
     QuickAlert.show(
       context: context,
-      title: "บันทึกข้อมูลสำเร็จ",
-      text: "บันทึกข้อมูลการผลิตสินค้าลงในระบบสำเร็จ",
+      title: "แก้ไขข้อมูลสำเร็จ",
+      text: "แก้ไขข้อมูลการผลิตสินค้า",
       type: QuickAlertType.success,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -125,7 +114,71 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
       }
     );
   }
+  void showConfirmToUpdateManufacturingAlert ()  {
+    QuickAlert.show(
+      context: context,
+      showCancelBtn: true,
+      title: "คุณแน่ใจหรือไม่?",
+      text: "ว่าต้องการที่จะแก้ไขข้อมูลการปลูกผลผลิต",
+      type: QuickAlertType.warning,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      confirmBtnColor: Colors.green,
+      onCancelBtnTap: (){
+        Navigator.pop(context);
+      },
+      onConfirmBtnTap: () async {
+        print("PRESSED!");
+        if (formKey.currentState!.validate()) {
 
+          print("UPDATE MANUFACTURING!");
+          //String username = await SessionManager().get("username");
+            products?.forEach((p) {
+               if(p.productName == selected_productName){
+                 product = p;
+
+               }              
+            });
+           print("สินค้า :" +"${product}");                          
+
+          DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
+          Manufacturing manufacturings = Manufacturing(
+            manufacturingId: widget.manufacturingId,
+            manufactureDate: dateFormat.parse(manufactureDateTextController.text),
+            expireDate:  dateFormat.parse(expireDateTextController.text),
+            productQty: int.parse(productQtyTextController.text),
+            productUnit: selected_productUnit_items??"",
+            usedRawMatQty: double.parse(usedRawMatQtyTextController.text),
+            usedRawMatQtyUnit: selected_usedRawMatQtyUnit_items??"",
+            manuftPrevBlockHash: "",
+            manuftCurrBlockHash: "",
+            rawMaterialShipping: manufacturing?.rawMaterialShipping,
+            product:product
+          );
+
+          http.Response response = await manufacturingController.updateManufacturing(manufacturings);
+
+          if (response.statusCode == 500) {
+            //showFailToSaveProductAlert();
+            print("Failed to update!");
+          } else {
+            showUpdateManufacturingSuccessAlert();
+            print("Update successfully!");
+          }
+      
+        }
+            }
+      
+    );
+        }
+
+   @override
+  void initState() {
+    super.initState();
+    fetchData(widget.manufacturingId);
+  }
+   
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -163,7 +216,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(builder:
                                                   (BuildContext context) {
-                                            return const ListAllSentAgriculturalProductsScreen();
+                                            return const ListManufacturingScreen();
                                           }));
                                         },
                                         child: Row(
@@ -195,7 +248,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
                                   child: Text(
-                                    "เพิ่มการผลิตสินค้า",
+                                    "แก้ไขการผลิตสินค้า",
                                     style: TextStyle(
                                         fontSize: 22, fontFamily: 'Itim'),
                                   ),
@@ -404,7 +457,76 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                             item),
                                   ),
                                 ),
-                                Padding(
+                                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          height: 53,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(50.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 203, 203, 34))
+                            ),
+                            onPressed: () {
+                              showConfirmToUpdateManufacturingAlert();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("บันทึกการแก้ไข",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 200,
+                          height: 53,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(50.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent)
+                            ),
+                            onPressed: () {
+                              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManufacturingScreen()));
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("ยกเลิก",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                         /*     Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: SizedBox(
@@ -488,7 +610,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       ),
                                     ),
                                   ),
-                                ),
+                                ), */
                               ],
                             ),
                           )
@@ -503,6 +625,5 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
         ),
       ),
     );
-    
   }
 }
