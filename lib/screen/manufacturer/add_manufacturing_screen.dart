@@ -45,7 +45,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen > {
   List<String> usedRawMatQtyUnit_items = ["หน่วยของสินค้า","กรัม","กิโลกรัม"];
   String? selected_usedRawMatQtyUnit_items  = "หน่วยของสินค้า";
 
-
+  String? selected_productName;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -80,6 +80,8 @@ final List<String> itemList=[]; //
       productNames?.add(productName);
       
     });
+
+    selected_productName = productNames?[0];
 
     print(productNames?.length);
   }
@@ -185,9 +187,9 @@ final List<String> itemList=[]; //
                                     ),
                                   ),
                                 ),
-                                /*  Center(
+                                Center(
                                   child: DropdownButton<String>(
-                                    value: productNames.toString(),
+                                    value: selected_productName,
                                     icon: const Icon(Icons.arrow_downward),
                                     elevation: 5,
                                     style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
@@ -201,10 +203,9 @@ final List<String> itemList=[]; //
                                       child: Text(item)
                                       ),
                                     ).toList(),
-                                    onChanged: (item) => setState(() =>  productNames = item),
+                                    onChanged: (item) => setState(() =>  selected_productName = item),
                                   ),
-                                ),*/
-
+                                ),
                                 CustomTextFormField(
                                   controller: productQtyTextController,
                                   hintText: "ปริมาณสินค้าที่ผลิตได้",
