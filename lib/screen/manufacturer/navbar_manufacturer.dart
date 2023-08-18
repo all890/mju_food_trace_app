@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/add_product_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/list_all_sent_agricultural_products_screen.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/list_manufacturing.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/main_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/request_renewing_manufacturer_certificate_screen.dart';
 
@@ -62,11 +63,22 @@ class ManufacturerNavbar extends StatelessWidget {
           ),
            ListTile(
             leading: const Icon(Icons.list),
-            title: const Text("รายการผลิตสินค้า"),
+            title: const Text("ผลผลิตจากเกษตรกร"),
             onTap: () {
               print("Go to list all sent agricultural product page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListAllSentAgriculturalProductsScreen()));
+              });
+              Navigator.pop(context);
+            },
+          ),
+            ListTile(
+            leading: const Icon(Icons.list),
+            title: const Text("รายการผลิตสินค้า"),
+            onTap: () {
+              print("Go to list all sent agricultural product page");
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManufacturingScreen()));
               });
               Navigator.pop(context);
             },

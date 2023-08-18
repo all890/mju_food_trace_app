@@ -102,21 +102,25 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
         child: Scaffold(
           drawer: ManufacturerNavbar(),
           appBar: AppBar(
-            title: Text("MAIN FARMER"),
+            title: Text("REQUEST RENEWING CERTIFICATE"),
             backgroundColor: Colors.green,
           ),
           backgroundColor: kBackgroundColor,
           body: Form(key: formKey,
             child: Column(
               children: [
-                Text("${username}"),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    "การยื่นคำร้องขอต่ออายุใบรับรองผู้ผลิต",
-                    style: TextStyle(fontSize: 22, fontFamily: 'Itim'),
-                  ),
-                ),
+                //Text("${username}"),
+                
+                 const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "การยื่นคำร้องขอต่ออายุใบรับรองผู้ผลิต",
+                              style: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'Itim',
+                                  color: Color.fromARGB(255, 33, 82, 35)),
+                            ),
+                          ),
                 CustomTextFormField(
                     controller: mnCertNoTextController,
                     hintText: "หมายเลขใบรับรอง",
@@ -291,7 +295,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: const [
-                                            Text("ลงทะเบียน",
+                                            Text("ยื่นใบรับรอง",
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontFamily: 'Itim'

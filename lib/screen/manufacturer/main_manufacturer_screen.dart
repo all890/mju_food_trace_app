@@ -45,7 +45,7 @@ class _MainManufacturerScreenState extends State<MainManufacturerScreen> {
         child: Scaffold(
           drawer: ManufacturerNavbar(),
           appBar: AppBar(
-            title: Text("MAIN FARMER"),
+            title: Text("MAIN MANUFACTURER"),
             backgroundColor: Colors.green,
           ),
           backgroundColor: kBackgroundColor,

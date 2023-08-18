@@ -28,6 +28,21 @@ class RawMaterialShippingController{
        return list;
   }
 
+  Future getRawMaterialShippingDetails(String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/getrmsdetails/' + rawMatShpId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+    return jsonResponse;
+
+  }
 
 
 }
