@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mju_food_trace_app/screen/login_screen.dart';
 import 'package:mju_food_trace_app/screen/register_success_screen.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -166,7 +167,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const RegisterSuccessScreen();
+                                                return const LoginScreen();
                                               }
                                             )
                                           );

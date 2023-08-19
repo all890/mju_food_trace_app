@@ -8,6 +8,7 @@ import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:mju_food_trace_app/controller/user_controller.dart';
 import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/main_manufacturer_screen.dart';
+import 'package:mju_food_trace_app/screen/register_selection_screen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -219,7 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onTap: () {
-                          //Go to register selection
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return const RegisterSelectionScreen();
+                              }
+                            )
+                          );
                           print("Go to register selection");
                         },
                       ),

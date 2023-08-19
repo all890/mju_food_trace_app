@@ -5,6 +5,7 @@ import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dar
 import 'package:mju_food_trace_app/screen/farmer_register_screen.dart';
 import 'package:mju_food_trace_app/screen/login_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer_register_screen.dart';
+import 'package:mju_food_trace_app/screen/register_selection_screen.dart';
 import 'package:mju_food_trace_app/screen/register_success_screen.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:LoginScreen()
+      home: LoginScreen()
     );
   }
 }
