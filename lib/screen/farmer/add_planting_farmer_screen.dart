@@ -507,7 +507,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: const [
-                                          Text("ลงทะเบียน",
+                                          Text("เพิ่มการปลูก",
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontFamily: 'Itim'

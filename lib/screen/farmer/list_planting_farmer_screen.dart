@@ -65,7 +65,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   void splitPlantingBySending () {
     plantings?.forEach((planting) {
-      if (planting.ptCurrBlockHash == "") {
+      if (planting.ptCurrBlockHash == null) {
         didNotSentPlantings?.add(planting);
       } else {
         sendPlantings?.add(planting);

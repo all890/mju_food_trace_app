@@ -147,7 +147,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
           ) : 
           manufacurings?.length == 0?
           Container(
-            child: Text("ยังไม่มีสินค้าของคุณ")
+            child: Text("ยังไม่มีการผลิตสินค้าของคุณ")
           ) :
           Column(
             children: [
