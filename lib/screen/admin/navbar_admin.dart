@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:mju_food_trace_app/screen/admin/list_farmer_request_renewing_cert_admin_screen.dart';
+import 'package:mju_food_trace_app/screen/admin/list_manuft_request_renewing_cert_admin.dart';
 import 'package:mju_food_trace_app/screen/login_screen.dart';
 import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
 
@@ -64,7 +66,7 @@ class AdminNavbar extends StatelessWidget {
             onTap: () {
               print("Go to manuft registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRegistrationScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListFarmerRequestRenewingCertificateScreen()));
               });
               Navigator.pop(context);
             },
@@ -75,7 +77,7 @@ class AdminNavbar extends StatelessWidget {
             onTap: () {
               print("Go to manuft registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRegistrationScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRequestRenewingCertificateScreen()));
               });
               Navigator.pop(context);
             },
