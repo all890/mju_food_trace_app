@@ -284,16 +284,17 @@ class _RequestRenewingFarmerCertificateState
                                             if (response.statusCode == 500) {
                                               print("Error!");
                                               //showUsernameDuplicationAlert();
-                                              Navigator.of(context).pushReplacement(
+                                              
+                                            } else {
+                                              print("Farmer registration successfully!");
+                                            //  showSavePlantingSuccessAlert();
+                                            Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
                                                 return const MainFarmerScreen();
                                               }
                                             )
                                           );
-                                            } else {
-                                              print("Farmer registration successfully!");
-                                            //  showSavePlantingSuccessAlert();
                                             }
                                           }
                                         },
