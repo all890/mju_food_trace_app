@@ -252,11 +252,26 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                           )
                         ],
                       ),
-                      trailing: const Icon(Icons.zoom_in),
-                      onTap: () {
-                        print("Go to farmer ${sendPlantings?[index].plantingId} details page!");
-                        
-                      },
+                      trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [    
+                           Center(
+                             child: GestureDetector(
+                              onTap: () {
+                                print("Send Pressed!");
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: sendPlantings?[index].plantingId ?? "")),
+                               );
+                              },
+                              child: Icon(Icons.send)
+                                                     ),
+                           )
+                        ],
+                      ),
+                    )
                     ),
                   );
                 },
