@@ -59,6 +59,28 @@ class AdminNavbar extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.document_scanner),
+            title: const Text("การร้องขอต่ออายุใบรับรองเกษตรกร"),
+            onTap: () {
+              print("Go to manuft registration page");
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRegistrationScreen()));
+              });
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.document_scanner),
+            title: const Text("การร้องขอต่ออายุใบรับรองผู้ผลิต"),
+            onTap: () {
+              print("Go to manuft registration page");
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRegistrationScreen()));
+              });
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("ออกจากระบบ"),
             onTap: () async {
