@@ -48,9 +48,6 @@ final List<String> itemList=[]; // Li
  
   String? selected_rawMatShpQtyUnit_items = "หน่วยของปริมาณผลผลิตสุทธิ";
 
- List<String> suggestons = ["โรงงานออแกนิคสาขา 1", "โรงงานออแกนิคสาขา 2", "โรงงานผลิตผักสด(สาขาแม่โจ้)", "โรงงานผักกาดดอง(ลำพูน)", "โรงงานผักกาดดอง(สาขาแม่ริม)"];
-//List<String> suggestons1 = manufacturers?[index].manuftName;
-
   TextEditingController rawMatShpDateTextController = TextEditingController();
   TextEditingController rawMatShpQtyTextController = TextEditingController();
   TextEditingController manuftIdTextController = TextEditingController();
@@ -86,6 +83,10 @@ final List<String> itemList=[]; // Li
     print(manuftNames?.length);
   }
 
+  void fetchDateTimeNow () {
+    rawMatShpDateTextController.text = dateFormat.format(DateTime.now());
+  }
+
   void fetchData(String plantingId) async {
     setState(() {
       isLoaded = false;
@@ -93,6 +94,7 @@ final List<String> itemList=[]; // Li
     var response = await plantingController.getPlantingrDetails(plantingId);
     manufacturers = await manufacturerController.getListAllManufacturer();
     fetchName();
+    fetchDateTimeNow();
     planting = Planting.fromJsonToPlanting(response);
     String filePath = planting?.plantingImg ?? "";
 
@@ -125,7 +127,19 @@ final List<String> itemList=[]; // Li
       child: SafeArea(
         child: Scaffold(
           backgroundColor: kBackgroundColor,
-          body: Center(
+          body: isLoaded == false?
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ),
+              ),
+            ],
+          ) :
+          Center(
             child: SingleChildScrollView(
               child: Center(
                 child: Form(
@@ -345,20 +359,8 @@ final List<String> itemList=[]; // Li
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
-                                    onTap: () async {
-                                      DateTime? tempDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: currentDate,
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2100));
-                                      setState(() {
-                                        plantDate = tempDate;
-                                        rawMatShpDateTextController.text =
-                                            dateFormat.format(plantDate??DateTime.now());
-                                      });
-                                      print(plantDate);
-                                    },
                                     readOnly: true,
+                                    enabled: false,
                                     controller: rawMatShpDateTextController,
                                     decoration: InputDecoration(
                                         labelText: "วันที่ส่งผลผลิต",
@@ -380,15 +382,40 @@ final List<String> itemList=[]; // Li
                                 ),
                                 CustomTextFormField(
                                     controller: rawMatShpQtyTextController,
-                                    hintText: "ปริมาณผลผลิต",
+                                    hintText: "ปริมาณผลผลิตที่ส่ง",
                                     maxLength: 50,
                                     numberOnly: true,
                                     validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
+
+                                      double actualGrams = 0;
+
+                                      if (selected_rawMatShpQtyUnit_items == "กิโลกรัม") {
+                                        actualGrams = double.parse(rawMatShpQtyTextController.text??"0") * 1000;
+                                      } else if (selected_rawMatShpQtyUnit_items == "กรัม") {
+                                        actualGrams = double.parse(rawMatShpQtyTextController.text??"0");
+                                      }
+
+                                      double ptNetQuantityGrams = 0;
+
+                                      print(planting?.netQuantityUnit);
+
+                                      if (planting?.netQuantityUnit == "กิโลกรัม") {
+                                        ptNetQuantityGrams = (planting?.netQuantity??0) * 1000.0;
+                                        print("kg : ${ptNetQuantityGrams}");
+                                      } else if (planting?.netQuantityUnit == "กรัม") {
+                                        ptNetQuantityGrams = planting?.netQuantity??0;
+                                      }
+
+                                      if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณผลผลิต";
                                       }
+                                      
+                                      print("actualGrams : ${actualGrams}, ptNetQuantityGrams : ${ptNetQuantityGrams}");
+
+                                      if (actualGrams > ptNetQuantityGrams) {
+                                        return "ปริมาณผลผลิตที่ส่งต้องไม่เกินปริมาณผลผลิตของการปลูกที่เลือกส่ง";
+                                      }
+
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
                                 Center(
@@ -429,32 +456,36 @@ final List<String> itemList=[]; // Li
                                 ),
                                 onPressed: () async {
 
-                                  String? manuftId = "";
+                                  if (formKey.currentState!.validate()) {
+                                    String? manuftId = "";
 
-                                  manufacturers?.forEach((manufacturer) {
-                                    if (manufacturer.manuftName == selectedManuftName) {
-                                      manuftId = manufacturer.manuftId;
+                                    manufacturers?.forEach((manufacturer) {
+                                      if (manufacturer.manuftName == selectedManuftName) {
+                                        manuftId = manufacturer.manuftId;
+                                      }
+                                    });
+
+                                    print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
+
+                                    http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
+                                          manuftId??"",
+                                          rawMatShpDateTextController.text,
+                                          double.parse(rawMatShpQtyTextController.text),
+                                          selected_rawMatShpQtyUnit_items??"",
+                                          planting?.plantingId??"");
+
+                                    if (response.statusCode == 200) {
+                                      print("Add rms successfully!");
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(builder:
+                                              (BuildContext context) {
+                                        return const ListPlantingScreen();
+                                      }));
+                                    } else if (response.statusCode == 480) {
+                                      print("Sum of rawMatShpQty greater than plantingNetQty");
+                                    } else {
+                                      print("Error!");
                                     }
-                                  });
-
-                                  http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
-                                        manuftId??"",
-                                        rawMatShpDateTextController.text,
-                                        double.parse(rawMatShpQtyTextController.text),
-                                        selected_rawMatShpQtyUnit_items??"",
-                                        planting?.plantingId??"");
-
-                                  if (response.statusCode == 200) {
-                                    print("Add rms successfully!");
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(builder:
-                                            (BuildContext context) {
-                                      return const ListPlantingScreen();
-                                    }));
-                                  } else if (response.statusCode == 480) {
-                                    print("Sum of rawMatShpQty greater than plantingNetQty");
-                                  } else {
-                                    print("Error!");
                                   }
                                 },
                                 child: Row(

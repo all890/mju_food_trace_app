@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/planting_controller.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
 import 'package:mju_food_trace_app/screen/farmer/navbar_farmer.dart';
@@ -27,8 +28,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   List<Planting>? plantings;
 
+  List<Planting>? cannotSentPlantings = [];
   List<Planting>? didNotSentPlantings = [];
   List<Planting>? sendPlantings = [];
+
+  var dateFormat = DateFormat('dd-MM-yyyy');
 
  void showConfirmToDeleteAlert (String plantingId) {
     QuickAlert.show(
@@ -50,6 +54,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
      
     );
   }
+
   void fetchData () async {
     var username = await SessionManager().get("username");
     setState(() {
@@ -65,7 +70,10 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   void splitPlantingBySending () {
     plantings?.forEach((planting) {
-      if (planting.ptCurrBlockHash == null) {
+      final now = DateTime.now();
+      if (planting.approxHarvDate?.compareTo(now) == 1 || planting.approxHarvDate?.compareTo(now) == 0) {
+        cannotSentPlantings?.add(planting);
+      } else if (planting.ptCurrBlockHash == "") {
         didNotSentPlantings?.add(planting);
       } else {
         sendPlantings?.add(planting);
@@ -84,7 +92,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-    length: 2,
+    length: 3,
     child: SafeArea(
       child: Scaffold(
         drawer: FarmerNavbar(),
@@ -94,7 +102,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
             tabs: [
               Tab(
                 child: Text(
-                  "ผลผลิตที่รอส่ง",
+                  "ไม่สามารถส่งได้",
                   style: TextStyle(
                     fontFamily: 'Itim'
                   ),
@@ -102,7 +110,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
               ),
               Tab(
                 child: Text(
-                  "ผลผลิตที่ส่งแล้ว",
+                  "สามารถส่งได้",
+                  style: TextStyle(
+                    fontFamily: 'Itim'
+                  ),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "ส่งแล้ว",
                   style: TextStyle(
                     fontFamily: 'Itim'
                   ),
@@ -130,6 +146,84 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
             Container(
               padding: EdgeInsets.all(10.0),
               child: ListView.builder(
+                itemCount: cannotSentPlantings?.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: ListTile(
+                      title: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${cannotSentPlantings?[index].plantName}",
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 22
+                            ),
+                          ),
+                          Text(
+                            "วันที่ปลูก : " + dateFormat.format(cannotSentPlantings?[index].plantDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                          Text(
+                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(cannotSentPlantings?[index].approxHarvDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                          Text(
+                            "ปริมาณผลผลิตสุทธิ : ${cannotSentPlantings?[index].netQuantity} ${cannotSentPlantings?[index].netQuantityUnit}",
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                        ],
+                      ),
+                      trailing: SizedBox(
+                      width: 100,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                print("Delete Pressed!");
+                               showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
+                              },
+                              child: Icon(Icons.delete)
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                print("Edit Pressed!");
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                               );
+                              },
+                              child: Icon(Icons.edit)
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: ListView.builder(
                 itemCount: didNotSentPlantings?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
@@ -151,55 +245,64 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             ),
                           ),
                           Text(
-                            "${didNotSentPlantings?[index].farmer?.farmName}",
-                            style: const TextStyle(
-                              fontFamily: 'Itim',
-                              fontSize: 18
-                            ),
-                          ),
-                          Text(
-                            "${didNotSentPlantings?[index].plantDate}",
+                            "วันที่ปลูก : " + dateFormat.format(didNotSentPlantings?[index].plantDate??DateTime.now()),
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             )
-                          )
+                          ),
+                          Text(
+                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(didNotSentPlantings?[index].approxHarvDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                          Text(
+                            "ปริมาณผลผลิตสุทธิ : ${didNotSentPlantings?[index].netQuantity} ${didNotSentPlantings?[index].netQuantityUnit}",
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
                         ],
                       ),
                       trailing: SizedBox(
                       width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("Delete Pressed!");
-                             showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
-                            },
-                            child: Icon(Icons.delete)
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              print("Edit Pressed!");
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
-                             );
-                            },
-                            child: Icon(Icons.edit)
-                          ),
-    
-                           GestureDetector(
-                            onTap: () {
-                              print("Send Pressed!");
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
-                             );
-                            },
-                            child: Icon(Icons.send)
-                          )
-                        ],
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                print("Delete Pressed!");
+                               showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
+                              },
+                              child: Icon(Icons.delete)
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                print("Edit Pressed!");
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                               );
+                              },
+                              child: Icon(Icons.edit)
+                            ),
+                          
+                             GestureDetector(
+                              onTap: () {
+                                print("Send Pressed!");
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                               );
+                              },
+                              child: Icon(Icons.send)
+                            )
+                          ],
+                        ),
                       ),
                     )
                     ),
@@ -219,37 +322,38 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       borderRadius: BorderRadius.circular(10)
                     ),
                     child: ListTile(
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.account_circle)
-                        ],
-                      ),
                       title: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${sendPlantings?[index].plantingId}",
+                            "${sendPlantings?[index].plantName}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 22
                             ),
                           ),
                           Text(
-                            "${sendPlantings?[index].plantName}",
-                            style: const TextStyle(
-                              fontFamily: 'Itim',
-                              fontSize: 18
-                            ),
-                          ),
-                          Text(
-                            "${sendPlantings?[index].plantDate}",
+                            "วันที่ปลูก : " + dateFormat.format(sendPlantings?[index].plantDate??DateTime.now()),
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             )
-                          )
+                          ),
+                          Text(
+                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(sendPlantings?[index].approxHarvDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                          Text(
+                            "ปริมาณผลผลิตคงเหลือ : BLAH",
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
                         ],
                       ),
                       trailing: SizedBox(

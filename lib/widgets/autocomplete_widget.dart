@@ -32,7 +32,7 @@ class _AutoCompleteStatefulState extends State<AutoCompleteStateful> {
         focusNode: focusNode,
         onEditingComplete: onFieldSubmitted,
         decoration: InputDecoration(
-          labelText: "ผู้รับผลผลิตปลายทาง",
+          labelText: "ชื่อผู้รับผลผลิตปลายทาง",
           counterText: "",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10)),

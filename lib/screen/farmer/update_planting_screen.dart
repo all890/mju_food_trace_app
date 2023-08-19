@@ -138,7 +138,7 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
             squareMeters: int.parse(squareMetersTextController.text),
             squareYards: int.parse(squareYardsTextController.text),
             rai: int.parse(raiTextController.text),
-            ptPrevBlockHash: "",
+            ptPrevBlockHash: "0",
             ptCurrBlockHash: "",
             farmer: planting?.farmer
           );
