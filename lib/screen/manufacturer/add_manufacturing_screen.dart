@@ -48,8 +48,8 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
 
   TextEditingController plantNameTextController = TextEditingController();
   TextEditingController usedRawMatQtyTextController = TextEditingController();
-  List<String> usedRawMatQtyUnit_items = ["หน่วยของสินค้า", "กรัม", "กิโลกรัม"];
-  String? selected_usedRawMatQtyUnit_items = "หน่วยของสินค้า";
+  List<String> usedRawMatQtyUnit_items = ["หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า", "กรัม", "กิโลกรัม"];
+  String? selected_usedRawMatQtyUnit_items = "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า";
 
   String? selected_productName;
 
@@ -365,14 +365,14 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     icon: const Icon(Icons.account_circle)),
                                 CustomTextFormField(
                                     controller: usedRawMatQtyTextController,
-                                    hintText: "ปริมาณผลผลิตสุทธิ",
+                                    hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
                                     maxLength: 50,
                                     numberOnly: true,
                                     validator: (value) {
                                       if (value!.isNotEmpty) {
                                         return null;
                                       } else {
-                                        return "กรุณากรอกปริมาณผลผลิตสุทธิ";
+                                        return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
                                       }
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
