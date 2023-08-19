@@ -354,7 +354,7 @@ final List<String> itemList=[]; // Li
                                       setState(() {
                                         plantDate = tempDate;
                                         rawMatShpDateTextController.text =
-                                            dateFormat.format(plantDate!);
+                                            dateFormat.format(plantDate??DateTime.now());
                                       });
                                       print(plantDate);
                                     },
