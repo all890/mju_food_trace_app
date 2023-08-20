@@ -34,6 +34,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
   List<Planting>? cannotSentPlantings = [];
   List<Planting>? didNotSentPlantings = [];
   List<Planting>? sendPlantings = [];
+  List<Planting>? emptyQtyPlantings = [];
 
   var dateFormat = DateFormat('dd-MM-yyyy');
 
@@ -84,8 +85,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       if (planting.approxHarvDate?.isBefore(now) == true && planting.ptCurrBlockHash == null) {
         didNotSentPlantings?.add(planting);
       } 
-      if (planting.ptCurrBlockHash != null) {
+      if ((remQtyOfPts[planting.plantingId] > 0) && planting.ptCurrBlockHash != null) {
         sendPlantings?.add(planting);
+      }
+      if ((remQtyOfPts[planting.plantingId] <= 0) && planting.ptCurrBlockHash != null) {
+        emptyQtyPlantings?.add(planting);
       }
     });
 
@@ -102,7 +106,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-    length: 3,
+    length: 4,
     child: SafeArea(
       child: Scaffold(
         drawer: FarmerNavbar(),
@@ -112,7 +116,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
             tabs: [
               Tab(
                 child: Text(
-                  "ไม่สามารถส่งได้",
+                  "รอเก็บเกี่ยว",
                   style: TextStyle(
                     fontFamily: 'Itim'
                   ),
@@ -129,6 +133,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
               Tab(
                 child: Text(
                   "ส่งแล้ว",
+                  style: TextStyle(
+                    fontFamily: 'Itim'
+                  ),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "ครบจำนวน",
                   style: TextStyle(
                     fontFamily: 'Itim'
                   ),
@@ -388,6 +400,50 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         ],
                       ),
                     )
+                    ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: ListView.builder(
+                itemCount: emptyQtyPlantings?.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: ListTile(
+                      title: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${emptyQtyPlantings?[index].plantName}",
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 22
+                            ),
+                          ),
+                          Text(
+                            "วันที่ปลูก : " + dateFormat.format(emptyQtyPlantings?[index].plantDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                          Text(
+                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(emptyQtyPlantings?[index].approxHarvDate??DateTime.now()),
+                            style: const TextStyle(
+                              fontFamily: 'Itim',
+                              fontSize: 18
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
