@@ -219,6 +219,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                            // TODO: Check fm cert before delete
                             GestureDetector(
                               onTap: () {
                                 print("Delete Pressed!");
@@ -226,6 +227,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                               },
                               child: Icon(Icons.delete)
                             ),
+                            // TODO: Check fm cert before update
                             GestureDetector(
                               onTap: () {
                                 print("Edit Pressed!");
@@ -297,6 +299,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // TODO: Check fm cert before delete
                             GestureDetector(
                               onTap: () {
                                 print("Delete Pressed!");
@@ -304,6 +307,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                               },
                               child: Icon(Icons.delete)
                             ),
+                            // TODO: Check fm cert before update
                             GestureDetector(
                               onTap: () {
                                 print("Edit Pressed!");
@@ -314,7 +318,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                               },
                               child: Icon(Icons.edit)
                             ),
-                          
+                            // TODO: Check fm cert before send
                              GestureDetector(
                               onTap: () {
                                 print("Send Pressed!");
@@ -385,7 +389,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       width: 100,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [    
+                        children: [
+                          // TODO: Check fm cert before send
                            Center(
                              child: GestureDetector(
                               onTap: () {
