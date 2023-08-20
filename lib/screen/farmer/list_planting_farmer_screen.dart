@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +29,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
   bool? isLoaded;
 
   List<Planting>? plantings;
+  Map<String, dynamic> remQtyOfPts = {};
 
   List<Planting>? cannotSentPlantings = [];
   List<Planting>? didNotSentPlantings = [];
@@ -61,6 +64,9 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       isLoaded = false;
     });
     plantings = await plantingController.getListPlantingById(username);
+    var remQtyOfPtsResponse = await plantingController.getRemQtyOfPtsByFarmerUsername(username);
+    remQtyOfPts = json.decode(remQtyOfPtsResponse);
+    print(remQtyOfPts);
     splitPlantingBySending();
     setState(() {
       isLoaded = true;
@@ -70,16 +76,20 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   void splitPlantingBySending () {
     plantings?.forEach((planting) {
-      final now = DateTime.now();
-      if (planting.approxHarvDate?.compareTo(now) == 1 || planting.approxHarvDate?.compareTo(now) == 0) {
+      print(planting.ptCurrBlockHash);
+      var now = DateTime.now();
+      if (planting.approxHarvDate?.isAfter(now) == true || planting.approxHarvDate?.isAtSameMomentAs(now) == true && planting.ptCurrBlockHash == null ) {
         cannotSentPlantings?.add(planting);
-      } else if (planting.ptCurrBlockHash == "") {
+      }
+      if (planting.approxHarvDate?.isBefore(now) == true && planting.ptCurrBlockHash == null) {
         didNotSentPlantings?.add(planting);
-      } else {
+      } 
+      if (planting.ptCurrBlockHash != null) {
         sendPlantings?.add(planting);
       }
     });
 
+    print("Length of cannotSentPlantings : ${cannotSentPlantings?.length}");
     print("Length of didNotSentPlantings : ${didNotSentPlantings?.length}");
     print("Length of sendPlantings : ${sendPlantings?.length}");
   }
@@ -148,7 +158,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
               child: ListView.builder(
                 itemCount: cannotSentPlantings?.length,
                 scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
+                itemBuilder: (context, index1) {
                   return Card(
                     elevation: 5,
                     shape: RoundedRectangleBorder(
@@ -160,28 +170,28 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${cannotSentPlantings?[index].plantName}",
+                            "${cannotSentPlantings?[index1].plantName}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 22
                             ),
                           ),
                           Text(
-                            "วันที่ปลูก : " + dateFormat.format(cannotSentPlantings?[index].plantDate??DateTime.now()),
+                            "วันที่ปลูก : " + dateFormat.format(cannotSentPlantings?[index1].plantDate??DateTime.now()),
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             )
                           ),
                           Text(
-                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(cannotSentPlantings?[index].approxHarvDate??DateTime.now()),
+                            "วันที่คาดว่าจะเก็บเกี่ยว : " + dateFormat.format(cannotSentPlantings?[index1].approxHarvDate??DateTime.now()),
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
                             )
                           ),
                           Text(
-                            "ปริมาณผลผลิตสุทธิ : ${cannotSentPlantings?[index].netQuantity} ${cannotSentPlantings?[index].netQuantityUnit}",
+                            "ปริมาณผลผลิตสุทธิ : ${cannotSentPlantings?[index1].netQuantity} ${cannotSentPlantings?[index1].netQuantityUnit}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
@@ -198,7 +208,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             GestureDetector(
                               onTap: () {
                                 print("Delete Pressed!");
-                               showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
+                               showConfirmToDeleteAlert(didNotSentPlantings?[index1].plantingId ?? "");
                               },
                               child: Icon(Icons.delete)
                             ),
@@ -207,7 +217,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                 print("Edit Pressed!");
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: cannotSentPlantings!.isEmpty ? '' : cannotSentPlantings![index1].plantingId??"")),
                                );
                               },
                               child: Icon(Icons.edit)
@@ -348,7 +358,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             )
                           ),
                           Text(
-                            "ปริมาณผลผลิตคงเหลือ : BLAH",
+                            "ปริมาณผลผลิตคงเหลือ : ${sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ?
+                            remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId]} ${sendPlantings?[index].netQuantityUnit}",
                             style: const TextStyle(
                               fontFamily: 'Itim',
                               fontSize: 18
@@ -367,7 +378,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                 print("Send Pressed!");
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: sendPlantings?[index].plantingId ?? "")),
+                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: sendPlantings?[index].plantingId ?? "", remQtyOfPt: sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ?
+                            remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId],)),
                                );
                               },
                               child: Icon(Icons.send)

@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
 import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
 import '../../controller/planting_controller.dart';
 import '../../model/planting.dart';
@@ -23,7 +25,8 @@ import 'list_planting_farmer_screen.dart';
 
 class SendAgriculturalProducts extends StatefulWidget {
   final String plantingId;
-  const SendAgriculturalProducts({Key? key, required this.plantingId})
+  final double? remQtyOfPt;
+  const SendAgriculturalProducts({Key? key, required this.plantingId, this.remQtyOfPt})
       : super(key: key);
 
   @override
@@ -42,9 +45,9 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
     "กิโลกรัม"
   ];
  
- List<Manufacturer>? manufacturers;
- List<String>? manuftNames = [];
-final List<String> itemList=[]; // Li
+  List<Manufacturer>? manufacturers;
+  List<String>? manuftNames = [];
+  final List<String> itemList=[]; // Li
  
   String? selected_rawMatShpQtyUnit_items = "หน่วยของปริมาณผลผลิตสุทธิ";
 
@@ -85,6 +88,32 @@ final List<String> itemList=[]; // Li
 
   void fetchDateTimeNow () {
     rawMatShpDateTextController.text = dateFormat.format(DateTime.now());
+  }
+
+  void showManuftNameIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณากรอกชื่อผู้ผลิตที่ต้องการส่งผลผลิต",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showSelectedRawMatShpQtyUnitIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของปริมาณผลผลิตที่ต้องการส่ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
   }
 
   void fetchData(String plantingId) async {
@@ -286,6 +315,7 @@ final List<String> itemList=[]; // Li
                                     ),
                                   ),
                                 ),
+                                planting?.ptCurrBlockHash == null ?
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
                                   child: Align(
@@ -293,6 +323,20 @@ final List<String> itemList=[]; // Li
                                     child: Text(
                                       "ปริมาณผลผลิตสุทธิ : " +
                                           "${planting?.netQuantity}" +
+                                          " " +
+                                          "${planting?.netQuantityUnit}",
+                                      style: TextStyle(
+                                          fontSize: 18, fontFamily: 'Itim'),
+                                    ),
+                                  ),
+                                ) :
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "ปริมาณผลผลิตคงเหลือ : " +
+                                          "${widget.remQtyOfPt}" +
                                           " " +
                                           "${planting?.netQuantityUnit}",
                                       style: TextStyle(
@@ -387,34 +431,60 @@ final List<String> itemList=[]; // Li
                                     numberOnly: true,
                                     validator: (value) {
 
-                                      double actualGrams = 0;
+                                      if (planting?.ptCurrBlockHash == null) {
+                                        double actualGrams = 0;
 
-                                      if (selected_rawMatShpQtyUnit_items == "กิโลกรัม") {
-                                        actualGrams = double.parse(rawMatShpQtyTextController.text??"0") * 1000;
-                                      } else if (selected_rawMatShpQtyUnit_items == "กรัม") {
-                                        actualGrams = double.parse(rawMatShpQtyTextController.text??"0");
+                                        if (selected_rawMatShpQtyUnit_items == "กิโลกรัม") {
+                                          actualGrams = double.parse(rawMatShpQtyTextController.text??"0") * 1000;
+                                        } else if (selected_rawMatShpQtyUnit_items == "กรัม") {
+                                          actualGrams = double.parse(rawMatShpQtyTextController.text??"0");
+                                        }
+
+                                        double ptNetQuantityGrams = 0;
+
+                                        print(planting?.netQuantityUnit);
+
+                                        if (planting?.netQuantityUnit == "กิโลกรัม") {
+                                          ptNetQuantityGrams = (planting?.netQuantity??0) * 1000.0;
+                                          print("kg : ${ptNetQuantityGrams}");
+                                        } else if (planting?.netQuantityUnit == "กรัม") {
+                                          ptNetQuantityGrams = planting?.netQuantity??0;
+                                        }
+
+                                        if (actualGrams > ptNetQuantityGrams) {
+                                          return "ปริมาณผลผลิตที่ส่งต้องไม่เกินปริมาณผลผลิตของการปลูกที่เลือกส่ง";
+                                        }
+                                      } else {
+                                        double actualGrams2 = 0;
+
+                                        if (selected_rawMatShpQtyUnit_items == "กิโลกรัม") {
+                                          actualGrams2 = double.parse(rawMatShpQtyTextController.text??"0") * 1000;
+                                        } else if (selected_rawMatShpQtyUnit_items == "กรัม") {
+                                          actualGrams2 = double.parse(rawMatShpQtyTextController.text??"0");
+                                        }
+
+                                        double ptNetQuantityGrams2 = 0;
+
+                                        print(widget.remQtyOfPt);
+
+                                        if (planting?.netQuantityUnit == "กิโลกรัม") {
+                                          ptNetQuantityGrams2 = widget.remQtyOfPt! * 1000.0;
+                                        } else if (planting?.netQuantityUnit == "กรัม") {
+                                          ptNetQuantityGrams2 = widget.remQtyOfPt!;
+                                        }
+
+                                        if (actualGrams2 > ptNetQuantityGrams2) {
+                                          return "ปริมาณผลผลิตที่ส่งต้องไม่เกินปริมาณผลผลิตคงเหลือของการปลูก";
+                                        }
                                       }
 
-                                      double ptNetQuantityGrams = 0;
-
-                                      print(planting?.netQuantityUnit);
-
-                                      if (planting?.netQuantityUnit == "กิโลกรัม") {
-                                        ptNetQuantityGrams = (planting?.netQuantity??0) * 1000.0;
-                                        print("kg : ${ptNetQuantityGrams}");
-                                      } else if (planting?.netQuantityUnit == "กรัม") {
-                                        ptNetQuantityGrams = planting?.netQuantity??0;
-                                      }
+                                      
 
                                       if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณผลผลิต";
                                       }
                                       
-                                      print("actualGrams : ${actualGrams}, ptNetQuantityGrams : ${ptNetQuantityGrams}");
-
-                                      if (actualGrams > ptNetQuantityGrams) {
-                                        return "ปริมาณผลผลิตที่ส่งต้องไม่เกินปริมาณผลผลิตของการปลูกที่เลือกส่ง";
-                                      }
+                                      //print("actualGrams : ${actualGrams}, ptNetQuantityGrams : ${ptNetQuantityGrams}");
 
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
@@ -455,6 +525,14 @@ final List<String> itemList=[]; // Li
                                   backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
                                 ),
                                 onPressed: () async {
+
+                                  if (selectedManuftName == "") {
+                                    return showManuftNameIsEmptyError();
+                                  }
+
+                                  if (selected_rawMatShpQtyUnit_items == "หน่วยของปริมาณผลผลิตสุทธิ") {
+                                    return showSelectedRawMatShpQtyUnitIsEmptyError();
+                                  }
 
                                   if (formKey.currentState!.validate()) {
                                     String? manuftId = "";
