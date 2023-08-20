@@ -12,6 +12,8 @@ import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:mju_food_trace_app/controller/farmer_controller.dart';
 import 'package:mju_food_trace_app/screen/farmer/main_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/navbar_farmer.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../controller/planting_controller.dart';
 import '../../model/farmer.dart';
@@ -38,7 +40,6 @@ class _RequestRenewingFarmerCertificateState
 
   DateTime currentDate = DateTime.now();
   DateTime? plantDate;
-  DateTime? approxHarvDate;
   var dateFormat = DateFormat('dd-MM-yyyy');
 
   TextEditingController fmCertNoTextController = TextEditingController();
@@ -88,6 +89,20 @@ class _RequestRenewingFarmerCertificateState
     });
   }
 
+  void showFmCertImgIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกรูปภาพของใบรับรองมาตรฐานเกษตรกร",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -125,10 +140,15 @@ class _RequestRenewingFarmerCertificateState
                     maxLength: 50,
                     numberOnly: false,
                     validator: (value) {
-                      if (value!.isNotEmpty) {
-                        return null;
-                      } else {
+                      if (value!.isEmpty) {
                         return "กรุณากรอกหมายเลขใบรับรอง";
+                      }
+                      if (value.length < 8 || value.length > 8) {
+                        return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 8 ตัวอักษร";
+                      }
+                      final fmCertRegEx = RegExp(r'\d{6}OC');
+                      if (!fmCertRegEx.hasMatch(value)) {
+                        return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
                       }
                     },
                     icon: const Icon(Icons.account_circle)),
@@ -145,6 +165,8 @@ class _RequestRenewingFarmerCertificateState
                         plantDate = tempDate;
                         fmCertRegDateTextController.text =
                             dateFormat.format(plantDate!);
+                        fmCertExpireDateTextController.text =
+                            dateFormat.format(plantDate!.add(Duration(days: 365)));
                       });
                       print(plantDate);
                     },
@@ -182,6 +204,7 @@ class _RequestRenewingFarmerCertificateState
                       print(plantDate);
                     },
                     readOnly: true,
+                    enabled: false,
                     controller: fmCertExpireDateTextController,
                     decoration: InputDecoration(
                         labelText: "วันหมดอายุใบรับรอง",
@@ -252,6 +275,11 @@ class _RequestRenewingFarmerCertificateState
                                           backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
                                         ),
                                         onPressed: () async {
+
+                                          if (fmCertImgTextController.text == "") {
+                                            return showFmCertImgIsEmptyError();
+                                          }
+
                                           if (formKey.currentState!.validate()) {
                                             
                                             //Farmer data insertion

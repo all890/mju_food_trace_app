@@ -11,9 +11,12 @@ import 'package:http/http.dart' as http;
 import 'package:mju_food_trace_app/controller/planting_controller.dart';
 import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/main_farmer_screen.dart';
+import 'package:mju_food_trace_app/screen/farmer/request_renewing_farmer_certificate_screen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
+import '../../controller/farmer_certificate_controller.dart';
+import '../../model/farmer_certificate.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 import '../register_success_screen.dart';
 
@@ -27,6 +30,7 @@ class AddPlantingScreen extends StatefulWidget {
 class _AddPlantingScreenState extends State<AddPlantingScreen> {
   
   final PlantingController plantingController = PlantingController();
+  final FarmerCertificateController farmerCertificateController = FarmerCertificateController();
   var dateFormat = DateFormat('dd-MM-yyyy');
 
   List<String> bioextract_items= ["ประเภทของน้ำหมัก","น้ำหมักทางชีวภาพจากพืช","น้ำหมักทางชีวภาพจากสัตว์","น้ำหมักชีวภาพจากเศษปลา","น้ำหมักชีวภาพจากผลไม้รสเปรี้ยว"];
@@ -56,6 +60,82 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
   PlatformFile? pickedFile;
   File? fileToDisplay;
   bool isLoadingPicture = true;
+
+  bool? isLoaded;
+  FarmerCertificate? farmerCertificate;
+
+  void showFmCertExpireError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถใช้งานฟังก์ชั่นเพิ่มการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingFarmerCertificate()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showFmCertIsWaitAcceptError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถใช้งานฟังก์ชั่นเพิ่มการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListPlantingScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showFmCertWasRejectedError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถใช้งานฟังก์ชั่นเพิ่มการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านถูกปฏิเสธโดยผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingFarmerCertificate()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void fetchLatestFarmerCertificate () async {
+    setState(() {
+      isLoaded = false;
+    });
+    String farmerUsername = await SessionManager().get("username");
+    var response = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(farmerUsername);
+    farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(response);
+    if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true) {
+      showFmCertExpireError();
+    } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+      showFmCertIsWaitAcceptError();
+    } else if (farmerCertificate?.fmCertStatus == "ไม่อนุมัติ") {
+      showFmCertWasRejectedError();
+    }
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLatestFarmerCertificate();
+  }
 
   void _pickFile () async {
     try {

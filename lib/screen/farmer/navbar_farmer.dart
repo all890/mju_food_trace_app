@@ -6,10 +6,44 @@ import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dar
 import 'package:mju_food_trace_app/screen/farmer/main_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/request_renewing_farmer_certificate_screen.dart';
 
+import '../../controller/farmer_certificate_controller.dart';
+import '../../controller/farmer_controller.dart';
+import '../../model/farmer.dart';
+import '../../model/farmer_certificate.dart';
 import '../login_screen.dart';
 
-class FarmerNavbar extends StatelessWidget {
+class FarmerNavbar extends StatefulWidget {
   const FarmerNavbar({super.key});
+
+  @override
+  State<FarmerNavbar> createState() => _FarmerNavbarState();
+}
+
+class _FarmerNavbarState extends State<FarmerNavbar> {
+
+  FarmerCertificate? farmerCertificate;
+  bool? isLoaded;
+
+  FarmerCertificateController farmerCertificateController = FarmerCertificateController();
+
+  void fetchFarmerCertificateData () async {
+    setState(() {
+      isLoaded = false;
+    });
+    String farmerUsername = await SessionManager().get("username");
+    var response = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(farmerUsername);
+    farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(response);
+    print(farmerCertificate?.fmCertExpireDate);
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFarmerCertificateData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +71,18 @@ class FarmerNavbar extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?
+          ListTile(
+            leading: const Icon(Icons.newspaper_sharp),
+            title: const Text("ต่ออายุใบรับรอง"),
+            onTap: () {
+              print("Go to request renewing farmer certificate page");
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingFarmerCertificate()));
+              });
+              Navigator.pop(context);
+            },
+          ) : Container(),
           ListTile(
             leading: const Icon(Icons.add),
             title: const Text("เพิ่มการปลูกผลผลิต"),
@@ -55,17 +101,6 @@ class FarmerNavbar extends StatelessWidget {
               print("Go to list planting page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListPlantingScreen()));
-              });
-              Navigator.pop(context);
-            },
-          ),
-           ListTile(
-            leading: const Icon(Icons.newspaper_sharp),
-            title: const Text("ต่ออายุใบรับรอง"),
-            onTap: () {
-              print("Go to request renewing farmer certificate page");
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingFarmerCertificate()));
               });
               Navigator.pop(context);
             },

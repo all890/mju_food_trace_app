@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:mju_food_trace_app/controller/farmer_certificate_controller.dart';
 import 'package:mju_food_trace_app/controller/planting_controller.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
 import 'package:mju_food_trace_app/screen/farmer/navbar_farmer.dart';
@@ -25,6 +26,7 @@ class ListPlantingScreen extends StatefulWidget {
 class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   PlantingController plantingController = PlantingController();
+  FarmerCertificateController farmerCertificateController = FarmerCertificateController();
 
   bool? isLoaded;
 
