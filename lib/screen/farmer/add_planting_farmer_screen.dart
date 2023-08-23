@@ -458,23 +458,46 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                   icon: const Icon(Icons.bubble_chart)
                                 ),
                                 
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_netQuantityUnit_items,
-                                    icon: const Icon(Icons.arrow_downward),
-                                    elevation: 5,
-                                    style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
-                                    isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
-                                    items:  netQuantityUnit_items.map((String item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item)
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
                                       ),
-                                    ).toList(),
-                                    onChanged: (item) => setState(() => selected_netQuantityUnit_items = item),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: selected_netQuantityUnit_items,
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.scale),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            icon: const Icon(Icons.expand_more),
+                                            elevation: 5,
+                                            style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
+                                            isExpanded: true,
+                                            items:  netQuantityUnit_items.map((String item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(item)
+                                              ),
+                                            ).toList(),
+                                            onChanged: (item) => setState(() => selected_netQuantityUnit_items = item),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
 

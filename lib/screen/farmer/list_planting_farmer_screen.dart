@@ -15,6 +15,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
+import '../../model/farmer_certificate.dart';
 
 class ListPlantingScreen extends StatefulWidget {
   const ListPlantingScreen({super.key});
@@ -30,6 +31,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   bool? isLoaded;
 
+  FarmerCertificate? farmerCertificate;
+
   List<Planting>? plantings;
   Map<String, dynamic> remQtyOfPts = {};
 
@@ -40,7 +43,49 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
 
   var dateFormat = DateFormat('dd-MM-yyyy');
 
- void showConfirmToDeleteAlert (String plantingId) {
+  void showErrorToUpdateBecauseFmCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถอัพเดตข้อมูลการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToSendBecauseFmCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถส่งผลผลิตของการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToDeleteBecauseFmCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถลบข้อมูลการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showConfirmToDeleteAlert (String? plantingId) {
     QuickAlert.show(
       context: context,
       showCancelBtn: true,
@@ -51,7 +96,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       cancelBtnText: "ยกเลิก",
       onConfirmBtnTap: () async{
         print(plantingId);
-       http.Response response = await plantingController.deletePlanting(plantingId);
+       http.Response response = await plantingController.deletePlanting(plantingId!);
         Navigator.pop(context);
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListPlantingScreen()));
@@ -67,6 +112,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       isLoaded = false;
     });
     plantings = await plantingController.getListPlantingById(username);
+    var fmCertResponse = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(username);
+    farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(fmCertResponse);
     var remQtyOfPtsResponse = await plantingController.getRemQtyOfPtsByFarmerUsername(username);
     remQtyOfPts = json.decode(remQtyOfPtsResponse);
     print(remQtyOfPts);
@@ -98,6 +145,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
     print("Length of cannotSentPlantings : ${cannotSentPlantings?.length}");
     print("Length of didNotSentPlantings : ${didNotSentPlantings?.length}");
     print("Length of sendPlantings : ${sendPlantings?.length}");
+    print("Length of emptyQtyPlantings : ${emptyQtyPlantings?.length}");
   }
 
   @override
@@ -223,7 +271,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             GestureDetector(
                               onTap: () {
                                 print("Delete Pressed!");
-                               showConfirmToDeleteAlert(didNotSentPlantings?[index1].plantingId ?? "");
+                                print(cannotSentPlantings?.length);
+                                print("state is ${farmerCertificate?.fmCertExpireDate?.isAfter(DateTime.now())}");
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToDeleteBecauseFmCertIsExpire();
+                                } else {
+                                  print("print this");
+                                  showConfirmToDeleteAlert(cannotSentPlantings?[index1].plantingId);
+                                }
+                                
                               },
                               child: Icon(Icons.delete)
                             ),
@@ -231,10 +287,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             GestureDetector(
                               onTap: () {
                                 print("Edit Pressed!");
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: cannotSentPlantings!.isEmpty ? '' : cannotSentPlantings![index1].plantingId??"")),
-                               );
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToUpdateBecauseFmCertIsExpire();
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: cannotSentPlantings!.isEmpty ? '' : cannotSentPlantings![index1].plantingId??"")),
+                                  );
+                                }
+                                
                               },
                               child: Icon(Icons.edit)
                             ),
@@ -303,7 +364,12 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             GestureDetector(
                               onTap: () {
                                 print("Delete Pressed!");
-                               showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToDeleteBecauseFmCertIsExpire();
+                                } else {
+                                  showConfirmToDeleteAlert(didNotSentPlantings?[index].plantingId ?? "");
+                                }
+                                
                               },
                               child: Icon(Icons.delete)
                             ),
@@ -311,10 +377,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                             GestureDetector(
                               onTap: () {
                                 print("Edit Pressed!");
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
-                               );
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToUpdateBecauseFmCertIsExpire();
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UpdatePlantingScreen(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                                  );
+                                }
+                                
                               },
                               child: Icon(Icons.edit)
                             ),
@@ -322,10 +393,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                              GestureDetector(
                               onTap: () {
                                 print("Send Pressed!");
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
-                               );
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToSendBecauseFmCertIsExpire();
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: didNotSentPlantings?[index].plantingId ?? "")),
+                                  );
+                                }
+                                
                               },
                               child: Icon(Icons.send)
                             )
@@ -394,12 +470,17 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                            Center(
                              child: GestureDetector(
                               onTap: () {
-                                print("Send Pressed!");
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: sendPlantings?[index].plantingId ?? "", remQtyOfPt: sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ?
-                            remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId],)),
-                               );
+                                if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus != "อนุมัติ") {
+                                  showErrorToSendBecauseFmCertIsExpire();
+                                } else {
+                                  print("Send Pressed!");
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SendAgriculturalProducts(plantingId: sendPlantings?[index].plantingId ?? "", remQtyOfPt: sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ?
+                                    remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId],)),
+                                  );
+                                }
+                                
                               },
                               child: Icon(Icons.send)
                                                      ),
