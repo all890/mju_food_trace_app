@@ -33,6 +33,7 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
     var username = await SessionManager().get("username");
     var manuftCertficateResponse = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
     manufacturerCertficate = ManufacturerCertificate.fromJsonToManufacturerCertificate(manuftCertficateResponse);
+    print(manufacturerCertficate?.mnCertExpireDate);
     setState(() {
       isLoaded = true;
     });
