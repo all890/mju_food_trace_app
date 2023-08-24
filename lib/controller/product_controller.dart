@@ -59,6 +59,16 @@ class ProductController {
     return response;
   }
 
+  Future getProductExistingByManuftUsername (String username) async {
+
+    var url = Uri.parse(baseURL + '/product/getprodexists/' + username);
+
+    http.Response response = await http.get(url);
+
+    return response.body;
+
+  }
+
   Future getProductById (String productId) async {
     var url = Uri.parse(baseURL + '/product/getprodbyid/' + productId);
     http.Response response = await http.get(

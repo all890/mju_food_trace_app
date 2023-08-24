@@ -1,12 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/list_product_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/main_manufacturer_screen.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/request_renewing_manufacturer_certificate_screen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
+import '../../controller/manufacturer_certificate_controller.dart';
 import '../../controller/product_controller.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 import '../register_success_screen.dart';
@@ -24,6 +27,7 @@ class AddProductScreen extends StatefulWidget {
 class _AddProductScreenState extends State<AddProductScreen> {
 
   ProductController productController = ProductController();
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
 
   TextEditingController productNameTextController = TextEditingController();
   TextEditingController netVolumeTextController = TextEditingController();
@@ -41,6 +45,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
   TextEditingController calciumTextController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  ManufacturerCertificate? manufacturerCertificate;
+  bool? isLoaded;
 
   void showFailToSaveProductAlert() {
     QuickAlert.show(
@@ -68,6 +75,79 @@ class _AddProductScreenState extends State<AddProductScreen> {
         });
       }
     );
+  }
+
+  void showMnCertWasRejectedError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองเกษตรกรของท่านถูกปฏิเสธโดยผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showMnCertIsWaitAcceptError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มการปลูกได้ เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListProductScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showMnCertExpireError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มการปลูกได้ เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void fetchManufacturerCertificate () async {
+    setState(() {
+      isLoaded = false;
+    });
+    String username = await SessionManager().get("username");
+    var response = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
+    manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(response);
+    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true) {
+      showMnCertExpireError();
+    } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
+      showMnCertIsWaitAcceptError();
+    } else if (manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
+      showMnCertWasRejectedError();
+    }
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchManufacturerCertificate();
   }
 
   @override

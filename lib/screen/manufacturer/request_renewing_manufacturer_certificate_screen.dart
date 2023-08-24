@@ -10,6 +10,8 @@ import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/navbar_manufacturer.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
@@ -48,7 +50,19 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
   File? fileToDisplay;
   bool isLoadingPicture = true;
 
- 
+  void showMnCertImgIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกรูปภาพของใบรับรองมาตรฐานการผลิต",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
   
   void _pickFile() async {
     try {
@@ -127,10 +141,15 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                     maxLength: 50,
                     numberOnly: false,
                     validator: (value) {
-                      if (value!.isNotEmpty) {
-                        return null;
-                      } else {
+                      if (value!.isEmpty) {
                         return "กรุณากรอกหมายเลขใบรับรอง";
+                      }
+                      if (value.length < 27 || value.length > 27) {
+                        return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 27 ตัวอักษร";
+                      }
+                      final mnCertRegEx = RegExp(r'กษ \d{2}-\d{4}-\d{4}-\d{11}');
+                      if (!mnCertRegEx.hasMatch(value)) {
+                        return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
                       }
                     },
                     icon: const Icon(Icons.account_circle)),
@@ -146,7 +165,9 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                       setState(() {
                         plantDate = tempDate;
                         mnCertRegDateTextController.text =
-                            dateFormat.format(plantDate!);
+                          dateFormat.format(plantDate!);
+                        mnCertExpireDateTextController.text =
+                          dateFormat.format(plantDate!.add(Duration(days: 365)));
                       });
                       print(plantDate);
                     },
@@ -184,6 +205,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                       print(plantDate);
                     },
                     readOnly: true,
+                    enabled: false,
                     controller: mnCertExpireDateTextController,
                     decoration: InputDecoration(
                         labelText: "วันหมดอายุใบรับรอง",
@@ -239,73 +261,77 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                 ),
           
                 Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    child: SizedBox(
-                                      height: 53,
-                                      width: 200,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(50.0))),
-                                          backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
-                                        ),
-                                        onPressed: () async {
-                                          if (formKey.currentState!.validate()) {
-                                            
-                                            //Farmer data insertion
-                                            /*
-                                            Provider.of<FarmersData>(context, listen: false)
-                                                            .addFarmer(
-                                                              farmerNameTextController.text,
-                                                              farmerLastnameTextController.text,
-                                                              farmerEmailTextController.text,
-                                                              farmerMobileNoTextController.text,
-                                                              farmNameTextController.text,
-                                                              double.parse(farmLatitudeTextController.text),
-                                                              double.parse(farmLongitudeTextController.text),
-                                                              farmerUsernameTextController.text,
-                                                              farmerPasswordTextController.text
-                                                            );
-                                            */
-              
-                                            //Farmer's data insertion using farmer controller
-                                            var username = await SessionManager().get("username");
-          
-                                            http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
-                                                                      mnCertNoTextController.text,
-                                                                      mnCertRegDateTextController.text,
-                                                                      mnCertExpireDateTextController.text,
-                                                                      username.toString());
-              
-                                            //print("Status code is " + code.toString());
-              
-                                            if (response.statusCode == 500) {
-                                              print("Error!");
-                                              //showUsernameDuplicationAlert();
-                                            } else {
-                                              print("Farmer registration successfully!");
-                                            //  showSavePlantingSuccessAlert();
-                                            }
-                                          }
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
-                                            Text("ยื่นใบรับรอง",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: 'Itim'
-                                              )
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 10),
+                  child: SizedBox(
+                    height: 53,
+                    width: 200,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(50.0))),
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                      ),
+                      onPressed: () async {
+                        if (mnCertImgTextController.text == "") {
+                          return showMnCertImgIsEmptyError();
+                        }
+
+                        if (formKey.currentState!.validate()) {
+                          
+                          //Farmer data insertion
+                          /*
+                          Provider.of<FarmersData>(context, listen: false)
+                                          .addFarmer(
+                                            farmerNameTextController.text,
+                                            farmerLastnameTextController.text,
+                                            farmerEmailTextController.text,
+                                            farmerMobileNoTextController.text,
+                                            farmNameTextController.text,
+                                            double.parse(farmLatitudeTextController.text),
+                                            double.parse(farmLongitudeTextController.text),
+                                            farmerUsernameTextController.text,
+                                            farmerPasswordTextController.text
+                                          );
+                          */
+
+                          //Farmer's data insertion using farmer controller
+                          var username = await SessionManager().get("username");
+
+                          http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
+                                                    mnCertNoTextController.text,
+                                                    mnCertRegDateTextController.text,
+                                                    mnCertExpireDateTextController.text,
+                                                    username.toString());
+
+                          //print("Status code is " + code.toString());
+
+                          if (response.statusCode == 500) {
+                            print("Error!");
+                            //showUsernameDuplicationAlert();
+                          } else {
+                            print("Farmer registration successfully!");
+                          //  showSavePlantingSuccessAlert();
+                          }
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text("ยื่นใบรับรอง",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Itim'
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),

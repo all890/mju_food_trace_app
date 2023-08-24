@@ -1,7 +1,10 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:mju_food_trace_app/controller/product_controller.dart';
+import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
 import 'package:mju_food_trace_app/model/product.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/navbar_manufacturer.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/update_product_manufacturer_screen.dart';
@@ -11,6 +14,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
 
 import '../../constant/constant.dart';
+import '../../controller/manufacturer_certificate_controller.dart';
 
 class ListProductScreen extends StatefulWidget {
   const ListProductScreen({super.key});
@@ -22,10 +26,18 @@ class ListProductScreen extends StatefulWidget {
 class _ListProductScreenState extends State<ListProductScreen> {
 
   ProductController productController = ProductController();
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
 
   bool? isLoaded;
 
-  List<Product>? products;
+  List<Product>? products = [];
+
+  List<Product>? notManufacturedProducts = [];
+  List<Product>? manufacturedProducts = [];
+
+  Map<String, dynamic>? productExisting;
+
+  ManufacturerCertificate? manufacturerCertificate;
 
   void showFailToDeleteProductAlert () {
     QuickAlert.show(
@@ -105,9 +117,54 @@ class _ListProductScreenState extends State<ListProductScreen> {
     });
     String username = await SessionManager().get("username");
     products = await productController.getListProduct(username);
+    var productJson = await productController.getProductExistingByManuftUsername(username);
+    productExisting = json.decode(productJson);
+    var responseMnCert = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
+    manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(responseMnCert);
+    splitProductByType();
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void showErrorToUpdateBecauseMnCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถแก้ไขข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToDeleteBecauseMnCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถลบข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void splitProductByType () {
+    products?.forEach((product) {
+      if (productExisting?.containsKey(product.productId) == true) {
+        manufacturedProducts?.add(product);
+      } else {
+        notManufacturedProducts?.add(product);
+      }
+    });
+    print("Manufactured : ${manufacturedProducts?.length}");
+    print("Not manufactured : ${notManufacturedProducts?.length}");
   }
 
   @override
@@ -122,49 +179,54 @@ class _ListProductScreenState extends State<ListProductScreen> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: SafeArea(
-        child: Scaffold(
-          drawer: ManufacturerNavbar(),
-          appBar: AppBar(
-            title: const Text("LIST PRODUCTS"),
-            backgroundColor: Colors.green,
-          ),
-          backgroundColor: kBackgroundColor,
-          body: isLoaded == false?
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                ),
+      child: DefaultTabController(
+        length: 2,
+        child: SafeArea(
+          child: Scaffold(
+            drawer: ManufacturerNavbar(),
+            appBar: AppBar(
+              title: const Text("LIST PRODUCTS"),
+              bottom: const TabBar(
+                tabs: [
+                  Tab(
+                    child: Text(
+                      "ยังไม่ถูกผลิต",
+                      style: TextStyle(
+                        fontFamily: 'Itim'
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "ผลิตแล้ว",
+                      style: TextStyle(
+                        fontFamily: 'Itim'
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ) : 
-          products?.length == 0?
-          Container(
-            child: Text("ยังไม่มีสินค้าของคุณ")
-          ) :
-          
-          Column(
-            children: [
-                const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "รายการสินค้า",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontFamily: 'Itim',
-                                  color: Color.fromARGB(255, 33, 82, 35)),
-                            ),
-                          ),
-              Expanded(
-                child: Container(
-                  
+              backgroundColor: Colors.green,
+            ),
+            backgroundColor: kBackgroundColor,
+            body: isLoaded == false?
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  ),
+                ),
+              ],
+            ) : 
+            TabBarView(
+              children: [
+                Container(
                   padding: EdgeInsets.all(10.0),
                   child: ListView.builder(
-                    itemCount: products?.length,
+                    itemCount: notManufacturedProducts?.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Card(
@@ -184,7 +246,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${products?[index].productName}",
+                                "${notManufacturedProducts?[index].productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 22
@@ -200,17 +262,25 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Edit Pressed!");
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: products?[index].productId ?? "")),
-                                    );
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                      showErrorToUpdateBecauseMnCertIsExpire();
+                                    } else {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: notManufacturedProducts?[index].productId ?? "")),
+                                      );
+                                    }
                                   },
                                   child: Icon(Icons.edit)
                                 ),
                                 GestureDetector(
                                   onTap: () {
                                     print("Delete Pressed!");
-                                    showConfirmToDeleteAlert(products?[index].productId ?? "");
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                      showErrorToDeleteBecauseMnCertIsExpire();
+                                    } else {
+                                      showConfirmToDeleteAlert(notManufacturedProducts?[index].productId ?? "");
+                                    }
                                   },
                                   child: Icon(Icons.delete)
                                 )
@@ -222,9 +292,45 @@ class _ListProductScreenState extends State<ListProductScreen> {
                     },
                   ),
                 ),
-              ),
-            ],
-          )
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView.builder(
+                    itemCount: manufacturedProducts?.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: ListTile(
+                          leading: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.place)
+                            ],
+                          ),
+                          title: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${manufacturedProducts?[index].productName}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 22
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
