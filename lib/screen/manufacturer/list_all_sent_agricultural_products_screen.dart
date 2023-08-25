@@ -4,11 +4,16 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/raw_material_shipping.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/add_manufacturing_screen.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/request_renewing_manufacturer_certificate_screen.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
+import '../../model/manufacturer_certificate.dart';
 import 'navbar_manufacturer.dart';
 
 class ListAllSentAgriculturalProductsScreen extends StatefulWidget {
@@ -19,12 +24,14 @@ class ListAllSentAgriculturalProductsScreen extends StatefulWidget {
       _ListAllSentAgriculturalProductsScreenState();
 }
 
-class _ListAllSentAgriculturalProductsScreenState
-    extends State<ListAllSentAgriculturalProductsScreen> {
+class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgriculturalProductsScreen> {
   RawMaterialShippingController rawMaterialShippingController =
       RawMaterialShippingController();
+  
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
 
   bool? isLoaded;
+  ManufacturerCertificate? manufacturerCertificate;
 
   List<RawMaterialShipping>? raw_material_shippings;
 
@@ -37,10 +44,31 @@ class _ListAllSentAgriculturalProductsScreenState
     });
     raw_material_shippings = await rawMaterialShippingController
         .getListAllSentAgriByUsername(username);
+    var responseManuftCert = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
+    manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(responseManuftCert);
+    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true) {
+      showMnCertExpireError();
+    }
     setState(() {
       isLoaded = true;
     });
     print(raw_material_shippings?.length);
+  }
+
+  void showMnCertExpireError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มการผลิตสินค้าได้ เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
   }
 
   @override

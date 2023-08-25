@@ -106,8 +106,8 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
             },
           ),
            ListTile(
-            leading: const Icon(Icons.list),
-            title: const Text("ผลผลิตจากเกษตรกร"),
+            leading: const Icon(Icons.add),
+            title: const Text("เพิ่มการผลิตสินค้า"),
             onTap: () {
               print("Go to list all sent agricultural product page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
