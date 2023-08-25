@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
@@ -66,8 +63,9 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
     setState(() {
       isLoaded = true;
     });
-    print(raw_material_shippings?.length);
-    print(remQtyOfRms);
+    raw_material_shippings?.forEach((element) {
+      print(element.rawMatShpDate);
+    });
   }
 
   void showMnCertExpireError () {
@@ -75,6 +73,22 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
       context: context,
       title: "เกิดข้อผิดพลาด",
       text: "ไม่สามารถเพิ่มการผลิตสินค้าได้ เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showCannotUseRmsBecauseChainIsInvalidError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถใช้ผลผลิตที่เลือกได้ เนื่องจากข้อมูลในการเข้ารหัสไม่ตรงกัน",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -289,18 +303,26 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                 )
                               ],
                             ),
-                            onTap: () {
+                            onTap: () async {
                               print(usedRms?[index]
                                   .rawMatShpId);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AddManufacturingScreen(
-                                          rawMatShpId:
-                                            usedRms?[index].rawMatShpId ??"",
-                                          remQtyOfRms: remQtyOfRms[usedRms?[index].rawMatShpId],)),
-                              );
+                              
+                              var response = await rawMaterialShippingController.isRmsAndPlantingChainValid(usedRms?[index].rawMatShpId??"");
+
+                              if (response == 200) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AddManufacturingScreen(
+                                            rawMatShpId:
+                                              usedRms?[index].rawMatShpId ??"",
+                                            remQtyOfRms: remQtyOfRms[usedRms?[index].rawMatShpId],)),
+                                );
+                              } else if (response == 409) {
+                                showCannotUseRmsBecauseChainIsInvalidError();
+                              }
+                              
                             },
                           ),
                         );

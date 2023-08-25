@@ -38,6 +38,16 @@ class RawMaterialShippingController{
 
   }
 
+  Future isRmsAndPlantingChainValid (String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/isrmsandptcv/' + rawMatShpId);
+
+    http.Response response = await http.get(url);
+
+    return response.statusCode;
+
+  }
+
   Future getRmsExistInManufacturingByManutftUsername (String username) async {
 
     var url = Uri.parse(baseURL + '/rms/getrmsexists/' + username);

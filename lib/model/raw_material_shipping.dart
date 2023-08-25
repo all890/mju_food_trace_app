@@ -4,7 +4,7 @@
 import 'package:mju_food_trace_app/model/manufacturer.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
 
-class RawMaterialShipping{
+class RawMaterialShipping {
 
   String? rawMatShpId;
   DateTime? rawMatShpDate;
@@ -15,17 +15,18 @@ class RawMaterialShipping{
   Planting? planting;
   Manufacturer?manufacturer;
 
-RawMaterialShipping({
-  this.rawMatShpId,
-  this.rawMatShpDate,
-  this.rawMatShpQty,
-  this.rawMatShpQtyUnit,
-  this.rmsPrevBlockHash,
-  this.rmsCurrBlockHash,
-  this.planting,
-  this.manufacturer
-});
-Map<String, dynamic> fromRawMaterialShippingToJson() {
+  RawMaterialShipping({
+    this.rawMatShpId,
+    this.rawMatShpDate,
+    this.rawMatShpQty,
+    this.rawMatShpQtyUnit,
+    this.rmsPrevBlockHash,
+    this.rmsCurrBlockHash,
+    this.planting,
+    this.manufacturer
+  });
+
+  Map<String, dynamic> fromRawMaterialShippingToJson() {
     return <String, dynamic>{
       'rawMatShpId': rawMatShpId,
       'rawMatShpDate': rawMatShpDate?.toIso8601String(),
@@ -38,9 +39,7 @@ Map<String, dynamic> fromRawMaterialShippingToJson() {
     };
   }
 
-    factory RawMaterialShipping.fromJsonToRawMaterialShipping(Map<String, dynamic> json) {
-
-    
+  factory RawMaterialShipping.fromJsonToRawMaterialShipping(Map<String, dynamic> json) {
     return RawMaterialShipping(
       rawMatShpId: json["rawMatShpId"],
       rawMatShpDate: DateTime.parse(json["rawMatShpDate"]),
@@ -52,6 +51,5 @@ Map<String, dynamic> fromRawMaterialShippingToJson() {
       manufacturer: Manufacturer.fromJsonToManufacturer(json["manufacturer"])
     );
   }
-
 
 }
