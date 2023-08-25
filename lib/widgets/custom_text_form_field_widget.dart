@@ -9,15 +9,19 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText,
     this.numberOnly,
     this.validator,
+    this.enabled,
     this.maxLength,
     this.maxLines,
-    this.icon
+    this.icon,
+    this.hT
   });
 
   final TextEditingController controller;
   final bool? obscureText;
   final bool? numberOnly;
+  final bool? enabled;
   final String hintText;
+  final String? hT;
   final int? maxLength;
   final int? maxLines;
   final Icon? icon;
@@ -30,12 +34,14 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         maxLength: maxLength,
+        enabled: enabled,
         maxLines: maxLines,
         obscureText: obscureText ?? false,
         keyboardType: numberOnly == true? TextInputType.number : TextInputType.text,
         validator: validator,
         decoration: InputDecoration(
           labelText: hintText,
+          hintText: hT,
           counterText: "",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10)),

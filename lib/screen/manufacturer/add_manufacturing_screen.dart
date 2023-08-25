@@ -19,7 +19,8 @@ import '../../widgets/custom_text_form_field_widget.dart';
 
 class AddManufacturingScreen extends StatefulWidget {
   final String rawMatShpId;
-  const AddManufacturingScreen({Key? key, required this.rawMatShpId})
+  final double? remQtyOfRms;
+  const AddManufacturingScreen({Key? key, required this.rawMatShpId, this.remQtyOfRms})
       : super(key: key);
 
   @override
@@ -61,10 +62,15 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   List<String>? productNames = [];
   String? productId;
 
+  bool? enableExpireDateField = false;
+
+  double? canUseKg;
+  double? canUseGrams;
+
   void fetchData(String rawMatShpId) async {
     var username = await SessionManager().get("username");
     setState(() {
-      var isLoaded = false;
+      isLoaded = false;
     });
     var response = await rawMaterialShippingController
         .getRawMaterialShippingDetails(rawMatShpId);
@@ -76,7 +82,8 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
     plantNameTextController.text =
         rawMaterialShipping?.planting?.plantName ?? "";
     fetchName();
-    //setTextToData();
+    canUseKg = widget.remQtyOfRms! / 1000;
+    canUseGrams = widget.remQtyOfRms;
     setState(() {
       isLoaded = true;
     });
@@ -97,7 +104,37 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   void initState() {
     super.initState();
     fetchData(widget.rawMatShpId);
+    print(widget.remQtyOfRms);
   }
+
+  //showUsedRawMatQtyIsEmptyError
+
+  void showUsedRawMatQtyIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showProductUnitIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของสินค้า",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showFailToSaveManufacuringAlert() {
     QuickAlert.show(
       context: context,
@@ -135,7 +172,20 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: kBackgroundColor,
-          body: Center(
+          body: isLoaded == false? 
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.green),
+                    ),
+                  ),
+                ],
+              ):
+          Center(
             child: SingleChildScrollView(
               child: Center(
                 child: Form(
@@ -285,12 +335,17 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
                                           initialDate: currentDate,
-                                          firstDate: DateTime(1950),
+                                          firstDate: rawMaterialShipping?.rawMatShpDate ?? DateTime.now(),
                                           lastDate: DateTime(2100));
                                       setState(() {
                                         manufactureDate = tempDate;
                                         manufactureDateTextController.text =
-                                            dateFormat.format(manufactureDate!);
+                                            dateFormat.format(manufactureDate??DateTime.now());
+                                        if (manufactureDateTextController.text != "") {
+                                          enableExpireDateField = true;
+                                        } else {
+                                          enableExpireDateField = false;
+                                        }
                                       });
                                       print(manufactureDate);
                                     },
@@ -317,18 +372,20 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
+                                    enabled: enableExpireDateField,
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: currentDate,
-                                          firstDate: DateTime(1950),
+                                          initialDate: DateFormat('dd-MM-yyyy').parse(manufactureDateTextController.text).add(Duration(days: 1)),
+                                          firstDate: DateFormat('dd-MM-yyyy').parse(manufactureDateTextController.text).add(Duration(days: 1)),
                                           lastDate: DateTime(2100));
                                       setState(() {
                                         expireDate = tempDate;
                                         expireDateTextController.text =
-                                            dateFormat.format(expireDate!);
+                                            dateFormat.format(expireDate??DateTime.now());
+                                        print(expireDate);
                                       });
-                                      print(expireDate);
+                                      
                                     },
                                     readOnly: true,
                                     controller: expireDateTextController,
@@ -351,31 +408,70 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   ),
                                 ),
                                 CustomTextFormField(
-                                    controller: plantNameTextController,
-                                    hintText: "ผลผลิตที่นำมาใช้",
-                                    maxLength: 50,
-                                    numberOnly: false,
-                                    validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
-                                        return "กรุณากรอกผลผลิตที่นำมาใช้";
-                                      }
-                                    },
-                                    icon: const Icon(Icons.account_circle)),
+                                  controller: plantNameTextController,
+                                  hintText: "ผลผลิตที่นำมาใช้",
+                                  maxLength: 50,
+                                  numberOnly: false,
+                                  enabled: false,
+                                  validator: (value) {
+                                    if (value!.isNotEmpty) {
+                                      return null;
+                                    } else {
+                                      return "กรุณากรอกผลผลิตที่นำมาใช้";
+                                    }
+                                  },
+                                  icon: const Icon(Icons.account_circle)
+                                ),
                                 CustomTextFormField(
-                                    controller: usedRawMatQtyTextController,
-                                    hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
-                                    maxLength: 50,
-                                    numberOnly: true,
-                                    validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
-                                        return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
-                                      }
-                                    },
-                                    icon: const Icon(Icons.bubble_chart)),
+                                  controller: usedRawMatQtyTextController,
+                                  hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
+                                  hT: "ไม่เกิน ${canUseKg} กิโลกรัม หรือ ${canUseGrams} กรัม",
+                                  maxLength: 50,
+                                  numberOnly: true,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
+                                    }
+
+                                    double actualGrams = 0;
+
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
+                                      actualGrams = double.parse(value) * 1000;
+                                    } else {
+                                      actualGrams = double.parse(value);
+                                    }
+
+                                    if (selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+                                      showUsedRawMatQtyIsEmptyError();
+                                      return "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า";
+                                    }
+
+                                    double rmsNetQuantityGrams = 0;
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
+                                      rmsNetQuantityGrams = (widget.remQtyOfRms??0) / 1000.0;
+                                    } else {
+                                      rmsNetQuantityGrams = (widget.remQtyOfRms??0);
+                                    }
+
+                                    print("KILOGRAMS : ${actualGrams/1000} <> ${rmsNetQuantityGrams}");
+                                    print("GRAMS : ${actualGrams} <> ${rmsNetQuantityGrams*1000}");
+
+                                    print("NORMAL : ${actualGrams} <> ${rmsNetQuantityGrams}");
+
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม" && actualGrams/1000 > rmsNetQuantityGrams) {
+                                      return "ปริมาณผลผลิตที่ใช้ต้องไม่เกินปริมาณผลผลิตที่มีอยู่";
+                                    }
+                                    else if (selected_usedRawMatQtyUnit_items == "กรัม" && actualGrams > rmsNetQuantityGrams*1000) {
+                                      return "ปริมาณผลผลิตที่ใช้ต้องไม่เกินปริมาณผลผลิตที่มีอยู่";
+                                    }
+                                    else {
+                                      return null;
+                                    }
+                                    
+                                    
+                                  },
+                                  icon: const Icon(Icons.bubble_chart)
+                                ),
                                 Center(
                                   child: DropdownButton<String>(
                                     value: selected_usedRawMatQtyUnit_items,
@@ -422,6 +518,11 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                               MaterialStateProperty.all<Color>(
                                                   Colors.green)),
                                       onPressed: () async {
+
+                                        if (selected_productUnit_items == "หน่วยของสินค้า") {
+                                          return showProductUnitIsEmptyError();
+                                        }
+
                                         if (formKey.currentState!.validate()) {
                                           //Farmer data insertion
                                           /*

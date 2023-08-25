@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturing.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/record_manufacturing.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/update_manufacturing_screen.dart';
@@ -12,6 +13,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
 import '../../controller/manufacturing_controller.dart';
+import '../../model/manufacturer_certificate.dart';
 import 'navbar_manufacturer.dart';
 
 class ListManufacturingScreen extends StatefulWidget {
@@ -22,11 +24,16 @@ class ListManufacturingScreen extends StatefulWidget {
 }
 
 class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
-   ManufacturingController manufacturingController = ManufacturingController();
+  ManufacturingController manufacturingController = ManufacturingController();
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
 
   bool? isLoaded;
+  ManufacturerCertificate? manufacturerCertificate;
 
-  List<Manufacturing>? manufacurings;
+  List<Manufacturing>? manufacturings = [];
+
+  List<Manufacturing>? recordedManufacturings = [];
+  List<Manufacturing>? notRecordedManufacturings = [];
 
   var dateFormat = DateFormat('dd-MM-yyyy');
 
@@ -35,11 +42,56 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
     setState(() {
       isLoaded = false;
     });
-    manufacurings = await manufacturingController.getListAllManufacturingUsername(username);
+    manufacturings = await manufacturingController.getListAllManufacturingUsername(username);
+    var manuftCertResponse = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
+    manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(manuftCertResponse);
+    splitManufacturingType();
     setState(() {
       isLoaded = true;
     });
-    print(manufacurings?.length);
+    print(manufacturings?.length);
+  }
+
+  void showErrorToDeleteBecauseMnCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถลบข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToRecordBecauseMnCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถบันทึกการผลิตได้ เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToUpdateBecauseMnCertIsExpire () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถแก้ไขข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
   }
 
   void showConfirmToDeleteAlert (String manufacturingId) async {
@@ -71,6 +123,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
       }
     );
   }
+
   void showFailToDeleteManufacturingAlert () {
     QuickAlert.show(
       context: context,
@@ -114,58 +167,76 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
     );
   }
 
+  void splitManufacturingType () {
+    manufacturings?.forEach((manufacturing) {
+      if (manufacturing.manuftCurrBlockHash == null) {
+        notRecordedManufacturings?.add(manufacturing);
+      } else {
+        recordedManufacturings?.add(manufacturing);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     fetchData();
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: SafeArea(
-        child: Scaffold(
-          drawer: ManufacturerNavbar(),
-          appBar: AppBar(
-            title: const Text("LIST MANUFACTURINGS"),
-            backgroundColor: Colors.green,
-          ),
-          backgroundColor: kBackgroundColor,
-          body: isLoaded == false?
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                ),
+      child: DefaultTabController(
+        length: 2,
+        child: SafeArea(
+          child: Scaffold(
+            drawer: ManufacturerNavbar(),
+            appBar: AppBar(
+              title: const Text("LIST MANUFACTURINGS"),
+              bottom: const TabBar(
+                tabs: [
+                  Tab(
+                    child: Text(
+                      "ยังไม่ถูกบันทึก",
+                      style: TextStyle(
+                        fontFamily: 'Itim'
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "บันทึกแล้ว",
+                      style: TextStyle(
+                        fontFamily: 'Itim'
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ) : 
-          manufacurings?.length == 0?
-          Container(
-            child: Text("ยังไม่มีการผลิตสินค้าของคุณ")
-          ) :
-          Column(
-            children: [
-               const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "รายการการผลิตสินค้า",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontFamily: 'Itim',
-                                  color: Color.fromARGB(255, 33, 82, 35)),
-                            ),
-                          ),
-              Expanded(
-                child: Container(
+              backgroundColor: Colors.green,
+            ),
+            backgroundColor: kBackgroundColor,
+            body: isLoaded == false?
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  ),
+                ),
+              ],
+            ) : 
+            TabBarView(
+              children: [
+                Container(
                   padding: EdgeInsets.all(10.0),
                   child: ListView.builder(
-                    itemCount: manufacurings?.length,
+                    itemCount: notRecordedManufacturings?.length,
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return Card(
@@ -185,14 +256,14 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${manufacurings?[index].product?.productName}",
+                                "${notRecordedManufacturings?[index].product?.productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 22
                                 ),
                               ),
-                                 Text(
-                                "${dateFormat.format(manufacurings?[index].manufactureDate ?? DateTime.now())}",
+                                  Text(
+                                "${dateFormat.format(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 22
@@ -208,27 +279,39 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Edit Pressed!");
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => UpdateManufacturingScreen(manufacturingId: manufacurings?[index].manufacturingId ?? "")),
-                                    );
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                      showErrorToUpdateBecauseMnCertIsExpire();
+                                    } else {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => UpdateManufacturingScreen(manufacturingId: notRecordedManufacturings?[index].manufacturingId ?? "")),
+                                      );
+                                    }
                                   },
                                   child: Icon(Icons.edit)
                                 ),
                                 GestureDetector(
                                   onTap: () {
                                     print("Delete Pressed!");
-                                    showConfirmToDeleteAlert(manufacurings?[index].manufacturingId ?? "");
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                      showErrorToDeleteBecauseMnCertIsExpire();
+                                    } else {
+                                      showConfirmToDeleteAlert(notRecordedManufacturings?[index].manufacturingId ?? "");
+                                    }
                                   },
                                   child: Icon(Icons.delete)
                                 ),
-                                 GestureDetector(
+                                  GestureDetector(
                                   onTap: () {
                                     print("Record Pressed!");
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                      showErrorToRecordBecauseMnCertIsExpire();
+                                    } else {
                                       Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => RecordManufacturingScreen(manufacturingId: manufacurings?[index].manufacturingId ?? "")),
-                                    );
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RecordManufacturingScreen(manufacturingId: notRecordedManufacturings?[index].manufacturingId ?? "")),
+                                      );
+                                    }
                                   },
                                   child: Icon(Icons.save)
                                 )
@@ -240,11 +323,54 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                     },
                   ),
                 ),
-              ),
-            ],
-          )
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: ListView.builder(
+                    itemCount: recordedManufacturings?.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: ListTile(
+                          leading: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.place)
+                            ],
+                          ),
+                          title: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${recordedManufacturings?[index].product?.productName}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 22
+                                ),
+                              ),
+                                  Text(
+                                "${dateFormat.format(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 22
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ]
+            )
+          ),
         ),
       ),
-    );;
+    );
   }
 }

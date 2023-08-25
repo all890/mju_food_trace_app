@@ -28,6 +28,26 @@ class RawMaterialShippingController{
        return list;
   }
 
+  Future getRemQtyOfRmsByManufacturerUsername (String username) async {
+
+    var url = Uri.parse(baseURL + '/rms/getremqtyofrms/' + username);
+
+    http.Response response = await http.get(url);
+
+    return response.body;
+
+  }
+
+  Future getRmsExistInManufacturingByManutftUsername (String username) async {
+
+    var url = Uri.parse(baseURL + '/rms/getrmsexists/' + username);
+
+    http.Response response = await http.get(url);
+
+    return response.body;
+
+  }
+
   Future getRawMaterialShippingDetails(String rawMatShpId) async {
 
     var url = Uri.parse(baseURL + '/rms/getrmsdetails/' + rawMatShpId);
