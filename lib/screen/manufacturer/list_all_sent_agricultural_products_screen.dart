@@ -92,9 +92,6 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
-        });
         Navigator.pop(context);
       }
     );
@@ -232,17 +229,27 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                 ),
                               ],
                             ),
-                            onTap: () {
+                            onTap: () async {
                               print(notUsedRms?[index]
                                   .rawMatShpId);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AddManufacturingScreen(
-                                            rawMatShpId: notUsedRms?[index].rawMatShpId ??"",
-                                            remQtyOfRms: remQtyOfRms[notUsedRms?[index].rawMatShpId],)),
-                              );
+
+                              var response = await rawMaterialShippingController.isRmsAndPlantingChainValid(notUsedRms?[index].rawMatShpId??"");
+
+                              if (response == 200) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AddManufacturingScreen(
+                                              rawMatShpId: notUsedRms?[index].rawMatShpId ??"",
+                                              remQtyOfRms: remQtyOfRms[notUsedRms?[index].rawMatShpId],)),
+                                              
+                                );
+                              } else if (response == 409) {
+                                showCannotUseRmsBecauseChainIsInvalidError();
+                              } else if (response == 500) {
+                                print("Error");
+                              }
                             },
                           ),
                         );
@@ -321,6 +328,8 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                 );
                               } else if (response == 409) {
                                 showCannotUseRmsBecauseChainIsInvalidError();
+                              } else if (response == 500) {
+                                print("Error!");
                               }
                               
                             },

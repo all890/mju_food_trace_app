@@ -8,6 +8,7 @@ import 'package:mju_food_trace_app/controller/planting_controller.dart';
 import 'package:mju_food_trace_app/controller/product_controller.dart';
 import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/raw_material_shipping.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/add_product_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/list_all_sent_agricultural_products_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:mju_food_trace_app/screen/manufacturer/list_manufacturing.dart';
@@ -67,6 +68,21 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   double? canUseKg;
   double? canUseGrams;
 
+  void showErrorToAddManufacturingBecauseProductIsEmpty () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "คุณไม่สามารถเพิ่มข้อมูลการผลิตสินค้าได้เนื่องจากคุณไม่มีสินค้าอยู่ในระบบ กรุณาเพิ่มสินค้าอย่างน้อย 1 ชิ้น",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => AddProductScreen())));
+        
+      }
+    );
+  }
+
   void fetchData(String rawMatShpId) async {
     var username = await SessionManager().get("username");
     setState(() {
@@ -81,7 +97,11 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
     //  print(rawMaterialShipping?.planting?.plantName);
     plantNameTextController.text =
         rawMaterialShipping?.planting?.plantName ?? "";
-    fetchName();
+    if (products?.length == 0) {
+      showErrorToAddManufacturingBecauseProductIsEmpty();
+    } else {
+      fetchName();
+    }
     canUseKg = widget.remQtyOfRms! / 1000;
     canUseGrams = widget.remQtyOfRms;
     setState(() {
@@ -91,6 +111,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
 
   void fetchName() {
     products?.forEach((product) {
+      print(product.productName);
       String productName = product.productName ?? "";
       productNames?.add(productName);
     });
