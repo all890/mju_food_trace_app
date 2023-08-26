@@ -8,7 +8,7 @@ import '../service/config_service.dart';
 
 class ManufacturingController {
 
-    Future addManufacturing (
+  Future addManufacturing (
     String manufactureDate,
     String expireDate,
     String productQty,
@@ -42,8 +42,15 @@ class ManufacturingController {
       return response;
   }
 
+  Future recordManufacturing (String manufacturingId) async {
+    var url = Uri.parse(baseURL + '/manufacturing/record/' + manufacturingId);
+    http.Response response = await http.get(
+      url,
+    );
+    return response.statusCode;
+  }
   
- Future getListAllManufacturingUsername(String username)async {
+  Future getListAllManufacturingUsername(String username)async {
     Map data = {};
 
     var body = json.encode(data);
@@ -63,7 +70,7 @@ class ManufacturingController {
        return list;
   }
 
- Future getManufacturingById(String manufacturingId) async {
+  Future getManufacturingById(String manufacturingId) async {
 
     var url = Uri.parse(baseURL + '/manufacturing/getmanufacturungs/' + manufacturingId);
 

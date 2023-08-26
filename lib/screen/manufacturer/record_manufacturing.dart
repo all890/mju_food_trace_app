@@ -6,7 +6,10 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
 import 'package:mju_food_trace_app/controller/manufacturing_controller.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/generate_qr_code_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/navbar_manufacturer.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
 import '../../model/manufacturing.dart';
@@ -46,6 +49,65 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void showRecordManufacturingSuccessAlert() {
+    QuickAlert.show(
+      context: context,
+      title: "บันทึกข้อมูลสำเร็จ",
+      text: "บันทึกข้อมูลการผลิตสินค้าสำเร็จ",
+      type: QuickAlertType.success,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) {
+            return GenerateQRCodeScreen(manufacturingId: widget.manufacturingId);
+          })
+        );
+      }
+    );
+  }
+
+  void showRecordManufacturingError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถบันทึกการผลิตสินค้าได้ กรุณาลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showConfirmToRecordManufacturingAlert (String manufacturingId) {
+    QuickAlert.show(
+      context: context,
+      showCancelBtn: true,
+      title: "คุณแน่ใจหรือไม่?",
+      text: "ว่าต้องการที่จะบันทึกข้อมูลการผลิตสินค้า",
+      type: QuickAlertType.warning,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      confirmBtnColor: Colors.green,
+      onCancelBtnTap: (){
+        Navigator.pop(context);
+      },
+      onConfirmBtnTap: () async {
+        print("PRESSED!");
+
+        var response = await manufacturingController.recordManufacturing(manufacturingId);
+
+        if (response == 200) {
+          Navigator.pop(context);
+          showRecordManufacturingSuccessAlert();
+          
+        } else if (response == 500) {
+          showRecordManufacturingError();
+        }
+      }
+    );
   }
 
   @override
@@ -266,8 +328,8 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                                 BorderRadius.circular(50.0))),
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
                         ),
-                        onPressed: () async {
-                    
+                        onPressed: () {
+                          showConfirmToRecordManufacturingAlert(widget.manufacturingId);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
