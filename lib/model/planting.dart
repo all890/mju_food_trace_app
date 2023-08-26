@@ -68,10 +68,10 @@ class Planting {
     return Planting(
       plantingId: json["plantingId"],
       plantName: json["plantName"],
-      plantDate: DateTime.parse(json["plantDate"]),
+      plantDate: DateTime.parse(json["plantDate"]).toLocal(),
       plantingImg: json["plantingImg"],
       bioextract: json["bioextract"],
-      approxHarvDate:DateTime.parse(json["approxHarvDate"]),
+      approxHarvDate:DateTime.parse(json["approxHarvDate"]).toLocal(),
       plantingMethod: json["plantingMethod"],
       netQuantity: json["netQuantity"],
       netQuantityUnit: json["netQuantityUnit"],

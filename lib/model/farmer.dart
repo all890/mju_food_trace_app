@@ -44,7 +44,7 @@ class Farmer {
       farmerLastname: json["farmerLastname"],
       farmerEmail: json["farmerEmail"],
       farmerMobileNo: json["farmerMobileNo"],
-      farmerRegDate: DateTime.parse(json["farmerRegDate"]),
+      farmerRegDate: DateTime.parse(json["farmerRegDate"]).toLocal(),
       farmerRegStatus: json["farmerRegStatus"],
       farmName: json["farmName"],
       farmLatitude: json["farmLatitude"].toString(),

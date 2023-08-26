@@ -54,8 +54,8 @@ class Manufacturing {
   factory Manufacturing.fromJsonToManufacturing(Map<String, dynamic> json) {
     return Manufacturing(
       manufacturingId : json["manufacturingId"],
-      manufactureDate: DateTime.parse(json["manufactureDate"]),
-      expireDate:  DateTime.parse(json["expireDate"]),
+      manufactureDate: DateTime.parse(json["manufactureDate"]).toLocal(),
+      expireDate:  DateTime.parse(json["expireDate"]).toLocal(),
       productQty: json["productQty"],
       productUnit: json["productUnit"],
       usedRawMatQty: json["usedRawMatQty"],

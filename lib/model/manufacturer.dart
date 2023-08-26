@@ -40,7 +40,7 @@ class Manufacturer {
       manuftId: json["manuftId"],
       manuftName: json["manuftName"],
       manuftEmail: json["manuftEmail"],
-      manuftRegDate: DateTime.parse(json["manuftRegDate"]),
+      manuftRegDate: DateTime.parse(json["manuftRegDate"]).toLocal(),
       manuftRegStatus: json["manuftRegStatus"],
       factoryLatitude: json["factoryLatitude"],
       factoryLongitude: json["factoryLongitude"],

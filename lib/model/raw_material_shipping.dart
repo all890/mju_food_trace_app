@@ -42,7 +42,7 @@ class RawMaterialShipping {
   factory RawMaterialShipping.fromJsonToRawMaterialShipping(Map<String, dynamic> json) {
     return RawMaterialShipping(
       rawMatShpId: json["rawMatShpId"],
-      rawMatShpDate: DateTime.parse(json["rawMatShpDate"]),
+      rawMatShpDate: DateTime.parse(json["rawMatShpDate"]).toLocal(),
       rawMatShpQty: json["rawMatShpQty"],
       rawMatShpQtyUnit: json["rawMatShpQtyUnit"],
       rmsPrevBlockHash: json["rmsPrevBlockHash"],

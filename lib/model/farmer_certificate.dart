@@ -29,10 +29,10 @@ class FarmerCertificate {
   factory FarmerCertificate.fromJsonToFarmerCertificate(Map<String, dynamic> json) => FarmerCertificate(
     fmCertId: json["fmCertId"],
     fmCertImg: json["fmCertImg"],
-    fmCertUploadDate: DateTime.parse(json["fmCertUploadDate"]),
+    fmCertUploadDate: DateTime.parse(json["fmCertUploadDate"]).toLocal(),
     fmCertNo: json["fmCertNo"],
-    fmCertRegDate: DateTime.parse(json["fmCertRegDate"]),
-    fmCertExpireDate: DateTime.parse(json["fmCertExpireDate"]),
+    fmCertRegDate: DateTime.parse(json["fmCertRegDate"]).toLocal(),
+    fmCertExpireDate: DateTime.parse(json["fmCertExpireDate"]).toLocal(),
     fmCertStatus: json["fmCertStatus"],
     farmer: json["farmer"] == null ? null : Farmer.fromJsonToFarmer(json["farmer"])
   );
