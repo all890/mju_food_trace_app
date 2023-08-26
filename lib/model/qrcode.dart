@@ -31,7 +31,7 @@ class QRCode {
     return QRCode(
       qrcodeId: json["qrcodeId"],
       qrcodeImg: json["qrcodeImg"],
-      generateDate: DateTime.parse(json["generateDate"]),
+      generateDate: DateTime.parse(json["generateDate"]).toLocal(),
       manufacturing: Manufacturing.fromJsonToManufacturing(json["manufacturing"])
     );
   }
