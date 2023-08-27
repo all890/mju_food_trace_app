@@ -7,6 +7,7 @@ import 'package:mju_food_trace_app/screen/login_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer_register_screen.dart';
 import 'package:mju_food_trace_app/screen/register_selection_screen.dart';
 import 'package:mju_food_trace_app/screen/register_success_screen.dart';
+import 'package:mju_food_trace_app/screen/user/trace_product_by_qrcode_user_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,7 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen()
+      home: TraceProductByQRCodeScreen()
     );
   }
 }
