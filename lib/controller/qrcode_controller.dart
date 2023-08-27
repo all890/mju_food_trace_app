@@ -19,7 +19,7 @@ class QRCodeController {
 
     http.Response response = await http.get(url);
 
-    return response.statusCode;
+    return response;
   }
 
 }
