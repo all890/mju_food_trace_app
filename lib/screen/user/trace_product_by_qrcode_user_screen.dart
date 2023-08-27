@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
@@ -9,6 +10,8 @@ import 'package:mju_food_trace_app/screen/user/navbar_user.dart';
 import 'package:mju_food_trace_app/screen/user/trace_product_by_qrcode_second_user_screen.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:http/http.dart' as http;
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 class TraceProductByQRCodeScreen extends StatefulWidget {
   const TraceProductByQRCodeScreen({super.key});
@@ -23,23 +26,32 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
 
   QRCodeController qrCodeController = QRCodeController();
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   QRCode? qrCode;
 
-  void showNotFoundQRCodAlert () {
+  TextEditingController qrcodeIdTextController = TextEditingController();
 
-  }
-
-  void showErrorToGetProductDetailsByQRCodeId () {
-
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
   }
 
   startScan () async {
     print("OK");
     String? scanResult = await scanner.scan();
     http.Response response = await qrCodeController.getProductDetailsByQRCodeId(scanResult??"");
-    qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
+    
     if (response.statusCode == 200) {
+      qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (BuildContext context) {
@@ -48,13 +60,9 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
         )
       );
     } else if (response.statusCode == 404) {
-      setState(() {
-        result = "NOT FOUND : ${scanResult}";
-      });
+      showError("ไม่พบสินค้าที่ท่านค้นหา");
     } else {
-      setState(() {
-        result = "ERROR : ${scanResult}";
-      });
+      showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
     }
   }
 
@@ -81,72 +89,137 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                   },
                 ),
               ),
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Image(
-                      image: AssetImage('images/logo.png'),
-                      width: 300,
-                      height: 300,
-                    ),
-                    Text(
-                      "ระบบการตรวจสอบกลับสินค้า",
-                      style: TextStyle(
-                        fontFamily: 'Itim',
-                        fontSize: 18
+              Form(
+                key: formKey,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Image(
+                        image: AssetImage('images/logo.png'),
+                        width: 250,
+                        height: 250,
                       ),
-                    ),
-                    Text(
-                      "ทางการเกษตร มหาวิทยาลัยแม่โจ้",
-                      style: TextStyle(
-                        fontFamily: 'Itim',
-                        fontSize: 18
+                      Text(
+                        "ระบบการตรวจสอบกลับสินค้า",
+                        style: TextStyle(
+                          fontFamily: 'Itim',
+                          fontSize: 18
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "รหัสคิวอาร์โค้ด",
-                                counterText: "",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)
+                      Text(
+                        "ทางการเกษตร มหาวิทยาลัยแม่โจ้",
+                        style: TextStyle(
+                          fontFamily: 'Itim',
+                          fontSize: 18
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: "รหัสคิวอาร์โค้ด",
+                                    counterText: "",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                    fontFamily: 'Itim',
+                                    fontSize: 18
+                                  ),
+                                  controller: qrcodeIdTextController,
+                                  maxLength: 10,
                                 ),
                               ),
-                              style: TextStyle(
-                                fontFamily: 'Itim',
-                                fontSize: 18
+                            ),
+                            Container(
+                              width: 100,
+                              height: 61,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  startScan();
+                                },
+                                child: Icon(
+                                  Icons.qr_code,
+                                  color: Colors.black
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                )
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: SizedBox(
+                          height: 53,
+                          width: 170,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(50.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                            ),
+                            onPressed: () async {
+                              
+                              if (qrcodeIdTextController.text == "") {
+                                return showError("กรุณากรอกรหัสคิวอาร์โค้ด");
+                              }
+
+                              if (qrcodeIdTextController.text.length < 10) {
+                                return showError("กรุณากรอกรหัสคิวอาร์โค้ดให้มีความยาว 10 ตัวอักษร");
+                              }
+
+                              http.Response response = await qrCodeController.getProductDetailsByQRCodeId(qrcodeIdTextController.text);
+                              
+                              if (response.statusCode == 200) {
+                                qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return TraceProductByQRCodeSecondScreen(qrCode: qrCode);
+                                    }
+                                  )
+                                );
+                              } else if (response.statusCode == 404) {
+                                showError("ไม่พบสินค้าที่ท่านค้นหา");
+                              } else {
+                                showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
+                              }
+
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("ค้นหา",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  )
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        Container(
-                          width: 50,
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              
-                            },
-                            child: Icon(Icons.qr_code),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               )
             ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              startScan();
-            },
-            child: Icon(Icons.qr_code_scanner_sharp),
           ),
         ),
       ),
