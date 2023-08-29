@@ -77,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: Icon(Icons.menu_rounded),
+                    iconSize: 40.0,
                     onPressed: () {
                       _globalKey.currentState?.openDrawer();
                     },

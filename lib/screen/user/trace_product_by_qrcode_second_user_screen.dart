@@ -120,7 +120,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
         backgroundColor: kBackgroundColor,
         drawer: UserNavbar(),
         floatingActionButton: IconButton(
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.menu_rounded),
+          iconSize: 40.0,
           onPressed: () {
             _globalKey.currentState?.openDrawer();
           },
