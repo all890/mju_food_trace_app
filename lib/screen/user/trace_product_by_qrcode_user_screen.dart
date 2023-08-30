@@ -4,7 +4,10 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
+import 'package:mju_food_trace_app/controller/farmer_certificate_controller.dart';
+import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/controller/qrcode_controller.dart';
+import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
 import 'package:mju_food_trace_app/model/qrcode.dart';
 import 'package:mju_food_trace_app/screen/user/navbar_user.dart';
 import 'package:mju_food_trace_app/screen/user/trace_product_by_qrcode_second_user_screen.dart';
@@ -12,6 +15,8 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:http/http.dart' as http;
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+
+import '../../model/farmer_certificate.dart';
 
 class TraceProductByQRCodeScreen extends StatefulWidget {
   const TraceProductByQRCodeScreen({super.key});
@@ -25,10 +30,15 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
   String? result = "";
 
   QRCodeController qrCodeController = QRCodeController();
+  FarmerCertificateController farmerCertificateController = FarmerCertificateController();
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
+
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   QRCode? qrCode;
+  FarmerCertificate? farmerCertificate;
+  ManufacturerCertificate? manufacturerCertificate;
 
   TextEditingController qrcodeIdTextController = TextEditingController();
 
@@ -48,18 +58,29 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
   startScan () async {
     print("OK");
     String? scanResult = await scanner.scan();
-    http.Response response = await qrCodeController.getProductDetailsByQRCodeId(scanResult??"");
+    http.Response qrResponse = await qrCodeController.getProductDetailsByQRCodeId(scanResult??"");
     
-    if (response.statusCode == 200) {
-      qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
+    if (qrResponse.statusCode == 200) {
+      qrCode = QRCode.fromJsonToQRCode(json.decode(utf8.decode(qrResponse.bodyBytes)));
+
+      var fmCertResponse = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(
+        qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.user?.username ?? ""
+      );
+      farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(fmCertResponse);
+
+      var mnCertResponse = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(
+        qrCode?.manufacturing?.product?.manufacturer?.user?.username ?? ""
+      );
+      manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(mnCertResponse);
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return TraceProductByQRCodeSecondScreen(qrCode: qrCode);
+            return TraceProductByQRCodeSecondScreen(qrCode: qrCode, farmerCertificate: farmerCertificate, manufacturerCertificate: manufacturerCertificate,);
           }
         )
       );
-    } else if (response.statusCode == 404) {
+    } else if (qrResponse.statusCode == 404) {
       showError("ไม่พบสินค้าที่ท่านค้นหา");
     } else {
       showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
