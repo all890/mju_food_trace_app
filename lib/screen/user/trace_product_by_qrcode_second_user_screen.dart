@@ -71,7 +71,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
+              page != 0 ? Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
                   onPressed: () {
@@ -95,8 +95,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     color: Colors.white,
                   ),
                 ),
-              ),
-              Padding(
+              ) : Container(),
+              page != 2 ?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
                   onPressed: () {
@@ -120,7 +120,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     color: Colors.white,
                   ),
                 ),
-              ),
+              ) : Container(),
             ],
           ),
         ],
