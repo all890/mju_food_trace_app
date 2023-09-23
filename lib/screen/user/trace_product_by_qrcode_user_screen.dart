@@ -113,130 +113,132 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
               Form(
                 key: formKey,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Image(
-                        image: AssetImage('images/logo.png'),
-                        width: 250,
-                        height: 250,
-                      ),
-                      Text(
-                        "ระบบการตรวจสอบกลับสินค้า",
-                        style: TextStyle(
-                          fontFamily: 'Itim',
-                          fontSize: 18
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image(
+                          image: AssetImage('images/logo.png'),
+                          width: 250,
+                          height: 250,
                         ),
-                      ),
-                      Text(
-                        "ทางการเกษตร มหาวิทยาลัยแม่โจ้",
-                        style: TextStyle(
-                          fontFamily: 'Itim',
-                          fontSize: 18
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: "รหัสคิวอาร์โค้ด",
-                                    counterText: "",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10)
-                                    ),
-                                  ),
-                                  style: TextStyle(
-                                    fontFamily: 'Itim',
-                                    fontSize: 18
-                                  ),
-                                  controller: qrcodeIdTextController,
-                                  maxLength: 10,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 100,
-                              height: 61,
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  startScan();
-                                },
-                                child: Icon(
-                                  Icons.qr_code,
-                                  color: Colors.black
-                                ),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                )
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        child: SizedBox(
-                          height: 53,
-                          width: 170,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(50.0))),
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
-                            ),
-                            onPressed: () async {
-                              
-                              if (qrcodeIdTextController.text == "") {
-                                return showError("กรุณากรอกรหัสคิวอาร์โค้ด");
-                              }
-
-                              if (qrcodeIdTextController.text.length < 10) {
-                                return showError("กรุณากรอกรหัสคิวอาร์โค้ดให้มีความยาว 10 ตัวอักษร");
-                              }
-
-                              http.Response response = await qrCodeController.getProductDetailsByQRCodeId(qrcodeIdTextController.text);
-                              
-                              if (response.statusCode == 200) {
-                                qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return TraceProductByQRCodeSecondScreen(qrCode: qrCode);
-                                    }
-                                  )
-                                );
-                              } else if (response.statusCode == 404) {
-                                showError("ไม่พบสินค้าที่ท่านค้นหา");
-                              } else {
-                                showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
-                              }
-
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("ค้นหา",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Itim'
-                                  )
-                                ),
-                              ],
-                            ),
+                        Text(
+                          "ระบบการตรวจสอบกลับสินค้า",
+                          style: TextStyle(
+                            fontFamily: 'Itim',
+                            fontSize: 18
                           ),
                         ),
-                      )
-                    ],
+                        Text(
+                          "ทางการเกษตร มหาวิทยาลัยแม่โจ้",
+                          style: TextStyle(
+                            fontFamily: 'Itim',
+                            fontSize: 18
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: "รหัสคิวอาร์โค้ด",
+                                      counterText: "",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 18
+                                    ),
+                                    controller: qrcodeIdTextController,
+                                    maxLength: 10,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 100,
+                                height: 61,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    startScan();
+                                  },
+                                  child: Icon(
+                                    Icons.qr_code,
+                                    color: Colors.black
+                                  ),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  )
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: SizedBox(
+                            height: 53,
+                            width: 170,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(50.0))),
+                                backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                              ),
+                              onPressed: () async {
+                                
+                                if (qrcodeIdTextController.text == "") {
+                                  return showError("กรุณากรอกรหัสคิวอาร์โค้ด");
+                                }
+                  
+                                if (qrcodeIdTextController.text.length < 10) {
+                                  return showError("กรุณากรอกรหัสคิวอาร์โค้ดให้มีความยาว 10 ตัวอักษร");
+                                }
+                  
+                                http.Response response = await qrCodeController.getProductDetailsByQRCodeId(qrcodeIdTextController.text);
+                                
+                                if (response.statusCode == 200) {
+                                  qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return TraceProductByQRCodeSecondScreen(qrCode: qrCode);
+                                      }
+                                    )
+                                  );
+                                } else if (response.statusCode == 404) {
+                                  showError("ไม่พบสินค้าที่ท่านค้นหา");
+                                } else {
+                                  showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
+                                }
+                  
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("ค้นหา",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Itim'
+                                    )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )

@@ -72,185 +72,187 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: kBackgroundColor,
           body: Form(
             key: formKey,
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    icon: Icon(Icons.menu_rounded),
-                    iconSize: 40.0,
-                    onPressed: () {
-                      _globalKey.currentState?.openDrawer();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(70),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Center(
-                          child: Image(
-                            image: AssetImage('images/logo.png'),
-                            width: 240,
-                            height: 240,
-                          ),
-                        ),
-                        const Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Text(
-                            "ลงชื่อเข้าใช้บัญชีของคุณ",
-                            style: TextStyle(
-                              fontFamily: 'Itim',
-                              fontSize: 24
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 350,
-                          child: CustomTextFormField(
-                            controller: usernameTextController,
-                            hintText: "ชื่อผู้ใช้งาน",
-                            maxLength: 50,
-                            validator: (value) {
-                              if (value!.isNotEmpty) {
-                                return null;
-                              } else {
-                                return "กรุณากรอกชื่อผู้ใช้งาน";
-                              }
-                            },
-                            icon: const Icon(Icons.account_circle),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 350,
-                          child: CustomTextFormField(
-                            controller: passwordTextController,
-                            hintText: "รหัสผ่าน",
-                            maxLength: 50,
-                            validator: (value) {
-                              if (value!.isNotEmpty) {
-                                return null;
-                              } else {
-                                return "กรุณากรอกรหัสผ่าน";
-                              }
-                            },
-                            icon: const Icon(Icons.lock),
-                            obscureText: true,
-                            maxLines: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                          child: SizedBox(
-                            height: 53,
-                            width: 200,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius:
-                                        BorderRadius.circular(50.0))),
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
-                              ),
-                              onPressed: () async {
-
-                                if (formKey.currentState!.validate()) {
-                                  http.Response response = await userController.userLogin(
-                                    usernameTextController.text,
-                                    passwordTextController.text
-                                  );
-
-                                  if (response.statusCode == 403) {
-                                    print("User not found naja eiei");
-                                    showUsernameOrPasswordAreWrongAlert();
-                                  } else if (response.statusCode == 500) {
-                                    print("Error naja eiei");
-                                    showErrorAlert();
-                                  } else {
-                                    var jsonResponse = jsonDecode(response.body);
-                                    String userType = jsonResponse["userType"];
-                                    if (userType == "FARMER") {
-                                      print("สวัสดีจอนชาวไร่");
-                                      await SessionManager().set("username", jsonResponse["username"].toString());
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                            return const MainFarmerScreen();
-                                          }
-                                        )
-                                      );
-                                    } else if (userType == "MANUFT") {
-                                        print("สวัสดีนายทุน");
-                                      await SessionManager().set("username", jsonResponse["username"].toString());
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                            return const MainManufacturerScreen();
-                                          }
-                                        )
-                                      );
-                                    } else {
-                                      print("สวัสดีแอดมิน");
-                                      await SessionManager().set("username", jsonResponse["username"].toString());
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                            return const MainAdminScreen();
-                                          }
-                                        )
-                                      );
-                                    }
-                                  }
-                                }
-
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text("เข้าสู่ระบบ",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Itim'
-                                    )
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                          child: InkWell(
-                            child: Text(
-                              "สมัครบัญชีผู้ใช้",
-                              style: TextStyle(
-                                fontFamily: 'Itim',
-                                fontSize: 18,
-                                decoration: TextDecoration.underline
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                    return const RegisterSelectionScreen();
-                                  }
-                                )
-                              );
-                              print("Go to register selection");
-                            },
-                          ),
-                        ),
-                      ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: Icon(Icons.menu_rounded),
+                      iconSize: 40.0,
+                      onPressed: () {
+                        _globalKey.currentState?.openDrawer();
+                      },
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(70),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Center(
+                            child: Image(
+                              image: AssetImage('images/logo.png'),
+                              width: 240,
+                              height: 240,
+                            ),
+                          ),
+                          const Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Text(
+                              "ลงชื่อเข้าใช้บัญชีของคุณ",
+                              style: TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 24
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: CustomTextFormField(
+                              controller: usernameTextController,
+                              hintText: "ชื่อผู้ใช้งาน",
+                              maxLength: 50,
+                              validator: (value) {
+                                if (value!.isNotEmpty) {
+                                  return null;
+                                } else {
+                                  return "กรุณากรอกชื่อผู้ใช้งาน";
+                                }
+                              },
+                              icon: const Icon(Icons.account_circle),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 350,
+                            child: CustomTextFormField(
+                              controller: passwordTextController,
+                              hintText: "รหัสผ่าน",
+                              maxLength: 50,
+                              validator: (value) {
+                                if (value!.isNotEmpty) {
+                                  return null;
+                                } else {
+                                  return "กรุณากรอกรหัสผ่าน";
+                                }
+                              },
+                              icon: const Icon(Icons.lock),
+                              obscureText: true,
+                              maxLines: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                            child: SizedBox(
+                              height: 53,
+                              width: 200,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                          BorderRadius.circular(50.0))),
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                ),
+                                onPressed: () async {
+            
+                                  if (formKey.currentState!.validate()) {
+                                    http.Response response = await userController.userLogin(
+                                      usernameTextController.text,
+                                      passwordTextController.text
+                                    );
+            
+                                    if (response.statusCode == 403) {
+                                      print("User not found naja eiei");
+                                      showUsernameOrPasswordAreWrongAlert();
+                                    } else if (response.statusCode == 500) {
+                                      print("Error naja eiei");
+                                      showErrorAlert();
+                                    } else {
+                                      var jsonResponse = jsonDecode(response.body);
+                                      String userType = jsonResponse["userType"];
+                                      if (userType == "FARMER") {
+                                        print("สวัสดีจอนชาวไร่");
+                                        await SessionManager().set("username", jsonResponse["username"].toString());
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                              return const MainFarmerScreen();
+                                            }
+                                          )
+                                        );
+                                      } else if (userType == "MANUFT") {
+                                          print("สวัสดีนายทุน");
+                                        await SessionManager().set("username", jsonResponse["username"].toString());
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                              return const MainManufacturerScreen();
+                                            }
+                                          )
+                                        );
+                                      } else {
+                                        print("สวัสดีแอดมิน");
+                                        await SessionManager().set("username", jsonResponse["username"].toString());
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                              return const MainAdminScreen();
+                                            }
+                                          )
+                                        );
+                                      }
+                                    }
+                                  }
+            
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text("เข้าสู่ระบบ",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'Itim'
+                                      )
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                            child: InkWell(
+                              child: Text(
+                                "สมัครบัญชีผู้ใช้",
+                                style: TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 18,
+                                  decoration: TextDecoration.underline
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return const RegisterSelectionScreen();
+                                    }
+                                  )
+                                );
+                                print("Go to register selection");
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
