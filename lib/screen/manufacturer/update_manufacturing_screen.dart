@@ -28,6 +28,7 @@ class UpdateManufacturingScreen extends StatefulWidget {
 }
 
 class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
+  
   final ManufacturingController manufacturingController = ManufacturingController();
   final ProductController productController = ProductController();
 
