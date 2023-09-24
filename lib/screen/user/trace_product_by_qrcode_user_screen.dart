@@ -208,7 +208,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                                 http.Response response = await qrCodeController.getProductDetailsByQRCodeId(qrcodeIdTextController.text);
                                 
                                 if (response.statusCode == 200) {
-                                  qrCode = QRCode.fromJsonToQRCode(json.decode(response.body));
+                                  qrCode = QRCode.fromJsonToQRCode(json.decode(utf8.decode(response.bodyBytes)));
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (BuildContext context) {

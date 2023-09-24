@@ -52,6 +52,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   String? imgPlantingName = "";
   String? imgMnCertFileName = "";
 
+  int? totalCarb = 0;
+
   double? midX;
   double? midY;
 
@@ -68,66 +70,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        actions: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              mnPage != 0 ? Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (!(mnPage! <= 0)) {
-                        mnPage = mnPage! - 1;
-                      }
-                      print("MNPAGE : ${mnPage}");
-                    });
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<
-                      RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(100.0))),
-                    backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 0, 0, 0))
-                  ),
-                  child: const Icon(
-                    Icons.arrow_left,
-                    color: Colors.white,
-                  ),
-                ),
-              ) : Container(),
-              mnPage != 1 ?Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      if (!(mnPage! > 1)) {
-                        mnPage = mnPage! + 1;
-                      }
-                      print("mnPAGE : ${mnPage}");
-                    });
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<
-                      RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(100.0))),
-                    backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 0, 0, 0))
-                  ),
-                  child: const Icon(
-                    Icons.arrow_right,
-                    color: Colors.white,
-                  ),
-                ),
-              ) : Container(),
-            ],
-          ),
-        ],
-        title: Center(child: Text("ผู้ผลิต")),
-        content: mnPage == 0? Container(
+        title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า")),
+        content: Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -135,121 +79,92 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ข้อมูลผู้ผลิต"
+                    "${widget.qrCode?.manufacturing?.product?.productName}"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftName}"
+                    "ปริมาตรสุทธิ : ${widget.qrCode?.manufacturing?.product?.netVolume} กรัม"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อผู้ดูแล : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupName} ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupLastname}"
+                    "คุณค่าทางโภชนาการต่อหนึ่งหน่วยบริโภค"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "เบอร์โทรศัพท์ : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factoryTelNo}"
+                    "พลังงานที่จะได้รับสุทธิ : ${widget.qrCode?.manufacturing?.product?.netEnergy} kcal"
+                  ),
+                ),
+                Divider(
+                  thickness: 2,
+                  color: Colors.black,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ไขมันทั้งหมด ${widget.qrCode?.manufacturing?.product?.saturatedFat} g : ไขมันอิ่มตัว ${widget.qrCode?.manufacturing?.product?.saturatedFat} g"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "อีเมลผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftEmail}"
+                    "โปรตีน ${widget.qrCode?.manufacturing?.product?.protein} g"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ตำแหน่ง : ${widget.manufacturerCertificate?.manufacturer?.factoryLatitude}, ${widget.manufacturerCertificate?.manufacturer?.factoryLongitude}"
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "ใบรับรอง GMP"
+                    "โซเดียม ${widget.qrCode?.manufacturing?.product?.sodium} mg"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รหัสใบรับรอง : ${widget.manufacturerCertificate?.mnCertNo}"
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 430,
-                  child: Image.network(baseURL + '/manuftcertificate/' + imgMnCertFileName!),
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "วันที่ทำการอัปโหลด : ${widget.manufacturerCertificate?.mnCertUploadDate}"
+                    "คอเลสเตอรอล ${widget.qrCode?.manufacturing?.product?.cholesterol} mg"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ออกใบรับรอง : ${widget.manufacturerCertificate?.mnCertRegDate}"
+                    "คาร์โบไฮเดรตทั้งหมด ${totalCarb} mg"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ใบรับรองหมดอายุ : ${widget.manufacturerCertificate?.mnCertExpireDate}"
+                    "ใยอาหาร ${widget.qrCode?.manufacturing?.product?.fiber} g  น้ำตาล ${widget.qrCode?.manufacturing?.product?.sugar} g"
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "สถานะการอนุมัติ : ${widget.manufacturerCertificate?.mnCertStatus}"
+                    "แร่ธาตุและวิตามิน"
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "แคลเซียม ${widget.qrCode?.manufacturing?.product?.calcium} %  เหล็ก ${widget.qrCode?.manufacturing?.product?.iron} %"
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "วิตามินบี2 ${widget.qrCode?.manufacturing?.product?.vitB2} %  วิตามินเอ ${widget.qrCode?.manufacturing?.product?.vitA} %"
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "วิตามินบี1 ${widget.qrCode?.manufacturing?.product?.vitB1} %"
                   ),
                 ),
               ],
-            ),
-          ),
-        ) : Container(
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "รายละเอียดการผลิต"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "วันที่ผลิตสินค้า : ${widget.qrCode?.manufacturing?.manufactureDate}"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "วันที่หมดอายุของสินค้า : ${widget.qrCode?.manufacturing?.expireDate}"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "จำนวนสินค้าที่ผลิตได้ : ${widget.qrCode?.manufacturing?.productQty} ${widget.qrCode?.manufacturing?.productUnit}"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า : ${widget.qrCode?.manufacturing?.usedRawMatQty} ${widget.qrCode?.manufacturing?.usedRawMatQtyUnit}"
-                  ),
-                ),
-              ]
             ),
           ),
         ),
@@ -769,6 +684,9 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     imgPlantingName = filePath2?.substring(filePath2.lastIndexOf('/')+1, filePath2.length);
     String? filePath3 = widget.manufacturerCertificate?.mnCertImg;
     imgMnCertFileName = filePath3?.substring(filePath3.lastIndexOf('/')+1, filePath3.length);
+    setState(() {
+      totalCarb = int.parse(widget.qrCode?.manufacturing?.product?.sugar.toString() ?? "") + int.parse(widget.qrCode?.manufacturing?.product?.fiber.toString() ?? "");
+    });
   }
 
   void setPolylines() async {
@@ -1009,7 +927,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                             ),
                             GestureDetector(
                               onTap: () async {
-                                print("Product pressed!");
+                                await openProductDialog();
                               },
                               child: SizedBox(
                                 width: iconSize,
