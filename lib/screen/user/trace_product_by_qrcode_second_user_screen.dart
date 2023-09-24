@@ -824,6 +824,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                                 setState(() {
                                   strokeStatus = "FM";
                                 });
+                                await openFmDialog();
                               },
                               child: Container(
                                 decoration: strokeStatus == "FM" ? BoxDecoration(
@@ -881,6 +882,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                                 setState(() {
                                   strokeStatus = "MN";
                                 });
+                                await openMnDialog();
                               },
                               child: Container(
                                 width: iconSize,
