@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mju_food_trace_app/model/farmer_certificate.dart';
+import 'package:mju_food_trace_app/screen/admin/view_farmer_renewing_request_certificate_details_admin_screen.dart';
 
 
 import '../../constant/constant.dart';
@@ -114,11 +115,11 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                     trailing: const Icon(Icons.zoom_in),
                     onTap: () {
                       print("Go to farmer ${farmerCertificates?[index].fmCertId} details page!");
-                      /*
+                      
                       WidgetsBinding.instance!.addPostFrameCallback((_) {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ViewFarmerRequestRenewingCertificateScreen(fmCertId: farmerCertificates?[index].fmCertId??"")));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ViewFarmerRenewingRequestCertDetailsAdminScreen(fmCertId: farmerCertificates?[index].fmCertId??"")));
                       });
-                      */
+                      
                     },
                   ),
                 );

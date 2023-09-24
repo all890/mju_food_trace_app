@@ -38,5 +38,34 @@ class FarmerCertificateController {
     return response;
 
   }
+  Future getFarmerCertDetails(String fmCertId) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/getfmcertdetails/' + fmCertId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+    return jsonResponse;
+
+  }
+  Future updateFmRenewingRequestCertStatus(String fmCertId) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/updatefmrenewingrequestcert/' + fmCertId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response;
+
+  }
+
 
 }
