@@ -41,7 +41,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
   var dateFormat = DateFormat('dd-MM-yyyy');
   FarmerCertificate? farmerCertificate;
 
-   void showUpdateFarmerRegistStatusFailAlert () {
+   void showUpdateFarmerRenewingReqCertStatusFailAlert () {
     QuickAlert.show(
       context: context,
       title: "อัปเดตสถานะไม่สำเร็จ",
@@ -73,7 +73,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
         http.Response updateFarmerCertResponse = await farmerCertificateController.updateFmRenewingRequestCertStatus(farmerCertificate?.fmCertId??"");
         if (updateFarmerCertResponse.statusCode == 500) {
           Navigator.pop(context);
-          showUpdateFarmerRegistStatusFailAlert();
+          showUpdateFarmerRenewingReqCertStatusFailAlert();
         } else {
           Navigator.pop(context);
           WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -101,7 +101,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
          http.Response updateDeclineFarmerCertResponse = await farmerCertificateController.declineFmRenewingRequestCertStatus(farmerCertificate?.fmCertId??"");
         if (updateDeclineFarmerCertResponse.statusCode == 500) {
           Navigator.pop(context);
-          showUpdateFarmerRegistStatusFailAlert();
+          showUpdateFarmerRenewingReqCertStatusFailAlert();
         } else {
           Navigator.pop(context);
           WidgetsBinding.instance!.addPostFrameCallback((_) {

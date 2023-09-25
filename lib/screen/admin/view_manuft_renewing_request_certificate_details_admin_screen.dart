@@ -5,9 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
 import 'package:mju_food_trace_app/screen/admin/list_manuft_request_renewing_cert_admin.dart';
-
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
 import '../../model/manufacturer_certificate.dart';
+import '../../service/config_service.dart';
 
 class ViewManuftRenewingRequestCertDetailsAdminScreen extends StatefulWidget {
     final String mnCertId;
@@ -24,6 +27,11 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
  
   TextEditingController manuftIDTextController = TextEditingController();
   TextEditingController manuftNameTextController = TextEditingController();
+  TextEditingController factorySupnameTextController = TextEditingController();
+  TextEditingController factorySupLastnameTextController = TextEditingController();
+  TextEditingController manuftCertRegDateTextController = TextEditingController();
+  TextEditingController manuftCertExpireDateTextController = TextEditingController();
+  TextEditingController manuftCertNoTextController = TextEditingController();
 
   bool? isLoaded;
 
@@ -31,6 +39,76 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   ManufacturerCertificate? manufacturerCertificate;
+
+   void showUpdateManuftRenewingReqCertStatusFailAlert () {
+    QuickAlert.show(
+      context: context,
+      title: "อัปเดตสถานะไม่สำเร็จ",
+      text: "ไม่สามารถอัปเดตสถานะการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิตได้",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+   void showAcceptMnRenewingRequestCertAlert () {
+    QuickAlert.show(
+      context: context,
+      showCancelBtn: true,
+      title: "คุณแน่ใจหรือไม่?",
+      text: "ว่าต้องการที่จะอนุมัติปฎิเสธการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิต",
+      type: QuickAlertType.confirm,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      confirmBtnColor: Colors.green,
+      onCancelBtnTap: (){
+        Navigator.pop(context);
+      },
+      onConfirmBtnTap: () async {
+        print("Accept!");
+      
+        http.Response updateManuftCertResponse = await manufacturerCertificateController.updateMnRenewingRequestCertStatus(manufacturerCertificate?.mnCertNo??"");
+        if (updateManuftCertResponse.statusCode == 500) {
+          Navigator.pop(context);
+          showUpdateManuftRenewingReqCertStatusFailAlert();
+        } else {
+          Navigator.pop(context);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRequestRenewingCertificateScreen()));
+          });
+        }
+      }
+    );
+  }
+    void showDeclineMnRenewingRequestCertAlert () {
+    QuickAlert.show(
+      context: context,
+      showCancelBtn: true,
+      title: "คุณแน่ใจหรือไม่?",
+      text: "ว่าต้องการที่จะปฎิเสธการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิต",
+      type: QuickAlertType.confirm,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      confirmBtnColor: Colors.green,
+      onCancelBtnTap: (){
+        Navigator.pop(context);
+      },
+      onConfirmBtnTap: () async{
+        print("Accept!");
+         http.Response updateDeclineManuftCertResponse = await manufacturerCertificateController.declineMnRenewingRequestCertStatus(manufacturerCertificate?.mnCertId??"");
+        if (updateDeclineManuftCertResponse.statusCode == 500) {
+          Navigator.pop(context);
+          showUpdateManuftRenewingReqCertStatusFailAlert();
+        } else {
+          Navigator.pop(context);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRequestRenewingCertificateScreen()));
+          });
+        }
+      }
+    );
+  }
 
     void fetchData (String mnCertId) async {
     setState(() {
@@ -49,11 +127,11 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
      void setTextToData () {
     manuftIDTextController.text =  manufacturerCertificate?.manufacturer?.manuftId?? "";
     manuftNameTextController.text = manufacturerCertificate?.manufacturer?.manuftName ?? "";
-    //farmerLastnameTextController.text = farmerCertificate?.farmer?.farmerLastname ?? "";
-  
-   // farmerCertNoTextController.text = farmerCertificate?.fmCertNo ?? "";
-   // farmerCertRegDateTextController.text = dateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now());
-   // farmerCertExpireDateTextController.text = dateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
+    factorySupLastnameTextController.text = manufacturerCertificate?.manufacturer?.factorySupLastname ?? "";
+    factorySupnameTextController.text = manufacturerCertificate?.manufacturer?.factorySupName ?? "";
+    manuftCertNoTextController.text = manufacturerCertificate?.mnCertNo ?? "";
+    manuftCertRegDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
+    manuftCertExpireDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
 
   }
 
@@ -193,6 +271,169 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                       ),
                     ),
                   ),
+                   Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: factorySupnameTextController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: "ชื่อผู้ดูแลโรงงาน",
+                        counterText: "",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: const Icon(Icons.account_circle),
+                        prefixIconColor: Colors.black
+                      ),
+                      style: const TextStyle(
+                        fontFamily: 'Itim',
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                    Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: factorySupLastnameTextController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: "นามสกุลผู้ดูแลโรงงาน",
+                        counterText: "",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: const Icon(Icons.account_circle),
+                        prefixIconColor: Colors.black
+                      ),
+                      style: const TextStyle(
+                        fontFamily: 'Itim',
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                   Image.network(baseURL + '/manuftcertificate/' + imgCertFileName!),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: manuftCertNoTextController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: "หมายเลขใบรับรองมาตรฐานผู้ผลิต",
+                        counterText: "",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: const Icon(Icons.account_circle),
+                        prefixIconColor: Colors.black
+                      ),
+                      style: const TextStyle(
+                        fontFamily: 'Itim',
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                   Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: manuftCertRegDateTextController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: "วันที่ลงทะเบียนใบรับรองมาตรฐานขิงผู้ผลิต",
+                        counterText: "",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: const Icon(Icons.account_circle),
+                        prefixIconColor: Colors.black
+                      ),
+                      style: const TextStyle(
+                        fontFamily: 'Itim',
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                   Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: manuftCertExpireDateTextController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: "วันหมดอายุใบรับรองมาตรฐานของผู้ผลิต",
+                        counterText: "",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                        prefixIcon: const Icon(Icons.account_circle),
+                        prefixIconColor: Colors.black
+                      ),
+                      style: const TextStyle(
+                        fontFamily: 'Itim',
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                       Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          height: 53,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(50.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                            ),
+                            onPressed: () {
+                              showAcceptMnRenewingRequestCertAlert();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("อนุมัติ",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 200,
+                          height: 53,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(50.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent)
+                            ),
+                            onPressed: () {
+                              showDeclineMnRenewingRequestCertAlert();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text("ปฎิเสธการอนุมัติ",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  )
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
 
               ]),
             ),

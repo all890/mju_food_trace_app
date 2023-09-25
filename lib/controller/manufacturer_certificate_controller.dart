@@ -52,5 +52,15 @@ class ManufacturerCertificateController {
     return response;
 
   }
+   Future declineMnRenewingRequestCertStatus(String mnCertId) async {
+
+    var url = Uri.parse(baseURL + '/manuftcertificate/declinemnrenewingrequestcert/' + mnCertId);
+    http.Response response = await http.get(
+      url
+    );
+    print(response.body);
+    return response;
+
+  }
 
 }
