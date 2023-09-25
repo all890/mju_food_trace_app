@@ -152,8 +152,8 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
             productUnit: selected_productUnit_items??"",
             usedRawMatQty: double.parse(usedRawMatQtyTextController.text),
             usedRawMatQtyUnit: selected_usedRawMatQtyUnit_items??"",
-            manuftPrevBlockHash: "",
-            manuftCurrBlockHash: "",
+            manuftPrevBlockHash: manufacturing?.manuftPrevBlockHash,
+            manuftCurrBlockHash: null,
             rawMaterialShipping: manufacturing?.rawMaterialShipping,
             product:product
           );

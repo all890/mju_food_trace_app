@@ -140,7 +140,6 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: kBackgroundColor,
-          
             body: 
             isLoaded == false
                 ? Column(

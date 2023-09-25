@@ -823,6 +823,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                                 ));
                                 setState(() {
                                   strokeStatus = "FM";
+                                  page = 0;
                                 });
                                 await openFmDialog();
                               },
@@ -881,6 +882,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                                 ));
                                 setState(() {
                                   strokeStatus = "MN";
+                                  mnPage = 0;
                                 });
                                 await openMnDialog();
                               },
