@@ -30,4 +30,27 @@ class ManufacturerCertificateController {
     return jsonResponse;
   }
 
+
+    Future getManuftCertDetails(String mnCertId) async {
+    var url = Uri.parse(baseURL + '/manuftcertificate/getmncertdetails/' + mnCertId);
+    http.Response response = await http.get(
+      url
+    );
+   // print(response.body);
+    final utf8Body = utf8.decode(response.bodyBytes);
+    var jsonResponse = json.decode(utf8Body);
+    return jsonResponse;
+
+  }
+  Future updateMnRenewingRequestCertStatus(String mnCertId) async {
+
+    var url = Uri.parse(baseURL + '/manuftcertificate/updatemnrenewingrequestcert/' + mnCertId);
+    http.Response response = await http.get(
+      url
+    );
+    print(response.body);
+    return response;
+
+  }
+
 }

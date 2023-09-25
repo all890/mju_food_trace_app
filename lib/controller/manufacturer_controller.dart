@@ -128,6 +128,21 @@ class ManufacturerController {
     return jsonResponse;
 
   }
+  
+  Future declineMnRegistStatus (String manuftId) async {
+
+    var url = Uri.parse(baseURL + '/manuft/declinemnregiststat/' + manuftId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse;
+
+  }
 
   Future upload(File file) async {
     if (file == null) return;

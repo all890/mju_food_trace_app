@@ -129,9 +129,18 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
       onCancelBtnTap: (){
         Navigator.pop(context);
       },
-      onConfirmBtnTap: () {
+      onConfirmBtnTap: () async{
         print("Accept!");
-        Navigator.pop(context);
+         http.Response declineFarmerResponse = await farmerController.declineFmRegistStatus(farmerCertificate?.farmer?.farmerId ?? "");
+        if (declineFarmerResponse.statusCode == 500) {
+          Navigator.pop(context);
+          showUpdateFarmerRegistStatusFailAlert();
+        } else {
+          Navigator.pop(context);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListFarmerRegistrationScreen()));
+          });
+        }
       }
     );
   }

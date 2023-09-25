@@ -122,9 +122,18 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
       onCancelBtnTap: (){
         Navigator.pop(context);
       },
-      onConfirmBtnTap: () {
+      onConfirmBtnTap: () async{
         print("Accept!");
-        Navigator.pop(context);
+       var declineManufacturerResponse = await manufacturerController.declineMnRegistStatus(manufacturerCertificate?.manufacturer?.manuftId ?? "");
+        if (declineManufacturerResponse["code"] == 500) {
+          Navigator.pop(context);
+          showUpdateManuftRegistStatusFailAlert();
+        } else {
+          Navigator.pop(context);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManuftRegistrationScreen()));
+          });
+        }
       }
     );
   }

@@ -66,6 +66,19 @@ class FarmerCertificateController {
     return response;
 
   }
+  Future declineFmRenewingRequestCertStatus(String fmCertId) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/declinefmrenewingrequestcert/' + fmCertId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response;
+
+  }
 
 
 }

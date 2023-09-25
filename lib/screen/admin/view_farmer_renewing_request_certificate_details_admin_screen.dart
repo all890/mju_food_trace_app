@@ -27,6 +27,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
 > {
 
   FarmerCertificateController farmerCertificateController = FarmerCertificateController();
+
   TextEditingController farmerIDTextController = TextEditingController();
   TextEditingController farmerNameTextController = TextEditingController();
   TextEditingController farmerLastnameTextController = TextEditingController();
@@ -53,7 +54,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
     );
   }
 
-    void showAcceptRegistrationAlert () {
+    void showAcceptFmRenewingRequestCertAlert () {
     QuickAlert.show(
       context: context,
       showCancelBtn: true,
@@ -69,8 +70,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
       onConfirmBtnTap: () async {
         print("Accept!");
       
-        http.Response updateFarmerResponse = await farmerCertificateController.updateFmRenewingRequestCertStatus(farmerCertificate?.fmCertId??"");
-        if (updateFarmerResponse.statusCode == 500) {
+        http.Response updateFarmerCertResponse = await farmerCertificateController.updateFmRenewingRequestCertStatus(farmerCertificate?.fmCertId??"");
+        if (updateFarmerCertResponse.statusCode == 500) {
           Navigator.pop(context);
           showUpdateFarmerRegistStatusFailAlert();
         } else {
@@ -82,7 +83,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
       }
     );
   }
-   void showDeclineRegistrationAlert () {
+   void showDeclineFmRenewingRequestCertAlert () {
     QuickAlert.show(
       context: context,
       showCancelBtn: true,
@@ -95,9 +96,18 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
       onCancelBtnTap: (){
         Navigator.pop(context);
       },
-      onConfirmBtnTap: () {
+      onConfirmBtnTap: () async{
         print("Accept!");
-        Navigator.pop(context);
+         http.Response updateDeclineFarmerCertResponse = await farmerCertificateController.declineFmRenewingRequestCertStatus(farmerCertificate?.fmCertId??"");
+        if (updateDeclineFarmerCertResponse.statusCode == 500) {
+          Navigator.pop(context);
+          showUpdateFarmerRegistStatusFailAlert();
+        } else {
+          Navigator.pop(context);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListFarmerRequestRenewingCertificateScreen()));
+          });
+        }
       }
     );
   }
@@ -107,30 +117,25 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
       isLoaded = false;
     });
     var response = await farmerCertificateController.getFarmerCertDetails(fmCertId);
-
     farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(response);
-
-
     String filePath = farmerCertificate?.fmCertImg ?? "";
    
-
     imgCertFileName = filePath.substring(filePath.lastIndexOf('/')+1, filePath.length);
     setTextToData();
     setState(() {
       isLoaded = true;
     });
   }
+
    void setTextToData () {
      farmerIDTextController.text = farmerCertificate?.farmer?.farmerId?? "";
     farmerNameTextController.text = farmerCertificate?.farmer?.farmerName ?? "";
     farmerLastnameTextController.text = farmerCertificate?.farmer?.farmerLastname ?? "";
-    
-
+  
     farmerCertNoTextController.text = farmerCertificate?.fmCertNo ?? "";
     farmerCertRegDateTextController.text = dateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now());
     farmerCertExpireDateTextController.text = dateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
 
-   
   }
 
     @override
@@ -179,7 +184,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                                 width: 5.0,
                               ),
                               Text(
-                                "กลับไปหน้ารายการร้องขอใบรับรอง",
+                                "กลับไปหน้ารายการร้องขอใบรับรองของเกษตรกร",
                                 style: TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20
@@ -363,7 +368,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                               backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
                             ),
                             onPressed: () {
-                              showAcceptRegistrationAlert();
+                              showAcceptFmRenewingRequestCertAlert();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -394,12 +399,12 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                               backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent)
                             ),
                             onPressed: () {
-                              showDeclineRegistrationAlert();
+                              showDeclineFmRenewingRequestCertAlert();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
-                                Text("ปฎิเสธ",
+                                Text("ปฎิเสธการอนุมัติ",
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontFamily: 'Itim'

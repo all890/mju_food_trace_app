@@ -141,6 +141,19 @@ class FarmerController {
     return response;
 
   }
+   Future declineFmRegistStatus (String farmerId) async {
+
+    var url = Uri.parse(baseURL + '/farmer/declinefmregiststat/' + farmerId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response;
+
+  }
 
   Future upload(File file) async {
     if (file == null) return;

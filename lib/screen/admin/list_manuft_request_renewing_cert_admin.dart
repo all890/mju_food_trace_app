@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
+import 'package:mju_food_trace_app/screen/admin/view_manuft_renewing_request_certificate_details_admin_screen.dart';
 
 import '../../constant/constant.dart';
 import '../../controller/farmer_certificate_controller.dart';
@@ -112,12 +113,12 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                     ),
                     trailing: const Icon(Icons.zoom_in),
                     onTap: () {
-                      print("Go to farmer ${manufacturerCertificates?[index].mnCertId} details page!");
-                      /*
+                      print("Go to manufacturer ${manufacturerCertificates?[index].mnCertId} details page!");
+                      
                       WidgetsBinding.instance!.addPostFrameCallback((_) {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ViewFarmerRequestRenewingCertificateScreen(fmCertId: farmerCertificates?[index].fmCertId??"")));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ViewManuftRenewingRequestCertDetailsAdminScreen(mnCertId: manufacturerCertificates?[index].mnCertId??"")));
                       });
-                      */
+                      
                     },
                   ),
                 );
