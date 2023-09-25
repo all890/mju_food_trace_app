@@ -81,6 +81,19 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
     );
   }
 
+  void showRecordManufacturingErrorBecauseEncryptionCodeNotMatch () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถบันทึกการผลิตสินค้าได้ เนื่องจากการเข้ารหัสของข้อมูลไม่ตรงกัน",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showConfirmToRecordManufacturingAlert (String manufacturingId) {
     QuickAlert.show(
       context: context,
@@ -105,6 +118,8 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
           
         } else if (response == 500) {
           showRecordManufacturingError();
+        } else if (response == 409) {
+          showRecordManufacturingErrorBecauseEncryptionCodeNotMatch();
         }
       }
     );
@@ -243,9 +258,9 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                       alignment: Alignment.center,
                       child: Text(
                         "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า : " +
-                            "${manufacturings?.rawMaterialShipping?.rawMatShpQty}" +
+                            "${manufacturings?.usedRawMatQty}" +
                             " " +
-                            "${manufacturings?.rawMaterialShipping?.rawMatShpQtyUnit}",
+                            "${manufacturings?.usedRawMatQtyUnit}",
                         style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
                       ),
                     ),
