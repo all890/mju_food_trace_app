@@ -161,14 +161,17 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
       child: Scaffold(
         drawer: FarmerNavbar(),
         appBar: AppBar(
-          title: const Text("รายการปลูกผลผลิต"),
-          bottom: const TabBar(
+          
+          title: const Text("รายการปลูกผลผลิต",style: TextStyle(fontFamily: 'Itim',color: kDefaultIconDarkColor),),
+          bottom: TabBar(
             tabs: [
               Tab(
                 child: Text(
                   "รอเก็บเกี่ยว",
                   style: TextStyle(
-                    fontFamily: 'Itim'
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextFM,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -176,7 +179,9 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                 child: Text(
                   "สามารถส่งได้",
                   style: TextStyle(
-                    fontFamily: 'Itim'
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextFM,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -184,7 +189,9 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                 child: Text(
                   "ส่งแล้ว",
                   style: TextStyle(
-                    fontFamily: 'Itim'
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextFM,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -192,13 +199,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                 child: Text(
                   "ครบจำนวน",
                   style: TextStyle(
-                    fontFamily: 'Itim'
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextFM,
+                    fontSize: 14,
                   ),
                 ),
               ),
             ],
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: kClipPathColorFM,
         ),
         backgroundColor: kBackgroundColor,
         body: isLoaded == false?

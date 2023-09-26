@@ -216,7 +216,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const MainFarmerScreen();
+                                                return const ListPlantingScreen();
                                               }
                                             )
                                           );
@@ -230,7 +230,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              "กลับไปหน้าหลัก",
+                                              "กลับไปหน้ารายการปลูก",
                                               style: TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 20

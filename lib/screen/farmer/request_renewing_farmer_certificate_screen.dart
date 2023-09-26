@@ -10,6 +10,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:mju_food_trace_app/controller/farmer_controller.dart';
+import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/main_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/navbar_farmer.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -314,12 +315,12 @@ class _RequestRenewingFarmerCertificateState
                                               //showUsernameDuplicationAlert();
                                               
                                             } else {
-                                              print("Farmer registration successfully!");
+                                              print("Farmer renewing req cert successfully!");
                                             //  showSavePlantingSuccessAlert();
                                             Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const MainFarmerScreen();
+                                                return const ListPlantingScreen();
                                               }
                                             )
                                           );

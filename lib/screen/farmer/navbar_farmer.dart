@@ -6,6 +6,7 @@ import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dar
 import 'package:mju_food_trace_app/screen/farmer/main_farmer_screen.dart';
 import 'package:mju_food_trace_app/screen/farmer/request_renewing_farmer_certificate_screen.dart';
 
+import '../../constant/constant.dart';
 import '../../controller/farmer_certificate_controller.dart';
 import '../../controller/farmer_controller.dart';
 import '../../model/farmer.dart';
@@ -23,6 +24,8 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
 
   FarmerCertificate? farmerCertificate;
   bool? isLoaded;
+ String? username;
+  String? userType;
 
   FarmerCertificateController farmerCertificateController = FarmerCertificateController();
 
@@ -33,11 +36,15 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
     String farmerUsername = await SessionManager().get("username");
     var response = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(farmerUsername);
     farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(response);
-    print(farmerCertificate?.fmCertExpireDate);
+   // print(farmerCertificate?.fmCertExpireDate);
+
+    var userTypeDynamic = await SessionManager().get("userType");
+     userType = userTypeDynamic.toString();
     setState(() {
       isLoaded = true;
     });
   }
+ 
 
   @override
   void initState() {
@@ -51,30 +58,23 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: null,
-            accountEmail: null,
+            accountName: Text("${farmerCertificate?.farmer?.farmerName} ${farmerCertificate?.farmer?.farmerLastname}",style: TextStyle(fontFamily: 'Itim',fontSize: 18),),
+            accountEmail: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontSize: 16),),
             decoration: BoxDecoration(
-              color: Colors.green,
-              image: DecorationImage(
-                image: AssetImage('images/ftmju_header_logo.png')
-              )
+              color:  kClipPathColorFM,
+              // image: DecorationImage(
+              //   image: AssetImage('images/ftmju_header_logo.png')
+              // )
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text("หน้าหลัก"),
-            onTap: () {
-              print("Go to main page");
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainFarmerScreen()));
-              });
-              Navigator.pop(context);
-            },
           ),
           farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?
           ListTile(
             leading: const Icon(Icons.newspaper_sharp),
-            title: const Text("ต่ออายุใบรับรอง"),
+            title:Text("ต่ออายุใบรับรอง",style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextNavbarFM,
+                    fontSize: 16,
+                  ),),
             onTap: () {
               print("Go to request renewing farmer certificate page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -85,7 +85,11 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
           ) : Container(),
           ListTile(
             leading: const Icon(Icons.add),
-            title: const Text("เพิ่มการปลูกผลผลิต"),
+            title: Text("เพิ่มการปลูกผลผลิต",style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextNavbarFM,
+                    fontSize: 16,
+                  ),),
             onTap: () {
               print("Go to add planting page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -96,7 +100,11 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
           ),
           ListTile(
             leading: const Icon(Icons.nature),
-            title: const Text("รายการปลูกผลผลิต"),
+            title: Text("รายการปลูกผลผลิต",style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextNavbarFM,
+                    fontSize: 16,
+                  ),),
             onTap: () {
               print("Go to list planting page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -109,7 +117,11 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
             leading: const Icon(
               Icons.logout,
               color: Colors.red,),
-            title: const Text("ออกจากระบบ"),
+            title: Text("ออกจากระบบ",style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: kClipPathColorTextNavbarFM,
+                    fontSize: 16,
+                  ),),
             onTap: () async {
               print("Go to login page");
               await SessionManager().set("username", "");

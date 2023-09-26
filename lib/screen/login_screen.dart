@@ -7,6 +7,8 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:mju_food_trace_app/controller/user_controller.dart';
 import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
+import 'package:mju_food_trace_app/screen/farmer/list_planting_farmer_screen.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/list_manufacturing.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/main_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/register_selection_screen.dart';
 import 'package:mju_food_trace_app/screen/user/navbar_user.dart';
@@ -178,26 +180,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (userType == "FARMER") {
                                         print("สวัสดีจอนชาวไร่");
                                         await SessionManager().set("username", jsonResponse["username"].toString());
+                                        // await SessionManager().set("userType", jsonResponse["userType"].toString());
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                              return const MainFarmerScreen();
+                                              return const ListPlantingScreen();
                                             }
                                           )
                                         );
                                       } else if (userType == "MANUFT") {
                                           print("สวัสดีนายทุน");
                                         await SessionManager().set("username", jsonResponse["username"].toString());
+                                        // await SessionManager().set("userType", jsonResponse["userType"].toString());
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                              return const MainManufacturerScreen();
+                                              return const ListManufacturingScreen();
                                             }
                                           )
                                         );
                                       } else {
                                         print("สวัสดีแอดมิน");
                                         await SessionManager().set("username", jsonResponse["username"].toString());
+                                        // await SessionManager().set("userType", jsonResponse["userType"].toString());
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (BuildContext context) {
