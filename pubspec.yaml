@@ -44,6 +44,10 @@ flutter:
     - images/admin_icon.png
     - images/ftmju_header_logo.png
     - images/assembly-line.gif
+    - images/rice_action1.png
+    - images/rice_action2.png
+    - images/rice_action3.png
+    - images/rice_action4.png
 
   fonts:
     - family: Itim

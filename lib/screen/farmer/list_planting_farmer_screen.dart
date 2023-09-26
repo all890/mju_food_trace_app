@@ -239,7 +239,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                   ],
                 )
               : TabBarView(children: [
-                  Container(
+                  cannotSentPlantings?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: cannotSentPlantings?.length,
@@ -348,8 +348,26 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         );
                       },
                     ),
+                  ) : Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/rice_action3.png"),
+                        ),
+                        Text(
+                          "ไม่มีผลผลิตที่ต้องรอเก็บเกี่ยว",
+                          style: TextStyle(
+                            fontFamily: "Itim",
+                            fontSize: 20
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
+                  didNotSentPlantings?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: didNotSentPlantings?.length,
@@ -482,8 +500,26 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         );
                       },
                     ),
+                  ) : Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/rice_action2.png"),
+                        ),
+                        Text(
+                          "ไม่มีผลผลิตที่สามารถส่งได้",
+                          style: TextStyle(
+                            fontFamily: "Itim",
+                            fontSize: 20
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
+                  sendPlantings?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: sendPlantings?.length,
@@ -578,8 +614,26 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         );
                       },
                     ),
+                  ) : Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/rice_action1.png"),
+                        ),
+                        Text(
+                          "ไม่มีผลผลิตที่เคยส่งแล้ว",
+                          style: TextStyle(
+                            fontFamily: "Itim",
+                            fontSize: 20
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
+                  emptyQtyPlantings?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: emptyQtyPlantings?.length,
@@ -621,7 +675,25 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                         );
                       },
                     ),
-                  )
+                  ) : Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/rice_action4.png"),
+                        ),
+                        Text(
+                          "ไม่มีผลผลิตที่ส่งครบจำนวน",
+                          style: TextStyle(
+                            fontFamily: "Itim",
+                            fontSize: 20
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ]),
         ),
       ));

@@ -159,12 +159,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       child: SafeArea(
         child: Scaffold(
           drawer: ManufacturerNavbar(),
-          appBar: AppBar(
-              title: const Text("LIST ALL SENT AGRICULTURAL PRODUCTS"),
-              backgroundColor: Colors.green,
-            ),
-            backgroundColor: kBackgroundColor,
-        
           body: Center(
             child: SingleChildScrollView(
               child: Center(
