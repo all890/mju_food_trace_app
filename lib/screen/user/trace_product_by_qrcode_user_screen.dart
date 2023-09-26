@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
@@ -102,6 +103,10 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
           drawer: UserNavbar(),
           body: Stack(
             children: [
+              CustomPaint(
+                size: ui.Size(MediaQuery.of(context).size.width,(MediaQuery.of(context).size.width*1.7777777777777777).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                painter: RPSCustomPainter(),
+              ),
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
@@ -112,6 +117,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                   },
                 ),
               ),
+              
               Form(
                 key: formKey,
                 child: Center(
@@ -254,4 +260,54 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
       ),
     );
   }
+}
+
+class RPSCustomPainter extends CustomPainter{
+  
+  @override
+  void paint(Canvas canvas, ui.Size size) {
+    
+    
+
+  // Layer 1
+  
+  Paint paint_fill_0 = Paint()
+      ..color = const Color.fromARGB(255, 116, 231, 131)
+      ..style = PaintingStyle.fill
+      ..strokeWidth = size.width*0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+     
+         
+    Path path_0 = Path();
+    path_0.moveTo(0,0);
+    path_0.lineTo(0,size.height*0.2193750);
+    path_0.quadraticBezierTo(size.width*0.2334778,size.height*0.2198875,size.width*0.4715556,size.height*0.1703750);
+    path_0.quadraticBezierTo(size.width*0.6755889,size.height*0.1213687,size.width*0.9992667,size.height*0.2202125);
+    path_0.lineTo(size.width,0);
+
+    canvas.drawPath(path_0, paint_fill_0);
+  
+
+  // Layer 1
+  
+  Paint paint_stroke_0 = Paint()
+      ..color = ui.Color.fromARGB(255, 255, 255, 255)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width*0.00
+      ..strokeCap = StrokeCap.butt
+      ..strokeJoin = StrokeJoin.miter;
+     
+         
+    
+    canvas.drawPath(path_0, paint_stroke_0);
+  
+    
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+  
 }
