@@ -49,7 +49,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
         child: Scaffold(
           drawer: AdminNavbar(),
           appBar: AppBar(
-            title: const Text("LIST FM REGIST"),
+            title: const Text("รายการลงทะเบียนเกษตรกร"),
             backgroundColor: Colors.green,
           ),
           backgroundColor: kBackgroundColor,

@@ -11,7 +11,7 @@ import 'list_manuft_registration_admin_screen.dart';
 
 class AdminNavbar extends StatelessWidget {
   const AdminNavbar({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Drawer(

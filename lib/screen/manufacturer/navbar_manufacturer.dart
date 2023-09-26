@@ -128,7 +128,9 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.red,),
             title: const Text("ออกจากระบบ"),
             onTap: () async {
               print("Go to login page");

@@ -14,6 +14,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../widgets/custom_text_form_field_widget.dart';
+import 'admin/list_farmer_registration_admin_screen.dart';
 import 'farmer/main_farmer_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -200,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                              return const MainAdminScreen();
+                                              return const ListFarmerRegistrationScreen();
                                             }
                                           )
                                         );
