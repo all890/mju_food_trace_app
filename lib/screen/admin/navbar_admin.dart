@@ -16,30 +16,6 @@ class AdminNavbar extends StatefulWidget {
 }
 
 class _AdminNavbarState extends State<AdminNavbar> {
-  String? username;
-  String? userType;
-
-  bool? isLoaded;
-
-  void syncUser() async {
-    setState(() {
-      isLoaded = false;
-    });
-    var usernameDynamic = await SessionManager().get("username");
-    var userTypeDynamic = await SessionManager().get("userType");
-    username = usernameDynamic.toString();
-    userType = userTypeDynamic.toString();
-    setState(() {
-      isLoaded = true;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    syncUser();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -47,33 +23,44 @@ class _AdminNavbarState extends State<AdminNavbar> {
         children: [
           UserAccountsDrawerHeader(
             accountEmail: Text(
-              userType ?? "",
-              style: TextStyle(fontFamily: 'Itim', fontSize: 16),
+              "ผู้ดูแลระบบ",
+              style: TextStyle(
+                fontFamily: 'Itim',
+                fontSize: 16,
+                shadows: [
+                  Shadow(
+                    color: Color.fromARGB(255, 0, 0, 0)
+                        .withOpacity(0.5), // สีของเงา
+                    offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 3, // ความคมของเงา
+                  ),
+                ],
+              ),
             ),
             accountName: Text(
-              "ผู้ดูแลระบบ",
-              style: TextStyle(fontFamily: 'Itim', fontSize: 16),
+              "ชื่อ",
+              style: TextStyle(
+                fontFamily: 'Itim',
+                fontSize: 16,
+                shadows: [
+                  Shadow(
+                    color: Color.fromARGB(255, 0, 0, 0)
+                        .withOpacity(0.5), // สีของเงา
+                    offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 3, // ความคมของเงา
+                  ),
+                ],
+              ),
             ),
             decoration: BoxDecoration(
-                color: Colors.green,
-                image: DecorationImage(
-                    image: AssetImage('images/ftmju_header_logo.png'))),
+              color: Colors.green,
+              // image: DecorationImage(
+              //     image: AssetImage('images/ftmju_header_logo.png'))
+            ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text("หน้าหลัก"),
-            onTap: () {
-              print("Go to main page");
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const MainAdminScreen()));
-              });
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text("การลงทะเบียนเกษตรกร"),
+            leading: const Icon(Icons.account_circle,color: Colors.green),
+            title: const Text("การลงทะเบียนเกษตรกร",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to farmer registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -86,8 +73,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text("การลงทะเบียนผู้ผลิต"),
+            leading: const Icon(Icons.account_circle,color: Colors.green),
+            title: const Text("การลงทะเบียนผู้ผลิต",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -100,8 +87,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.document_scanner),
-            title: const Text("การร้องขอต่ออายุใบรับรองเกษตรกร"),
+            leading: const Icon(Icons.document_scanner,color: Colors.green),
+            title: const Text("การร้องขอต่ออายุใบรับรองเกษตรกร",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -115,8 +102,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.document_scanner),
-            title: const Text("การร้องขอต่ออายุใบรับรองผู้ผลิต"),
+            leading: const Icon(Icons.document_scanner,color: Colors.green),
+            title: const Text("การร้องขอต่ออายุใบรับรองผู้ผลิต",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
               WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -130,8 +117,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text("ออกจากระบบ"),
+            leading: const Icon(Icons.logout,color: Colors.green),
+            title: const Text("ออกจากระบบ",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () async {
               print("Go to login page");
               await SessionManager().set("username", "");

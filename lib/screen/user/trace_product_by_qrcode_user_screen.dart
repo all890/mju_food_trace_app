@@ -272,7 +272,7 @@ class RPSCustomPainter extends CustomPainter{
   // Layer 1
   
   Paint paint_fill_0 = Paint()
-      ..color = const Color.fromARGB(255, 116, 231, 131)
+      ..color = Colors.green
       ..style = PaintingStyle.fill
       ..strokeWidth = size.width*0.00
       ..strokeCap = StrokeCap.butt

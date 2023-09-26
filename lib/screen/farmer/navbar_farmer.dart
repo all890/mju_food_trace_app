@@ -58,8 +58,8 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${farmerCertificate?.farmer?.farmerName} ${farmerCertificate?.farmer?.farmerLastname}",style: TextStyle(fontFamily: 'Itim',fontSize: 18),),
-            accountEmail: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontSize: 16),),
+            accountName: Text("${farmerCertificate?.farmer?.farmerName} ${farmerCertificate?.farmer?.farmerLastname}",style: TextStyle(fontFamily: 'Itim',fontSize: 18,color: Colors?.black),),
+            accountEmail: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontSize: 16,color: Colors.black),),
             decoration: BoxDecoration(
               color:  kClipPathColorFM,
               // image: DecorationImage(
@@ -69,7 +69,7 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
           ),
           farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?
           ListTile(
-            leading: const Icon(Icons.newspaper_sharp),
+            leading: const Icon(Icons.newspaper_sharp, color: Color.fromARGB(255, 124, 94, 4),),
             title:Text("ต่ออายุใบรับรอง",style: TextStyle(
                     fontFamily: 'Itim',
                     color: kClipPathColorTextNavbarFM,
@@ -84,7 +84,7 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
             },
           ) : Container(),
           ListTile(
-            leading: const Icon(Icons.add),
+            leading: const Icon(Icons.add , color: Color.fromARGB(255, 124, 94, 4),),
             title: Text("เพิ่มการปลูกผลผลิต",style: TextStyle(
                     fontFamily: 'Itim',
                     color: kClipPathColorTextNavbarFM,
@@ -99,7 +99,7 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.nature),
+            leading: const Icon(Icons.nature , color: Color.fromARGB(255, 124, 94, 4),),
             title: Text("รายการปลูกผลผลิต",style: TextStyle(
                     fontFamily: 'Itim',
                     color: kClipPathColorTextNavbarFM,
@@ -116,7 +116,7 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
           ListTile(
             leading: const Icon(
               Icons.logout,
-              color: Colors.red,),
+              color: Color.fromARGB(255, 124, 94, 4),),
             title: Text("ออกจากระบบ",style: TextStyle(
                     fontFamily: 'Itim',
                     color: kClipPathColorTextNavbarFM,
