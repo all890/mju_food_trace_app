@@ -44,7 +44,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
     QuickAlert.show(
       context: context,
       title: "อัปเดตสถานะไม่สำเร็จ",
-      text: "ไม่สามารถอัปเดตสถานะการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิตได้",
+      text: "ไม่สามารถอัปเดตสถานะการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิตได้",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -57,7 +57,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
       context: context,
       showCancelBtn: true,
       title: "คุณแน่ใจหรือไม่?",
-      text: "ว่าต้องการที่จะอนุมัติปฎิเสธการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิต",
+      text: "ว่าต้องการที่จะอนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของผู้ผลิต",
       type: QuickAlertType.confirm,
       confirmBtnText: "ตกลง",
       cancelBtnText: "ยกเลิก",
@@ -68,7 +68,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
       onConfirmBtnTap: () async {
         print("Accept!");
       
-        http.Response updateManuftCertResponse = await manufacturerCertificateController.updateMnRenewingRequestCertStatus(manufacturerCertificate?.mnCertNo??"");
+        http.Response updateManuftCertResponse = await manufacturerCertificateController.updateMnRenewingRequestCertStatus(manufacturerCertificate?.mnCertId??"");
         if (updateManuftCertResponse.statusCode == 500) {
           Navigator.pop(context);
           showUpdateManuftRenewingReqCertStatusFailAlert();

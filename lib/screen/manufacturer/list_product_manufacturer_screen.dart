@@ -185,7 +185,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
           child: Scaffold(
             drawer: ManufacturerNavbar(),
             appBar: AppBar(
-              title: const Text("LIST PRODUCTS"),
+              title: const Text("รายการสินค้า"),
               bottom: const TabBar(
                 tabs: [
                   Tab(

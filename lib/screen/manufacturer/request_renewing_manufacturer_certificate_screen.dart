@@ -8,6 +8,7 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
+import 'package:mju_food_trace_app/screen/manufacturer/list_product_manufacturer_screen.dart';
 import 'package:mju_food_trace_app/screen/manufacturer/navbar_manufacturer.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickalert/models/quickalert_type.dart';
@@ -105,6 +106,20 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
     super.initState();
     syncUser();
   }
+  void showSaveManufacuringSuccessAlert() {
+    QuickAlert.show(
+      context: context,
+      title: "บันทึกข้อมูลสำเร็จ",
+      text: "ส่งคำร้องขอใบรับรองผู้ผลิตสำเร็จ กรุณารอตรวจสอบในเวลาไม่เกิน 3 วัน",
+      type: QuickAlertType.success,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListProductScreen()));
+        });
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +131,8 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
         child: Scaffold(
           drawer: ManufacturerNavbar(),
           appBar: AppBar(
-            title: Text("REQUEST RENEWING CERTIFICATE"),
-            backgroundColor: Colors.green,
+            title: Text("ยื่นใบรับรองผู้ผลิต",style: TextStyle(fontFamily: 'Itim'),),
+            backgroundColor:kClipPathColorMN,
           ),
           backgroundColor: kBackgroundColor,
           body: Form(key: formKey,
@@ -314,7 +329,8 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                             //showUsernameDuplicationAlert();
                           } else {
                             print("Farmer registration successfully!");
-                          //  showSavePlantingSuccessAlert();
+
+                          showSaveManufacuringSuccessAlert();
                           }
                         }
                       },

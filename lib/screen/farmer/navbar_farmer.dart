@@ -58,8 +58,20 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("${farmerCertificate?.farmer?.farmerName} ${farmerCertificate?.farmer?.farmerLastname}",style: TextStyle(fontFamily: 'Itim',fontSize: 18,color: Colors?.black),),
-            accountEmail: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontSize: 16,color: Colors.black),),
+            accountName: Text("${farmerCertificate?.farmer?.farmerName} ${farmerCertificate?.farmer?.farmerLastname}",style: TextStyle(fontFamily: 'Itim',fontSize: 18,color: Colors?.white, shadows: [
+                  Shadow(color: Color.fromARGB(255, 0, 0, 0)
+                        .withOpacity(0.5), // สีของเงา
+                    offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 3, // ความคมของเงา
+                  ),
+                ],),),
+            accountEmail: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontSize: 16,color: Colors.white, shadows: [
+                  Shadow(color: Color.fromARGB(255, 0, 0, 0)
+                        .withOpacity(0.5), // สีของเงา
+                    offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 3, // ความคมของเงา
+                  ),
+                ],),),
             decoration: BoxDecoration(
               color:  kClipPathColorFM,
               // image: DecorationImage(

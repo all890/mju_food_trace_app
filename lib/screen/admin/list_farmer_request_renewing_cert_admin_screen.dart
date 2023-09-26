@@ -51,7 +51,14 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
         child: Scaffold(
           drawer: AdminNavbar(),
           appBar: AppBar(
-            title: const Text("LIST FM RENEWING REQ CERT"),
+            title:Text("รายการขอใบรับรองเกษตรกรฉบับใหม่",style: TextStyle(fontFamily: 'Itim',shadows: [
+                  Shadow(
+                    color: Color.fromARGB(255, 0, 0, 0)
+                        .withOpacity(0.5), // สีของเงา
+                    offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 3, // ความคมของเงา
+                  ),
+                ],),),
             backgroundColor: Colors.green,
           ),
           backgroundColor: kBackgroundColor,

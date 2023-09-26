@@ -188,7 +188,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const MainManufacturerScreen();
+                                                return const ListProductScreen();
                                               }
                                             )
                                           );
@@ -202,7 +202,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              "กลับไปหน้าหลัก",
+                                              "กลับไปหน้ารายการสินค้า",
                                               style: TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 20

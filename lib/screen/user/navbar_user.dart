@@ -24,10 +24,10 @@ class _UserNavbarState extends State<UserNavbar> {
                     image: AssetImage('images/ftmju_header_logo.png'))),
           ),
           ListTile(
-            leading: const Icon(Icons.add),
+            leading: const Icon(Icons.add,color: Colors.green,),
             title: const Text(
               "ตรวจสอบย้อนกลับสินค้า",
-              style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+              style: TextStyle(fontSize: 16, fontFamily: 'Itim'),
             ),
             onTap: () {
               print("Go to list all sent agricultural product page");
@@ -41,10 +41,10 @@ class _UserNavbarState extends State<UserNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle),
+            leading: const Icon(Icons.account_circle,color: Colors.green,),
             title: const Text(
               "เข้าสู่ระบบ",
-              style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+              style: TextStyle(fontSize: 16, fontFamily: 'Itim'),
             ),
             onTap: () {
               print("Go to login page");

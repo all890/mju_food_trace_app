@@ -167,17 +167,18 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
           appBar: AppBar(
             title: Text(
               "รายการปลูกผลผลิต",
-              style:
-                  TextStyle(
-                    fontFamily: 'Itim',
-                    color: kDefaultIconDarkColor,
-                  shadows: [
-                  Shadow(color: Color.fromARGB(255, 0, 0, 0)
+              style: TextStyle(
+                fontFamily: 'Itim',
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Color.fromARGB(255, 0, 0, 0)
                         .withOpacity(0.5), // สีของเงา
                     offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
                     blurRadius: 3, // ความคมของเงา
                   ),
-                ],),
+                ],
+              ),
             ),
             bottom: TabBar(
               tabs: [
@@ -188,6 +189,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       fontFamily: 'Itim',
                       color: kClipPathColorTextFM,
                       fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -198,6 +207,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       fontFamily: 'Itim',
                       color: kClipPathColorTextFM,
                       fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -208,6 +225,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       fontFamily: 'Itim',
                       color: kClipPathColorTextFM,
                       fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -218,6 +243,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                       fontFamily: 'Itim',
                       color: kClipPathColorTextFM,
                       fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -239,461 +272,481 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                   ],
                 )
               : TabBarView(children: [
-                  cannotSentPlantings?.isNotEmpty == true? Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                      itemCount: cannotSentPlantings?.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index1) {
-                        return Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                              title: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${cannotSentPlantings?[index1].plantName}",
-                                    style: const TextStyle(
-                                        fontFamily: 'Itim', fontSize: 22),
-                                  ),
-                                  Text(
-                                      "วันที่ปลูก : " +
-                                          dateFormat.format(
-                                              cannotSentPlantings?[index1]
-                                                      .plantDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                          dateFormat.format(
-                                              cannotSentPlantings?[index1]
-                                                      .approxHarvDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "ปริมาณผลผลิตสุทธิ : ${cannotSentPlantings?[index1].netQuantity} ${cannotSentPlantings?[index1].netQuantityUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                ],
+                  cannotSentPlantings?.isNotEmpty == true
+                      ? Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.builder(
+                            itemCount: cannotSentPlantings?.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index1) {
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                    title: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${cannotSentPlantings?[index1].plantName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 22),
+                                        ),
+                                        Text(
+                                            "วันที่ปลูก : " +
+                                                dateFormat.format(
+                                                    cannotSentPlantings?[index1]
+                                                            .plantDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                                dateFormat.format(
+                                                    cannotSentPlantings?[index1]
+                                                            .approxHarvDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "ปริมาณผลผลิตสุทธิ : ${cannotSentPlantings?[index1].netQuantity} ${cannotSentPlantings?[index1].netQuantityUnit}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                      ],
+                                    ),
+                                    trailing: SizedBox(
+                                      width: 100,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            // TODO: Check fm cert before delete
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("Delete Pressed!");
+                                                  print(cannotSentPlantings
+                                                      ?.length);
+                                                  print(
+                                                      "state is ${farmerCertificate?.fmCertExpireDate?.isAfter(DateTime.now())}");
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToDeleteBecauseFmCertIsExpire();
+                                                  } else {
+                                                    print("print this");
+                                                    showConfirmToDeleteAlert(
+                                                        cannotSentPlantings?[
+                                                                index1]
+                                                            .plantingId);
+                                                  }
+                                                },
+                                                child: Icon(Icons.delete)),
+                                            // TODO: Check fm cert before update
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("Edit Pressed!");
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToUpdateBecauseFmCertIsExpire();
+                                                  } else {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              UpdatePlantingScreen(
+                                                                  plantingId: cannotSentPlantings!
+                                                                          .isEmpty
+                                                                      ? ''
+                                                                      : cannotSentPlantings![index1]
+                                                                              .plantingId ??
+                                                                          "")),
+                                                    );
+                                                  }
+                                                },
+                                                child: Icon(Icons.edit)),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/rice_action3.png"),
                               ),
-                              trailing: SizedBox(
-                                width: 100,
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                              Text(
+                                "ไม่มีผลผลิตที่ต้องรอเก็บเกี่ยว",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                  didNotSentPlantings?.isNotEmpty == true
+                      ? Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.builder(
+                            itemCount: didNotSentPlantings?.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                    title: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${didNotSentPlantings?[index].plantName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 22),
+                                        ),
+                                        Text(
+                                            "วันที่ปลูก : " +
+                                                dateFormat.format(
+                                                    didNotSentPlantings?[index]
+                                                            .plantDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                                dateFormat.format(
+                                                    didNotSentPlantings?[index]
+                                                            .approxHarvDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "ปริมาณผลผลิตสุทธิ : ${didNotSentPlantings?[index].netQuantity} ${didNotSentPlantings?[index].netQuantityUnit}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                      ],
+                                    ),
+                                    trailing: SizedBox(
+                                      width: 100,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // TODO: Check fm cert before delete
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("Delete Pressed!");
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToDeleteBecauseFmCertIsExpire();
+                                                  } else {
+                                                    showConfirmToDeleteAlert(
+                                                        didNotSentPlantings?[
+                                                                    index]
+                                                                .plantingId ??
+                                                            "");
+                                                  }
+                                                },
+                                                child: Icon(Icons.delete)),
+                                            // TODO: Check fm cert before update
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("Edit Pressed!");
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToUpdateBecauseFmCertIsExpire();
+                                                  } else {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              UpdatePlantingScreen(
+                                                                  plantingId:
+                                                                      didNotSentPlantings?[index]
+                                                                              .plantingId ??
+                                                                          "")),
+                                                    );
+                                                  }
+                                                },
+                                                child: Icon(Icons.edit)),
+                                            // TODO: Check fm cert before send
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("Send Pressed!");
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToSendBecauseFmCertIsExpire();
+                                                  } else {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SendAgriculturalProducts(
+                                                                  plantingId:
+                                                                      didNotSentPlantings?[index]
+                                                                              .plantingId ??
+                                                                          "")),
+                                                    );
+                                                  }
+                                                },
+                                                child: Icon(Icons.send))
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/rice_action2.png"),
+                              ),
+                              Text(
+                                "ไม่มีผลผลิตที่สามารถส่งได้",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                  sendPlantings?.isNotEmpty == true
+                      ? Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.builder(
+                            itemCount: sendPlantings?.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                    title: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${sendPlantings?[index].plantName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 22),
+                                        ),
+                                        Text(
+                                            "วันที่ปลูก : " +
+                                                dateFormat.format(
+                                                    sendPlantings?[index]
+                                                            .plantDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                                dateFormat.format(
+                                                    sendPlantings?[index]
+                                                            .approxHarvDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "ปริมาณผลผลิตคงเหลือ : ${sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ? remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId]} ${sendPlantings?[index].netQuantityUnit}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                      ],
+                                    ),
+                                    trailing: SizedBox(
+                                      width: 100,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // TODO: Check fm cert before send
+                                          Center(
+                                            child: GestureDetector(
+                                                onTap: () {
+                                                  if (farmerCertificate
+                                                              ?.fmCertExpireDate
+                                                              ?.isBefore(
+                                                                  DateTime
+                                                                      .now()) ==
+                                                          true ||
+                                                      farmerCertificate
+                                                              ?.fmCertStatus !=
+                                                          "อนุมัติ") {
+                                                    showErrorToSendBecauseFmCertIsExpire();
+                                                  } else {
+                                                    print("Send Pressed!");
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SendAgriculturalProducts(
+                                                                plantingId:
+                                                                    sendPlantings?[index]
+                                                                            .plantingId ??
+                                                                        "",
+                                                                remQtyOfPt: sendPlantings?[index]
+                                                                            .netQuantityUnit ==
+                                                                        "กิโลกรัม"
+                                                                    ? remQtyOfPts[sendPlantings?[index]
+                                                                            .plantingId] /
+                                                                        1000
+                                                                    : remQtyOfPts[
+                                                                        sendPlantings?[index]
+                                                                            .plantingId],
+                                                              )),
+                                                    );
+                                                  }
+                                                },
+                                                child: Icon(Icons.send)),
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                              );
+                            },
+                          ),
+                        )
+                      : Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/rice_action1.png"),
+                              ),
+                              Text(
+                                "ไม่มีผลผลิตที่เคยส่งแล้ว",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                  emptyQtyPlantings?.isNotEmpty == true
+                      ? Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.builder(
+                            itemCount: emptyQtyPlantings?.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                  title: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      // TODO: Check fm cert before delete
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Delete Pressed!");
-                                            print(cannotSentPlantings?.length);
-                                            print(
-                                                "state is ${farmerCertificate?.fmCertExpireDate?.isAfter(DateTime.now())}");
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToDeleteBecauseFmCertIsExpire();
-                                            } else {
-                                              print("print this");
-                                              showConfirmToDeleteAlert(
-                                                  cannotSentPlantings?[index1]
-                                                      .plantingId);
-                                            }
-                                          },
-                                          child: Icon(Icons.delete)),
-                                      // TODO: Check fm cert before update
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Edit Pressed!");
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToUpdateBecauseFmCertIsExpire();
-                                            } else {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => UpdatePlantingScreen(
-                                                        plantingId: cannotSentPlantings!
-                                                                .isEmpty
-                                                            ? ''
-                                                            : cannotSentPlantings![
-                                                                        index1]
-                                                                    .plantingId ??
-                                                                "")),
-                                              );
-                                            }
-                                          },
-                                          child: Icon(Icons.edit)),
+                                      Text(
+                                        "${emptyQtyPlantings?[index].plantName}",
+                                        style: const TextStyle(
+                                            fontFamily: 'Itim', fontSize: 22),
+                                      ),
+                                      Text(
+                                          "วันที่ปลูก : " +
+                                              dateFormat.format(
+                                                  emptyQtyPlantings?[index]
+                                                          .plantDate ??
+                                                      DateTime.now()),
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18)),
+                                      Text(
+                                          "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                              dateFormat.format(
+                                                  emptyQtyPlantings?[index]
+                                                          .approxHarvDate ??
+                                                      DateTime.now()),
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18)),
                                     ],
                                   ),
                                 ),
-                              )),
-                        );
-                      },
-                    ),
-                  ) : Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          height: 350,
-                          width: 350,
-                          image: AssetImage("images/rice_action3.png"),
-                        ),
-                        Text(
-                          "ไม่มีผลผลิตที่ต้องรอเก็บเกี่ยว",
-                          style: TextStyle(
-                            fontFamily: "Itim",
-                            fontSize: 20
+                              );
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  didNotSentPlantings?.isNotEmpty == true? Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                      itemCount: didNotSentPlantings?.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                              title: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${didNotSentPlantings?[index].plantName}",
-                                    style: const TextStyle(
-                                        fontFamily: 'Itim', fontSize: 22),
-                                  ),
-                                  Text(
-                                      "วันที่ปลูก : " +
-                                          dateFormat.format(
-                                              didNotSentPlantings?[index]
-                                                      .plantDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                          dateFormat.format(
-                                              didNotSentPlantings?[index]
-                                                      .approxHarvDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "ปริมาณผลผลิตสุทธิ : ${didNotSentPlantings?[index].netQuantity} ${didNotSentPlantings?[index].netQuantityUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                ],
+                        )
+                      : Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/rice_action4.png"),
                               ),
-                              trailing: SizedBox(
-                                width: 100,
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // TODO: Check fm cert before delete
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Delete Pressed!");
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToDeleteBecauseFmCertIsExpire();
-                                            } else {
-                                              showConfirmToDeleteAlert(
-                                                  didNotSentPlantings?[index]
-                                                          .plantingId ??
-                                                      "");
-                                            }
-                                          },
-                                          child: Icon(Icons.delete)),
-                                      // TODO: Check fm cert before update
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Edit Pressed!");
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToUpdateBecauseFmCertIsExpire();
-                                            } else {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UpdatePlantingScreen(
-                                                            plantingId:
-                                                                didNotSentPlantings?[
-                                                                            index]
-                                                                        .plantingId ??
-                                                                    "")),
-                                              );
-                                            }
-                                          },
-                                          child: Icon(Icons.edit)),
-                                      // TODO: Check fm cert before send
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Send Pressed!");
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToSendBecauseFmCertIsExpire();
-                                            } else {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SendAgriculturalProducts(
-                                                            plantingId:
-                                                                didNotSentPlantings?[
-                                                                            index]
-                                                                        .plantingId ??
-                                                                    "")),
-                                              );
-                                            }
-                                          },
-                                          child: Icon(Icons.send))
-                                    ],
-                                  ),
-                                ),
-                              )),
-                        );
-                      },
-                    ),
-                  ) : Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          height: 350,
-                          width: 350,
-                          image: AssetImage("images/rice_action2.png"),
-                        ),
-                        Text(
-                          "ไม่มีผลผลิตที่สามารถส่งได้",
-                          style: TextStyle(
-                            fontFamily: "Itim",
-                            fontSize: 20
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  sendPlantings?.isNotEmpty == true? Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                      itemCount: sendPlantings?.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                              title: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${sendPlantings?[index].plantName}",
-                                    style: const TextStyle(
-                                        fontFamily: 'Itim', fontSize: 22),
-                                  ),
-                                  Text(
-                                      "วันที่ปลูก : " +
-                                          dateFormat.format(
-                                              sendPlantings?[index].plantDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                          dateFormat.format(
-                                              sendPlantings?[index]
-                                                      .approxHarvDate ??
-                                                  DateTime.now()),
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                  Text(
-                                      "ปริมาณผลผลิตคงเหลือ : ${sendPlantings?[index].netQuantityUnit == "กิโลกรัม" ? remQtyOfPts[sendPlantings?[index].plantingId] / 1000 : remQtyOfPts[sendPlantings?[index].plantingId]} ${sendPlantings?[index].netQuantityUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18)),
-                                ],
+                              Text(
+                                "ไม่มีผลผลิตที่ส่งครบจำนวน",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
                               ),
-                              trailing: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // TODO: Check fm cert before send
-                                    Center(
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            if (farmerCertificate
-                                                        ?.fmCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                farmerCertificate
-                                                        ?.fmCertStatus !=
-                                                    "อนุมัติ") {
-                                              showErrorToSendBecauseFmCertIsExpire();
-                                            } else {
-                                              print("Send Pressed!");
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SendAgriculturalProducts(
-                                                          plantingId:
-                                                              sendPlantings?[
-                                                                          index]
-                                                                      .plantingId ??
-                                                                  "",
-                                                          remQtyOfPt: sendPlantings?[
-                                                                          index]
-                                                                      .netQuantityUnit ==
-                                                                  "กิโลกรัม"
-                                                              ? remQtyOfPts[sendPlantings?[
-                                                                          index]
-                                                                      .plantingId] /
-                                                                  1000
-                                                              : remQtyOfPts[
-                                                                  sendPlantings?[
-                                                                          index]
-                                                                      .plantingId],
-                                                        )),
-                                              );
-                                            }
-                                          },
-                                          child: Icon(Icons.send)),
-                                    )
-                                  ],
-                                ),
-                              )),
-                        );
-                      },
-                    ),
-                  ) : Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          height: 350,
-                          width: 350,
-                          image: AssetImage("images/rice_action1.png"),
-                        ),
-                        Text(
-                          "ไม่มีผลผลิตที่เคยส่งแล้ว",
-                          style: TextStyle(
-                            fontFamily: "Itim",
-                            fontSize: 20
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  emptyQtyPlantings?.isNotEmpty == true? Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: ListView.builder(
-                      itemCount: emptyQtyPlantings?.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${emptyQtyPlantings?[index].plantName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim', fontSize: 22),
-                                ),
-                                Text(
-                                    "วันที่ปลูก : " +
-                                        dateFormat.format(
-                                            emptyQtyPlantings?[index]
-                                                    .plantDate ??
-                                                DateTime.now()),
-                                    style: const TextStyle(
-                                        fontFamily: 'Itim', fontSize: 18)),
-                                Text(
-                                    "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                        dateFormat.format(
-                                            emptyQtyPlantings?[index]
-                                                    .approxHarvDate ??
-                                                DateTime.now()),
-                                    style: const TextStyle(
-                                        fontFamily: 'Itim', fontSize: 18)),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ) : Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          height: 350,
-                          width: 350,
-                          image: AssetImage("images/rice_action4.png"),
-                        ),
-                        Text(
-                          "ไม่มีผลผลิตที่ส่งครบจำนวน",
-                          style: TextStyle(
-                            fontFamily: "Itim",
-                            fontSize: 20
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ]),
         ),
       ));

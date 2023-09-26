@@ -195,7 +195,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
           child: Scaffold(
             drawer: ManufacturerNavbar(),
             appBar: AppBar(
-              title: const Text("LIST MANUFACTURINGS"),
+              title: const Text("รายการผลิตสินค้า"),
               bottom: const TabBar(
                 tabs: [
                   Tab(
