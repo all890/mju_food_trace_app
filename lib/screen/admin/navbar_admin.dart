@@ -9,9 +9,14 @@ import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
 import 'list_farmer_registration_admin_screen.dart';
 import 'list_manuft_registration_admin_screen.dart';
 
-class AdminNavbar extends StatelessWidget {
+class AdminNavbar extends StatefulWidget {
   const AdminNavbar({super.key});
-  
+
+  @override
+  State<AdminNavbar> createState() => _AdminNavbarState();
+}
+
+class _AdminNavbarState extends State<AdminNavbar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
