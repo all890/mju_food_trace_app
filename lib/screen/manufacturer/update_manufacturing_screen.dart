@@ -120,7 +120,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       context: context,
       showCancelBtn: true,
       title: "คุณแน่ใจหรือไม่?",
-      text: "ว่าต้องการที่จะแก้ไขข้อมูลการปลูกผลผลิต",
+      text: "ว่าต้องการที่จะแก้ไขข้อมูลการผลิตสินค้า",
       type: QuickAlertType.warning,
       confirmBtnText: "ตกลง",
       cancelBtnText: "ยกเลิก",
@@ -242,7 +242,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              "กลับไปผลผลิตที่ส่งมาจากเกษตรกร",
+                                              "กลับไปยังหน้าการผลิตสินค้า",
                                               style: TextStyle(
                                                   fontFamily: 'Itim',
                                                   fontSize: 20),
@@ -280,10 +280,26 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     ),
                                   ),
                                 ),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_productName,
-                                    icon: const Icon(Icons.arrow_downward),
+                                       Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                           value: selected_productName,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -291,10 +307,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                       fontFamily: 'Itim',
                                     ),
                                     isExpanded: true,
-                                    underline: Container(
-                                      height: 3,
-                                      color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                  
                                     items: productNames
                                         ?.map(
                                           (String item) =>
@@ -305,8 +318,21 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                         .toList(),
                                     onChanged: (item) => setState(
                                         () => selected_productName = item),
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.compost),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                               
                                 CustomTextFormField(
                                     controller: productQtyTextController,
                                     hintText: "ปริมาณสินค้าที่ผลิตได้",
@@ -319,11 +345,27 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
                                       }
                                     },
-                                    icon: const Icon(Icons.account_circle)),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_productUnit_items,
-                                    icon: const Icon(Icons.arrow_downward),
+                                    icon: const Icon(Icons.equalizer)),
+                                        Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                           value: selected_productUnit_items,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -331,10 +373,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                       fontFamily: 'Itim',
                                     ),
                                     isExpanded: true,
-                                    underline: Container(
-                                      height: 3,
-                                      color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                 
                                     items: productUnit_items
                                         .map(
                                           (String item) =>
@@ -345,8 +384,21 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                         .toList(),
                                     onChanged: (item) => setState(() =>
                                         selected_productUnit_items = item),
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                                
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
@@ -431,7 +483,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                         return "กรุณากรอกผลผลิตที่นำมาใช้";
                                       }
                                     },
-                                    icon: const Icon(Icons.account_circle)),
+                                    icon: const Icon(Icons.grass)),
                                 CustomTextFormField(
                                     controller: usedRawMatQtyTextController,
                                     hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
@@ -445,10 +497,26 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                       }
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_usedRawMatQtyUnit_items,
-                                    icon: const Icon(Icons.arrow_downward),
+                                       Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: selected_usedRawMatQtyUnit_items,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -456,10 +524,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                       fontFamily: 'Itim',
                                     ),
                                     isExpanded: true,
-                                    underline: Container(
-                                      height: 3,
-                                      color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                  
                                     items: usedRawMatQtyUnit_items
                                         .map(
                                           (String item) =>
@@ -471,8 +536,22 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     onChanged: (item) => setState(() =>
                                         selected_usedRawMatQtyUnit_items =
                                             item),
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                               
                                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(

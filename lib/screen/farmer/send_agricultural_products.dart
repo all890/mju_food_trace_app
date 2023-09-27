@@ -488,10 +488,27 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
 
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_rawMatShpQtyUnit_items,
-                                    icon: const Icon(Icons.arrow_downward),
+
+                                      Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                             value: selected_rawMatShpQtyUnit_items,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -499,10 +516,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                       fontFamily: 'Itim',
                                     ),
                                     isExpanded: true,
-                                    underline: Container(
-                                      height: 3,
-                                      color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                    
                                     items: rawMatShpQtyUnit_items
                                         .map(
                                           (String item) =>
@@ -513,8 +527,22 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                         .toList(),
                                     onChanged: (item) => setState(() =>
                                         selected_rawMatShpQtyUnit_items = item),
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
+                              
                                ElevatedButton(
                                 style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
@@ -522,7 +550,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                       RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(50.0))),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                  backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
                                 ),
                                 onPressed: () async {
 

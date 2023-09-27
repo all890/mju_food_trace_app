@@ -340,7 +340,7 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                               RoundedRectangleBorder(
                                 borderRadius:
                                 BorderRadius.circular(50.0))),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 105, 13, 175))
                         ),
                         onPressed: () {
                           showConfirmToRecordManufacturingAlert(widget.manufacturingId);

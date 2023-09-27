@@ -527,12 +527,12 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     "รายละเอียดการปลูก"
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 SizedBox(
-                  height: 430,
+                 // height: 430,
                   child: Image.network(baseURL + '/planting/' + imgPlantingName!),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(

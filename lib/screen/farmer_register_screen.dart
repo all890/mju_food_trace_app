@@ -429,7 +429,17 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                     ),
                                   ],
                                 ),
-                                //Text(fileName != null? fileName.toString() : ""),
+                                    const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "สามารถเลือกไฟล์ที่มีนามสกุล png,jpg,pdf",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Itim'
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
                                 CustomTextFormField(
                                   controller: farmerCertNoTextController,
                                   hintText: "หมายเลขใบรับรองมาตรฐานเกษตรกร",

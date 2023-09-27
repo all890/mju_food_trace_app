@@ -221,7 +221,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                       return "กรุณากรอกชื่อผู้ผลิต";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.home_filled)
                                 ),
                                 CustomTextFormField(
                                   controller: manuftEmailTextController,

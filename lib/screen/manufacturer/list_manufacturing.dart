@@ -280,7 +280,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               child: ListTile(
                                 leading: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [Icon(Icons.place)],
+                                  children: [Icon(Icons.compost)],
                                 ),
                                 title: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -289,12 +289,17 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                     Text(
                                       "${notRecordedManufacturings?[index].product?.productName}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 22),
+                                          fontFamily: 'Itim', fontSize: 20),
                                     ),
                                     Text(
-                                      "${dateFormat.format(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                      "วันที่ทำการผลิต "+"${dateFormat.format(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 22),
+                                          fontFamily: 'Itim', fontSize: 20),
+                                    ),
+                                     Text(
+                                      "ปริมาณสินค้า "+"${notRecordedManufacturings?[index].productQty}"+" ${notRecordedManufacturings?[index].productUnit}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim', fontSize: 20),
                                     ),
                                   ],
                                 ),
@@ -400,7 +405,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               child: ListTile(
                                 leading: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [Icon(Icons.place)],
+                                  children: [Icon(Icons.compost)],
                                 ),
                                 title: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -409,12 +414,12 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                     Text(
                                       "${recordedManufacturings?[index].product?.productName}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 22),
+                                          fontFamily: 'Itim', fontSize: 20),
                                     ),
                                     Text(
                                       "${dateFormat.format(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 22),
+                                          fontFamily: 'Itim', fontSize: 20),
                                     ),
                                   ],
                                 ),

@@ -267,7 +267,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.place)
+                              Icon(Icons.compost)
                             ],
                           ),
                           title: Column(
@@ -278,11 +278,26 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 "${notManufacturedProducts?[index].productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
-                                  fontSize: 22
+                                  fontSize: 20
+                                ),
+                              ),
+                              Text(
+                                "ปริมาตรสุทธิ : "+"${notManufacturedProducts?[index].netVolume}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 20
+                                ),
+                              ),
+                              Text(
+                                "พลังงานที่ได้รับสุทธิ : "+"${notManufacturedProducts?[index].netEnergy}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 20
                                 ),
                               ),
                             ],
                           ),
+                          
                           trailing: SizedBox(
                             width: 80,
                             child: Row(
@@ -336,7 +351,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.place)
+                              Icon(Icons.compost)
                             ],
                           ),
                           title: Column(
@@ -347,7 +362,21 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 "${manufacturedProducts?[index].productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
-                                  fontSize: 22
+                                  fontSize: 20
+                                ),
+                              ),
+                                Text(
+                                "ปริมาตรสุทธิ : "+"${manufacturedProducts?[index].netVolume}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 20
+                                ),
+                              ),
+                              Text(
+                                "พลังงานที่ได้รับสุทธิ : "+"${manufacturedProducts?[index].netEnergy}",
+                                style: const TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 20
                                 ),
                               ),
                             ],

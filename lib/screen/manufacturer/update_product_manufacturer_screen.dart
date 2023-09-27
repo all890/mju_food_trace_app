@@ -220,7 +220,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                               width: 5.0,
                                             ),
                                             Text(
-                                              "กลับไปหน้าหลัก",
+                                              "กลับไปหน้ารายการสินค้า",
                                               style: TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 20
@@ -275,7 +275,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกชื่อสินค้า";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.compost)
                                 ),
                                 CustomTextFormField(
                                   controller: netVolumeTextController,
@@ -289,7 +289,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาตรสุทธิ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.equalizer)
                                 ),
                                 CustomTextFormField(
                                   controller: netEnergyTextController,
@@ -303,7 +303,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกพลังงานที่ได้รับสุทธิ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.bolt)
                                 ),
                                 CustomTextFormField(
                                   controller: saturatedFatTextController,
@@ -317,7 +317,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณไขมันอิ่มตัว";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.opacity)
                                 ),
                                 CustomTextFormField(
                                   controller: cholesteralTextController,
@@ -331,7 +331,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณคอเลสเตอรอล";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: proteinTextController,
@@ -345,7 +345,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณโปรตีน";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: sodiumTextController,
@@ -359,7 +359,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณโซเดียม";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: fiberTextController,
@@ -373,7 +373,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณใยอาหาร";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: sugarTextController,
@@ -387,7 +387,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณน้ำตาล";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -421,7 +421,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณเหล็ก";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hdr_strong)
                                 ),
                                 CustomTextFormField(
                                   controller: vitATextController,
@@ -435,7 +435,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินเอ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB1TextController,
@@ -449,7 +449,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินบี 1";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB2TextController,
@@ -463,7 +463,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินบี 2";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: calciumTextController,
@@ -477,7 +477,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณแคลเซียม";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hdr_strong)
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -494,7 +494,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                                 RoundedRectangleBorder(
                                                   borderRadius:
                                                   BorderRadius.circular(50.0))),
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 203, 203, 34))
                                           ),
                                           onPressed: () {
                                             showConfirmToUpdateProductAlert();

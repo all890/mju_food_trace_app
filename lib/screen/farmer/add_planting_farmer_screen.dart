@@ -652,7 +652,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                             RoundedRectangleBorder(
                                               borderRadius:
                                               BorderRadius.circular(50.0))),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                        backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
                                       ),
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {

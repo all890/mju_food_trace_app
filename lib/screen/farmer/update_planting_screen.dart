@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_google_location_picker/export.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:path_provider/path_provider.dart';
@@ -193,6 +194,38 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+   void calculateAreaFromSquareMetres (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currSqaureMetres = double.parse(value);
+      var resSquareYards = currSqaureMetres / 4;
+      var resRai = currSqaureMetres / 1600;
+      squareYardsTextController.text = resSquareYards.toString();
+      raiTextController.text = resRai.toString();
+    }
+  }
+
+  void calculateAreaFromSquareYards (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currSqaureYards = double.parse(value);
+      var resSqaureMetres = currSqaureYards * 4;
+      var resRai = currSqaureYards / 400;
+      squareMetersTextController.text = resSqaureMetres.toString();
+      raiTextController.text = resRai.toString();
+    }
+  }
+
+  void calculateAreaFromRai (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currRai = double.parse(value);
+      var resSqaureMetres = currRai * 1600;
+      var resSqaureYards = currRai * 400;
+      squareMetersTextController.text = resSqaureMetres.toString();
+      squareYardsTextController.text = resSqaureYards.toString();
     }
   }
   @override
@@ -448,46 +481,99 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     },
                                   ),
                                 ),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: planting?.bioextract,
-                                    icon: const Icon(Icons.arrow_downward),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: planting?.bioextract,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
                                     isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                    
                                     items: bioextract_items.map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(item)
                                       ),
                                     ).toList(),
                                     onChanged: (item) => setState(() =>  planting?.bioextract = item),
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-
-                                 Center(
-                                  child: DropdownButton<String>(
-                                    value: planting?.plantingMethod ,
-                                    icon: const Icon(Icons.arrow_downward),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                             value: planting?.plantingMethod ,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
                                     isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
+                                    
                                     items:  plantingMethod_items.map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(item)
                                       ),
                                     ).toList(),
                                     onChanged: (item) => setState(() => planting?.plantingMethod = item),
+                                  
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
 
+                             
                                 CustomTextFormField(
                                   controller: netQuantityTextController,
                                   hintText: "ปริมาณผลผลิตสุทธิ",
@@ -502,27 +588,53 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                   },
                                   icon: const Icon(Icons.bubble_chart)
                                 ),
-                                
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: planting?.netQuantityUnit,
-                                    icon: const Icon(Icons.arrow_downward),
+
+                                 Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: planting?.netQuantityUnit,
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
                                     isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
                                     items:  netQuantityUnit_items.map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(item)
                                       ),
                                     ).toList(),
                                     onChanged: (item) => setState(() => planting?.netQuantityUnit = item),
+                                  
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-
+                               
                                 CustomTextFormField(
                                   controller: squareMetersTextController,
                                   hintText: "จำนวนตารางเมตร",
@@ -534,6 +646,9 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     } else {
                                       return "กรุณากรอกจำนวนตารางเมตร";
                                     }
+                                  },
+                                  onChanged: (value) {
+                                    calculateAreaFromSquareMetres(value ?? "");
                                   },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),
@@ -550,6 +665,9 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                       return "กรุณากรอกจำนวนตารางวา";
                                     }
                                   },
+                                  onChanged: (value) {
+                                    calculateAreaFromSquareYards(value ?? "");
+                                  },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),
 
@@ -564,6 +682,9 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     } else {
                                       return "กรุณากรอกจำนวนไร";
                                     }
+                                  },
+                                  onChanged: (value) {
+                                    calculateAreaFromRai(value ?? "");
                                   },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),

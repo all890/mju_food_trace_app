@@ -257,7 +257,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกชื่อสินค้า";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.compost)
                                 ),
                                 CustomTextFormField(
                                   controller: netVolumeTextController,
@@ -271,7 +271,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาตรสุทธิ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.equalizer)
                                 ),
                                 CustomTextFormField(
                                   controller: netEnergyTextController,
@@ -285,7 +285,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกพลังงานที่ได้รับสุทธิ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.bolt)
                                 ),
                                 CustomTextFormField(
                                   controller: saturatedFatTextController,
@@ -299,7 +299,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณไขมันอิ่มตัว";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.opacity)
+
                                 ),
                                 CustomTextFormField(
                                   controller: cholesteralTextController,
@@ -313,7 +314,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณคอเลสเตอรอล";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: proteinTextController,
@@ -327,7 +328,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณโปรตีน";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: sodiumTextController,
@@ -341,7 +342,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณโซเดียม";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: fiberTextController,
@@ -355,7 +356,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณใยอาหาร";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 CustomTextFormField(
                                   controller: sugarTextController,
@@ -369,7 +370,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณน้ำตาล";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.water_drop)
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -403,7 +404,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณเหล็ก";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hdr_strong)
                                 ),
                                 CustomTextFormField(
                                   controller: vitATextController,
@@ -417,7 +418,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินเอ";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB1TextController,
@@ -431,7 +432,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินบี 1";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB2TextController,
@@ -445,7 +446,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณวิตามินบี 2";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hub)
                                 ),
                                 CustomTextFormField(
                                   controller: calciumTextController,
@@ -459,7 +460,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       return "กรุณากรอกปริมาณแคลเซียม";
                                     }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.hdr_strong)
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -474,7 +475,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                             RoundedRectangleBorder(
                                               borderRadius:
                                               BorderRadius.circular(50.0))),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                        backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorMN)
                                       ),
                                       onPressed: () async {
                                         print("PRESSED!");
