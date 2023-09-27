@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:mju_food_trace_app/controller/administrator_controller.dart';
+import 'package:mju_food_trace_app/model/administrator.dart';
 import 'package:mju_food_trace_app/screen/admin/list_farmer_request_renewing_cert_admin_screen.dart';
 import 'package:mju_food_trace_app/screen/admin/list_manuft_request_renewing_cert_admin.dart';
 import 'package:mju_food_trace_app/screen/login_screen.dart';
@@ -16,6 +18,28 @@ class AdminNavbar extends StatefulWidget {
 }
 
 class _AdminNavbarState extends State<AdminNavbar> {
+
+  AdministratorController administratorController = AdministratorController();
+
+  Administrator? administrator;
+  String? username;
+
+  void fetchAdminInfo () async {
+    var usernameDynamic = await SessionManager().get("username");
+    username = usernameDynamic.toString();
+    var response = await administratorController.getAdminByUsername(username ?? "");
+    Administrator tempAdmin = Administrator.fromJsonToAdministrator(response);
+    setState(() {
+      administrator = tempAdmin;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAdminInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -38,7 +62,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
               ),
             ),
             accountName: Text(
-              "ชื่อ",
+              "${administrator?.adminName} ${administrator?.adminLastname}",
               style: TextStyle(
                 fontFamily: 'Itim',
                 fontSize: 16,
