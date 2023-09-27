@@ -185,14 +185,34 @@ class _ListProductScreenState extends State<ListProductScreen> {
           child: Scaffold(
             drawer: ManufacturerNavbar(),
             appBar: AppBar(
-              title: const Text("รายการสินค้า"),
-              bottom: const TabBar(
+              title:Text("รายการสินค้า",
+                      style: TextStyle(
+                        fontFamily: 'Itim',
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
+                      ),),
+              bottom: TabBar(
                 tabs: [
                   Tab(
                     child: Text(
                       "ยังไม่ถูกผลิต",
                       style: TextStyle(
-                        fontFamily: 'Itim'
+                        fontFamily: 'Itim',
+                        fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                       ),
                     ),
                   ),
@@ -200,13 +220,22 @@ class _ListProductScreenState extends State<ListProductScreen> {
                     child: Text(
                       "ผลิตแล้ว",
                       style: TextStyle(
-                        fontFamily: 'Itim'
+                        fontFamily: 'Itim',
+                        fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                       ),
                     ),
                   ),
                 ],
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: kClipPathColorMN,
             ),
             backgroundColor: kBackgroundColor,
             body: isLoaded == false?

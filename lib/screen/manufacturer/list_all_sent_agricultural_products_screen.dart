@@ -130,14 +130,31 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
           child: Scaffold(
               drawer: ManufacturerNavbar(),
               appBar: AppBar(
-                title: const Text("LIST ALL SENT AGRICULTURAL PRODUCTS"),
-                bottom: const TabBar(
+                title:Text("รายการผลผลิตที่ถูกส่งจากเกษตรกร",style:  TextStyle(fontFamily: 'Itim',
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],),),
+                bottom:TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         "ผลผลิตที่ไม่เคยใช้",
                         style: TextStyle(
-                          fontFamily: 'Itim'
+                          fontFamily: 'Itim',
+                          fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                         ),
                       ),
                     ),
@@ -145,7 +162,16 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                       child: Text(
                         "ผลผลิตคงเหลือ",
                         style: TextStyle(
-                          fontFamily: 'Itim'
+                          fontFamily: 'Itim',
+                          fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                         ),
                       ),
                     ),
@@ -153,13 +179,22 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                       child: Text(
                         "ครบจำนวน",
                         style: TextStyle(
-                          fontFamily: 'Itim'
+                          fontFamily: 'Itim',
+                          fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
                         ),
                       ),
                     ),
                   ],
                 ),
-                backgroundColor: Colors.green,
+                backgroundColor: kClipPathColorMN,
               ),
               backgroundColor: kBackgroundColor,
               body: isLoaded == false? 

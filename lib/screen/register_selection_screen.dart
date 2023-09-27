@@ -77,7 +77,7 @@ class _RegisterSelectionScreenState extends State<RegisterSelectionScreen> {
                                       RoundedRectangleBorder(
                                         borderRadius:
                                           BorderRadius.circular(50.0))),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 184, 184, 184))
+                                        backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
@@ -121,7 +121,7 @@ class _RegisterSelectionScreenState extends State<RegisterSelectionScreen> {
                                       RoundedRectangleBorder(
                                         borderRadius:
                                           BorderRadius.circular(50.0))),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 184, 184, 184))
+                                        backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorMN)
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(

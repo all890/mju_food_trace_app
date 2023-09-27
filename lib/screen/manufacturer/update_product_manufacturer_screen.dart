@@ -206,7 +206,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const MainManufacturerScreen();
+                                                return const ListProductScreen();
                                               }
                                             )
                                           );
