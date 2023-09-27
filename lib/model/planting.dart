@@ -1,7 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'dart:convert';
-import 'dart:ffi';
 
 import 'farmer.dart';
 
@@ -16,9 +12,9 @@ class Planting {
   String? plantingMethod;
   double? netQuantity;
   String? netQuantityUnit;
-  int? squareMeters;
-  int? squareYards;
-  int? rai;
+  double? squareMeters;
+  double? squareYards;
+  double? rai;
   String? ptPrevBlockHash;
   String? ptCurrBlockHash;
 

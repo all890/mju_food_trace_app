@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_google_location_picker/export.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
@@ -63,6 +64,10 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
 
   bool? isLoaded;
   FarmerCertificate? farmerCertificate;
+
+  double? calSquareMetres = 0.00;
+  double? calSquareYards = 0.00;
+  double? calRai = 0.00;
 
   void showFmCertExpireError () {
     QuickAlert.show(
@@ -129,6 +134,39 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void calculateAreaFromSquareMetres (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currSqaureMetres = double.parse(value);
+      var resSquareYards = currSqaureMetres / 4;
+      var resRai = currSqaureMetres / 1600;
+      squareYardsTextController.text = resSquareYards.toString();
+      raiTextController.text = resRai.toString();
+    }
+  }
+
+  void calculateAreaFromSquareYards (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currSqaureYards = double.parse(value);
+      var resSqaureMetres = currSqaureYards * 4;
+      var resRai = currSqaureYards / 400;
+      squareMetersTextController.text = resSqaureMetres.toString();
+      raiTextController.text = resRai.toString();
+    }
+  }
+
+  void calculateAreaFromRai (String value) {
+    if (value.isNotNullOrEmpty()) {
+      print("VALUE IS : " + value);
+      var currRai = double.parse(value);
+      var resSqaureMetres = currRai * 1600;
+      var resSqaureYards = currRai * 400;
+      squareMetersTextController.text = resSqaureMetres.toString();
+      squareYardsTextController.text = resSqaureYards.toString();
+    }
   }
 
   @override
@@ -403,43 +441,89 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     },
                                   ),
                                 ),
-                                Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_bioextract_items,
-                                    icon: const Icon(Icons.arrow_downward),
-                                    elevation: 5,
-                                    style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
-                                    isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
-                                    items: bioextract_items.map((String item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item)
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
                                       ),
-                                    ).toList(),
-                                    onChanged: (item) => setState(() =>  selected_bioextract_items = item),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: selected_bioextract_items,
+                                            icon: const Icon(Icons.expand_more),
+                                            elevation: 5,
+                                            style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
+                                            isExpanded: true,
+                                            items: bioextract_items.map((String item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(item)
+                                              ),
+                                            ).toList(),
+                                            onChanged: (item) => setState(() =>  selected_bioextract_items = item),
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
 
-                                 Center(
-                                  child: DropdownButton<String>(
-                                    value: selected_plantingMethod_items ,
-                                    icon: const Icon(Icons.arrow_downward),
-                                    elevation: 5,
-                                    style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
-                                    isExpanded: true,
-                                    underline: Container(
-                                    height: 3,
-                                    color: Color.fromARGB(255, 51, 149, 158),
-                                    ),
-                                    items:  plantingMethod_items.map((String item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(item)
+                                 Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
                                       ),
-                                    ).toList(),
-                                    onChanged: (item) => setState(() => selected_plantingMethod_items = item),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: selected_plantingMethod_items ,
+                                            icon: const Icon(Icons.expand_more),
+                                            elevation: 5,
+                                            style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
+                                            isExpanded: true,
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            items:  plantingMethod_items.map((String item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(item)
+                                              ),
+                                            ).toList(),
+                                            onChanged: (item) => setState(() => selected_plantingMethod_items = item),
+                                          )
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
 
@@ -513,6 +597,9 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       return "กรุณากรอกจำนวนตารางเมตร";
                                     }
                                   },
+                                  onChanged: (value) {
+                                    calculateAreaFromSquareMetres(value ?? "");
+                                  },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),
 
@@ -528,6 +615,9 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       return "กรุณากรอกจำนวนตารางวา";
                                     }
                                   },
+                                  onChanged: (value) {
+                                    calculateAreaFromSquareYards(value ?? "");
+                                  },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),
 
@@ -542,6 +632,9 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     } else {
                                       return "กรุณากรอกจำนวนไร";
                                     }
+                                  },
+                                  onChanged: (value) {
+                                    calculateAreaFromRai(value ?? "");
                                   },
                                   icon: const Icon(Icons.filter_hdr)
                                 ),

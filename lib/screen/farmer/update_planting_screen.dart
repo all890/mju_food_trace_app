@@ -135,9 +135,9 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
             plantingMethod: planting?.plantingMethod,
             netQuantity: double.parse(netQuantityTextController.text),
             netQuantityUnit: planting?.netQuantityUnit,
-            squareMeters: int.parse(squareMetersTextController.text),
-            squareYards: int.parse(squareYardsTextController.text),
-            rai: int.parse(raiTextController.text),
+            squareMeters: double.parse(squareMetersTextController.text),
+            squareYards: double.parse(squareYardsTextController.text),
+            rai: double.parse(raiTextController.text),
             ptPrevBlockHash: "0",
             ptCurrBlockHash: null,
             farmer: planting?.farmer
