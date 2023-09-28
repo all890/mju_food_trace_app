@@ -65,6 +65,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
   bool? isLoaded;
   FarmerCertificate? farmerCertificate;
 
+  bool? enabledToSelectApproxHarvDate = false;
+
   double? calSquareMetres = 0.00;
   double? calSquareYards = 0.00;
   double? calRai = 0.00;
@@ -80,6 +82,19 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingFarmerCertificate()));
         });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
         Navigator.pop(context);
       }
     );
@@ -315,16 +330,21 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                 CustomTextFormField(
                                   controller: plantNameTextController,
                                   hintText: "ชื่อผลผลิตที่ปลูก",
-                                  maxLength: 50,
+                                  maxLength: 35,
                                   numberOnly: false,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final plantNameRegEx = RegExp(r'^[ก-์a-zA-Z-()]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผลผลิตที่ปลูก";
                                     }
+                                    if (!plantNameRegEx.hasMatch(value)) {
+                                      return "ชื่อผลผลิตที่ปลูกต้องเป็นภาษาไทย ภาษาอังกฤษ และมีอักขระ - () ได้";
+                                    }
+                                    if (value.length < 4) {
+                                      return "กรุณากรอกชื่อผลผลิตให้มีความยาวตั้งแต่ 4 - 35 ตัวอักษร";
+                                    }
                                   },
-                                  icon: const Icon(Icons.account_circle)
+                                  icon: const Icon(Icons.grass)
                                 ),
                                 Row(
                                   children: [
@@ -375,11 +395,12 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                         context: context,
                                         initialDate: currentDate,
                                         firstDate: DateTime(1950),
-                                        lastDate: DateTime(2100)
+                                        lastDate: currentDate
                                       );
                                       setState(() {
                                         plantDate = tempDate;
                                         plantDateTextController.text = dateFormat.format(plantDate!);
+                                        enabledToSelectApproxHarvDate = true;
                                       });
                                       print(plantDate);
                                     },
@@ -399,7 +420,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     ),
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return "กรุณาเลือกวันวันที่ปลูก";
+                                        return "กรุณาเลือกวันที่ปลูก";
                                       }
                                     },
                                   ),
@@ -410,8 +431,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
-                                        firstDate: DateTime(1950),
+                                        initialDate: currentDate.add(Duration(days: 3)),
+                                        firstDate: currentDate.add(Duration(days: 3)),
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
@@ -421,6 +442,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       print(plantDate);
                                     },
                                     readOnly: true,
+                                    enabled: enabledToSelectApproxHarvDate,
                                     controller: approxHarvDateTextController,
                                     decoration: InputDecoration(
                                       labelText: "วันที่คาดว่าจะเก็บเกี่ยว",
@@ -530,13 +552,14 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                 CustomTextFormField(
                                   controller: netQuantityTextController,
                                   hintText: "ปริมาณผลผลิตสุทธิ",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณผลผลิตสุทธิ";
+                                    }
+                                    if (double.parse(value) <= 0.0 || double.parse(value) > 100000.0) {
+                                      return "กรุณากรอกปริมาณผลผลิตสุทธิให้มีค่าตั้งแต่ 1 - 100,000";
                                     }
                                   },
                                   icon: const Icon(Icons.bubble_chart)
@@ -588,13 +611,14 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                 CustomTextFormField(
                                   controller: squareMetersTextController,
                                   hintText: "จำนวนตารางเมตร",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนตารางเมตร";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนตารางเมตรให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {
@@ -609,10 +633,11 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                   maxLength: 50,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนตารางวา";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนตารางวาให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {
@@ -623,14 +648,15 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
 
                                  CustomTextFormField(
                                   controller: raiTextController,
-                                  hintText: "จำนวนไร",
+                                  hintText: "จำนวนไร่",
                                   maxLength: 50,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return "กรุณากรอกจำนวนไร";
+                                    if (value!.isEmpty) {
+                                      return "กรุณากรอกจำนวนไร่";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนไร่ให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {
@@ -657,46 +683,44 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
                                           
-                                          //Farmer data insertion
-                                          /*
-                                          Provider.of<FarmersData>(context, listen: false)
-                                                          .addFarmer(
-                                                            farmerNameTextController.text,
-                                                            farmerLastnameTextController.text,
-                                                            farmerEmailTextController.text,
-                                                            farmerMobileNoTextController.text,
-                                                            farmNameTextController.text,
-                                                            double.parse(farmLatitudeTextController.text),
-                                                            double.parse(farmLongitudeTextController.text),
-                                                            farmerUsernameTextController.text,
-                                                            farmerPasswordTextController.text
-                                                          );
-                                          */
-    
-                                          //Farmer's data insertion using farmer controller
-                                          var username = await SessionManager().get("username");
-
-                                          http.Response response = await plantingController.addPlanting(plantNameTextController.text,
-                                                                    plantDateTextController.text,
-                                                                    fileToDisplay!,
-                                                                    selected_bioextract_items!,
-                                                                    approxHarvDateTextController.text,
-                                                                    selected_plantingMethod_items!,
-                                                                    netQuantityTextController.text,
-                                                                    selected_netQuantityUnit_items!,
-                                                                    squareMetersTextController.text,
-                                                                    squareYardsTextController.text,
-                                                                    raiTextController.text,
-                                                                    username.toString());
-    
-                                          //print("Status code is " + code.toString());
-    
-                                          if (response.statusCode == 500) {
-                                            print("Error!");
-                                            //showUsernameDuplicationAlert();
+                                          if (plantingImgTextController.text == "") {
+                                            showError("กรุณาเลือกรูปภาพการปลูก");
+                                            return;
+                                          } else if (selected_bioextract_items == "ประเภทของน้ำหมัก") {
+                                            showError("กรุณาเลือกประเภทของน้ำหมัก");
+                                            return;
+                                          } else if (selected_plantingMethod_items == "วิธีการปลูก") {
+                                            showError("กรุณาเลือกวิธีการปลูก");
+                                            return;
+                                          } else if (selected_netQuantityUnit_items == "หน่วยของปริมาณผลผลิตสุทธิ") {
+                                            showError("กรุณาเลือกหน่วยของปริมาณผลผลิตสุทธิ");
+                                            return;
                                           } else {
-                                            print("Farmer registration successfully!");
-                                            showSavePlantingSuccessAlert();
+                                            //Farmer's data insertion using farmer controller
+                                            var username = await SessionManager().get("username");
+
+                                            http.Response response = await plantingController.addPlanting(plantNameTextController.text,
+                                                                      plantDateTextController.text,
+                                                                      fileToDisplay!,
+                                                                      selected_bioextract_items!,
+                                                                      approxHarvDateTextController.text,
+                                                                      selected_plantingMethod_items!,
+                                                                      netQuantityTextController.text,
+                                                                      selected_netQuantityUnit_items!,
+                                                                      squareMetersTextController.text,
+                                                                      squareYardsTextController.text,
+                                                                      raiTextController.text,
+                                                                      username.toString());
+      
+                                            //print("Status code is " + code.toString());
+      
+                                            if (response.statusCode == 500) {
+                                              print("Error!");
+                                              //showUsernameDuplicationAlert();
+                                            } else {
+                                              print("Farmer registration successfully!");
+                                              showSavePlantingSuccessAlert();
+                                            }
                                           }
                                         }
                                       },

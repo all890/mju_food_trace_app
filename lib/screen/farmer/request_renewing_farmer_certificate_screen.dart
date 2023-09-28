@@ -207,18 +207,18 @@ class _RequestRenewingFarmerCertificateState
                             CustomTextFormField(
                               controller: fmCertNoTextController,
                               hintText: "หมายเลขใบรับรอง",
-                              maxLength: 50,
+                              maxLength: 8,
                               numberOnly: false,
                               validator: (value) {
+                                final farmerCertNoRegEx = RegExp(r'^[0-9]{6}OC');
                                 if (value!.isEmpty) {
-                                  return "กรุณากรอกหมายเลขใบรับรอง";
+                                  return "กรุณากรอกหมายเลขใบรับรองมาตรฐานเกษตรกร";
                                 }
-                                if (value.length < 8 || value.length > 8) {
-                                  return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 8 ตัวอักษร";
+                                if (value!.contains(" ")) {
+                                  return "หมายเลขใบรับรองมาตรฐานเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
                                 }
-                                final fmCertRegEx = RegExp(r'\d{6}OC');
-                                if (!fmCertRegEx.hasMatch(value)) {
-                                  return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
+                                if (!farmerCertNoRegEx.hasMatch(value)) {
+                                  return "กรุณากรอกหมายเลขใบรับรองมาตรฐานเกษตรกรให้ถูกต้องตามรูปแบบ";
                                 }
                               },
                               icon: const Icon(Icons.account_circle)
@@ -231,7 +231,7 @@ class _RequestRenewingFarmerCertificateState
                                       context: context,
                                       initialDate: currentDate,
                                       firstDate: DateTime(1950),
-                                      lastDate: DateTime(2100));
+                                      lastDate: currentDate);
                                   setState(() {
                                     plantDate = tempDate;
                                     fmCertRegDateTextController.text =
@@ -347,29 +347,12 @@ class _RequestRenewingFarmerCertificateState
                                     ),
                                     onPressed: () async {
 
-                                      if (fmCertImgTextController.text == "") {
-                                        return showFmCertImgIsEmptyError();
-                                      }
-
                                       if (formKey.currentState!.validate()) {
-                                        
-                                        //Farmer data insertion
-                                        /*
-                                        Provider.of<FarmersData>(context, listen: false)
-                                                        .addFarmer(
-                                                          farmerNameTextController.text,
-                                                          farmerLastnameTextController.text,
-                                                          farmerEmailTextController.text,
-                                                          farmerMobileNoTextController.text,
-                                                          farmNameTextController.text,
-                                                          double.parse(farmLatitudeTextController.text),
-                                                          double.parse(farmLongitudeTextController.text),
-                                                          farmerUsernameTextController.text,
-                                                          farmerPasswordTextController.text
-                                                        );
-                                        */
-            
-                                        //Farmer's data insertion using farmer controller
+
+                                        if (fmCertImgTextController.text == "") {
+                                          return showFmCertImgIsEmptyError();
+                                        } else {
+                                          //Farmer's data insertion using farmer controller
                                         var username = await SessionManager().get("username");
           
                                         http.Response response = await farmerController.addfarmerCertificate(fileToDisplay!,
@@ -394,6 +377,7 @@ class _RequestRenewingFarmerCertificateState
                                           }
                                         )
                                       );
+                                        }
                                         }
                                       }
                                     },

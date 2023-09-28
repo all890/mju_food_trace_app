@@ -130,6 +130,34 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
       );
     }
 
+    void showLatLongIsNullAlert() {
+      QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "กรุณาเลือกตำแหน่งละติจูดและลองติจูดของฟาร์ม",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          
+          Navigator.pop(context);
+        }
+      );
+    }
+
+    void showFarmerCertIsNullAlert() {
+      QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "กรุณาเลือกรูปภาพใบรับรองมาตรฐานเกษตรกร",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          
+          Navigator.pop(context);
+        }
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -216,10 +244,18 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                   hintText: "ชื่อเกษตรกร",
                                   maxLength: 50,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerNameRegEx = RegExp(r'^[ก-์a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อเกษตรกร";
+                                    }
+                                    if (!farmerNameRegEx.hasMatch(value!)) {
+                                      return "กรุณากรอกชื่อเกษตรกรเป็นภาษาไทยหรือภาษาอังกฤษ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ชื่อเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 2) {
+                                      return "กรุณากรอกชื่อเกษตรกรให้มีความยาวตั้งแต่ 2 - 50 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle)
@@ -229,10 +265,18 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                   hintText: "นามสกุลเกษตรกร",
                                   maxLength: 50,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerLastnameRegEx = RegExp(r'^[ก-์a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกนามสกุลเกษตรกร";
+                                    } 
+                                    if (!farmerLastnameRegEx.hasMatch(value!)) {
+                                      return "กรุณากรอกนามสกุลเกษตรกรเป็นภาษาไทยหรือภาษาอังกฤษ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "นามสกุลเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 2) {
+                                      return "กรุณากรอกนามสกุลเกษตรกรให้มีความยาวตั้งแต่ 2 - 50 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle)
@@ -240,12 +284,20 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerEmailTextController,
                                   hintText: "อีเมลเกษตรกร",
-                                  maxLength: 50,
+                                  maxLength: 60,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerEmailRegEx = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกอีเมลเกษตรกร";
+                                    }
+                                    if (!farmerEmailRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกอีเมลเกษตรกรให้ถูกต้องตามรูปแบบ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "อีเมลเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 10) {
+                                      return "กรุณากรอกอีเมลเกษตรกรให้มีความยาวตั้งแต่ 10 - 60 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.email)
@@ -253,12 +305,20 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerMobileNoTextController,
                                   hintText: "เบอร์โทรศัพท์มือถือเกษตรกร",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerMobileNoRegEx = RegExp(r'^09|06|08[0-9]{8}');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกเบอร์โทรศัพท์มือถือเกษตรกร";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "เบอร์โทรศัพท์มือถือเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 10) {
+                                      return "กรุณากรอกกรอกเบอร์โทรศัพท์มือถือเกษตรกรให้มีความยาว 10 หลัก";
+                                    }
+                                    if (!farmerMobileNoRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกเบอร์โทรศัพท์มือถือเกษตรกรให้ถูกต้องตามรูปแบบ";
                                     }
                                   },
                                   icon: const Icon(Icons.call)
@@ -284,12 +344,17 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmNameTextController,
                                   hintText: "ชื่อฟาร์ม",
-                                  maxLength: 50,
+                                  maxLength: 60,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmNameRegEx = RegExp(r'^[ก-์a-zA-Z-." "]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อฟาร์ม";
+                                    }
+                                    if (value.length < 6) {
+                                      return "กรุณากรอกชื่อฟาร์มให้มีความยาวตั้งแต่ 6 - 60 ตัวอักษร";
+                                    }
+                                    if (!farmNameRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกชื่อฟาร์มให้เป็นภาษาไทยหรือภาษาอังกฤษ โดยสามารถประกอบไปด้วยช่องว่าง - และ .";
                                     }
                                   },
                                   icon: const Icon(Icons.gite)
@@ -443,12 +508,17 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerCertNoTextController,
                                   hintText: "หมายเลขใบรับรองมาตรฐานเกษตรกร",
-                                  maxLength: 50,
+                                  maxLength: 8,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerCertNoRegEx = RegExp(r'^[0-9]{6}OC');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกหมายเลขใบรับรองมาตรฐานเกษตรกร";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "หมายเลขใบรับรองมาตรฐานเกษตรกรต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!farmerCertNoRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกหมายเลขใบรับรองมาตรฐานเกษตรกรให้ถูกต้องตามรูปแบบ";
                                     }
                                   },
                                   icon: const Icon(Icons.description),
@@ -461,7 +531,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                         context: context,
                                         initialDate: currentDate,
                                         firstDate: DateTime(1950),
-                                        lastDate: DateTime(2100)
+                                        lastDate: currentDate
                                       );
                                       setState(() {
                                         farmerCertRegDate = tempDate;
@@ -551,12 +621,20 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerUsernameTextController,
                                   hintText: "ชื่อผู้ใช้ระบบ",
-                                  maxLength: 50,
+                                  maxLength: 16,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerUsernameRegEx = RegExp(r'^[0-9a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผู้ใช้ระบบ";
+                                    }
+                                    if (!farmerUsernameRegEx.hasMatch(value)) {
+                                      return "ชื่อผู้ใช้ระบบต้องเป็นภาษาอังกฤษหรือตัวเลขเท่านั้น";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ชื่อผู้ใช้ระบบต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 4) {
+                                      return "กรุณากรอกชื่อผู้ใช้ระบบให้มีความยาวตั้งแต่ 4 - 16 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle),
@@ -564,12 +642,22 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerPasswordTextController,
                                   hintText: "รหัสผ่าน",
-                                  maxLength: 50,
+                                  maxLength: 20,
+                                  obscureText: true,
+                                  maxLines: 1,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerPasswordRegEx = RegExp(r'^[a-zA-Z0-9!#@_.]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกรหัสผ่าน";
+                                    }
+                                    if (!farmerPasswordRegEx.hasMatch(value)) {
+                                      return "ต้องเป็นภาษาอังกฤษหรือตัวเลข และสามารถมีอักขระ ! # @ _ . ได้เท่านั้น";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "รหัสผ่านต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 8) {
+                                      return "กรุณากรอกรหัสผ่านให้มีความยาวตั้งแต่ 8 - 20 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.lock),
@@ -577,14 +665,15 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 CustomTextFormField(
                                   controller: farmerConfirmPasswordTextController,
                                   hintText: "ยืนยันรหัสผ่าน",
-                                  maxLength: 50,
+                                  maxLength: 20,
+                                  obscureText: true,
+                                  maxLines: 1,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else if (value != farmerPasswordTextController.text) {
-                                      return "กรุณากรอกยืนยันรหัสผ่านให้ตรงกับรหัสผ่าน";
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณายืนยันรหัสผ่าน";
+                                    }
+                                    if (value != farmerPasswordTextController.text) {
+                                      return "กรุณากรอกยืนยันรหัสผ่านให้ตรงกับรหัสผ่าน";
                                     }
                                   },
                                   icon: const Icon(Icons.lock),
@@ -606,53 +695,46 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                       ),
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
-                                          
-                                          //Farmer data insertion
-                                          /*
-                                          Provider.of<FarmersData>(context, listen: false)
-                                                          .addFarmer(
-                                                            farmerNameTextController.text,
-                                                            farmerLastnameTextController.text,
-                                                            farmerEmailTextController.text,
-                                                            farmerMobileNoTextController.text,
-                                                            farmNameTextController.text,
-                                                            double.parse(farmLatitudeTextController.text),
-                                                            double.parse(farmLongitudeTextController.text),
-                                                            farmerUsernameTextController.text,
-                                                            farmerPasswordTextController.text
-                                                          );
-                                          */
-    
-                                          //Farmer's data insertion using farmer controller
-                                          http.Response response = await farmerController.addFarmer(farmerNameTextController.text,
-                                                                    farmerLastnameTextController.text,
-                                                                    farmerEmailTextController.text,
-                                                                    farmerMobileNoTextController.text,
-                                                                    farmNameTextController.text,
-                                                                    farmLatitudeTextController.text,
-                                                                    farmLongitudeTextController.text,
-                                                                    farmerUsernameTextController.text,
-                                                                    farmerPasswordTextController.text,
-                                                                    fileToDisplay!,
-                                                                    farmerCertNoTextController.text,
-                                                                    farmerCertRegDateTextController.text,
-                                                                    farmerCertExpireDateTextController.text);
-    
-                                          //print("Status code is " + code.toString());
-    
-                                          if (response.statusCode == 409) {
-                                            print("Username is already exists!");
-                                            showUsernameDuplicationAlert();
+                                        
+                                          if (farmLatitudeTextController.text.isEmpty) {
+                                            showLatLongIsNullAlert();
+                                            return;
+                                          } else if (farmerCertImgTextController.text.isEmpty) {
+                                            showFarmerCertIsNullAlert();
+                                            return;
                                           } else {
-                                            print("Farmer registration successfully!");
-                                            Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                builder: (BuildContext context) {
-                                                  return const RegisterSuccessScreen();
-                                                }
-                                              )
-                                            );
+                                            //Farmer's data insertion using farmer controller
+                                            http.Response response = await farmerController.addFarmer(farmerNameTextController.text,
+                                                                      farmerLastnameTextController.text,
+                                                                      farmerEmailTextController.text,
+                                                                      farmerMobileNoTextController.text,
+                                                                      farmNameTextController.text,
+                                                                      farmLatitudeTextController.text,
+                                                                      farmLongitudeTextController.text,
+                                                                      farmerUsernameTextController.text,
+                                                                      farmerPasswordTextController.text,
+                                                                      fileToDisplay!,
+                                                                      farmerCertNoTextController.text,
+                                                                      farmerCertRegDateTextController.text,
+                                                                      farmerCertExpireDateTextController.text);
+      
+                                            //print("Status code is " + code.toString());
+      
+                                            if (response.statusCode == 409) {
+                                              print("Username is already exists!");
+                                              showUsernameDuplicationAlert();
+                                            } else {
+                                              print("Farmer registration successfully!");
+                                              Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (BuildContext context) {
+                                                    return const RegisterSuccessScreen();
+                                                  }
+                                                )
+                                              );
+                                            }
                                           }
+                                          
                                         }
                                       },
                                       child: Row(
