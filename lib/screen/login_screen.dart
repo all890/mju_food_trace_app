@@ -62,6 +62,32 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void showFailToLoginAlertBecauseRejected () {
+    QuickAlert.show(
+      context: context,
+      title: "เข้าสู่ระบบไม่สำเร็จ",
+      text: "ผู้ใช้รายนี้ถูกปฎิเสธการลงทะเบียนจากผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาลงทะเบียนใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showFailToLoginAlertBecauseWaitToAccept () {
+    QuickAlert.show(
+      context: context,
+      title: "เข้าสู่ระบบไม่สำเร็จ",
+      text: "ผู้ใช้รายนี้กำลังอยู่ในระหว่างการตรวจสอบข้อมูลการลงทะเบียนจากผู้ดูแลระบบ กรุณาลองใหม่อีกครั้งในภายหลัง",
+      type: QuickAlertType.warning,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -171,6 +197,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (response.statusCode == 403) {
                                       print("User not found naja eiei");
                                       showUsernameOrPasswordAreWrongAlert();
+                                    } else if (response.statusCode == 400) {
+                                      print("Error naja eiei");
+                                      showFailToLoginAlertBecauseWaitToAccept();
+                                    } else if (response.statusCode == 409) {
+                                      print("Error naja eiei");
+                                      showFailToLoginAlertBecauseRejected();
                                     } else if (response.statusCode == 500) {
                                       print("Error naja eiei");
                                       showErrorAlert();

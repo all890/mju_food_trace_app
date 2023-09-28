@@ -73,7 +73,7 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
               ),
             ],
           ) : 
-          Container(
+          manufacturerCertificates?.isNotEmpty == true? Container(
             padding: EdgeInsets.all(10.0),
             child: ListView.builder(
               itemCount: manufacturerCertificates?.length,
@@ -130,6 +130,25 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                   ),
                 );
               },
+            ),
+          ) :
+          Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    height: 350,
+                    width: 350,
+                    image: AssetImage("images/bean_action4.png"),
+                  ),
+                  Text(
+                    "ไม่มีการร้องขอต่ออายุใบรับรองผู้ผลิต",
+                    style:
+                        TextStyle(fontFamily: "Itim", fontSize: 20),
+                  ),
+                ],
+              ),
             ),
           )
         ),

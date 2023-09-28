@@ -71,12 +71,38 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
         });
   }
 
+  void showErrorToDeleteBecauseMnCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถลบข้อมูลสินค้าได้เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
   void showErrorToRecordBecauseMnCertIsExpire() {
     QuickAlert.show(
         context: context,
         title: "เกิดข้อผิดพลาด",
         text:
-            "ไม่สามารถบันทึกการผลิตได้ เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ",
+            "ไม่สามารถบันทึกการผลิตได้เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
+  void showErrorToRecordBecauseMnCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถบันทึกการผลิตได้เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
         type: QuickAlertType.error,
         confirmBtnText: "ตกลง",
         onConfirmBtnTap: () {
@@ -90,6 +116,19 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
         title: "เกิดข้อผิดพลาด",
         text:
             "ไม่สามารถแก้ไขข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
+  void showErrorToUpdateBecauseMnCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถแก้ไขข้อมูลสินค้าได้เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
         type: QuickAlertType.error,
         confirmBtnText: "ตกลง",
         onConfirmBtnTap: () {
@@ -318,9 +357,13 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                                             DateTime.now()) ==
                                                     true ||
                                                 manufacturerCertificate
-                                                        ?.mnCertStatus !=
-                                                    "อนุมัติ") {
+                                                        ?.mnCertStatus ==
+                                                    "ไม่อนุมัติ") {
                                               showErrorToUpdateBecauseMnCertIsExpire();
+                                            } else if (manufacturerCertificate
+                                                        ?.mnCertStatus ==
+                                                    "รอการอนุมัติ") {
+                                              showErrorToUpdateBecauseMnCertIsWaitToAccept();
                                             } else {
                                               Navigator.pushReplacement(
                                                 context,
@@ -345,9 +388,13 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                                             DateTime.now()) ==
                                                     true ||
                                                 manufacturerCertificate
-                                                        ?.mnCertStatus !=
-                                                    "อนุมัติ") {
+                                                        ?.mnCertStatus ==
+                                                    "ไม่อนุมัติ") {
                                               showErrorToDeleteBecauseMnCertIsExpire();
+                                            } else if (manufacturerCertificate
+                                                        ?.mnCertStatus ==
+                                                    "รอการอนุมัติ") {
+                                              showErrorToDeleteBecauseMnCertIsWaitToAccept();
                                             } else {
                                               showConfirmToDeleteAlert(
                                                   notRecordedManufacturings?[
@@ -366,9 +413,13 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                                             DateTime.now()) ==
                                                     true ||
                                                 manufacturerCertificate
-                                                        ?.mnCertStatus !=
-                                                    "อนุมัติ") {
+                                                        ?.mnCertStatus ==
+                                                    "ไม่อนุมัติ") {
                                               showErrorToRecordBecauseMnCertIsExpire();
+                                            } else if (manufacturerCertificate
+                                                        ?.mnCertStatus ==
+                                                    "รอการอนุมัติ") {
+                                              showErrorToRecordBecauseMnCertIsWaitToAccept();
                                             } else {
                                               Navigator.pushReplacement(
                                                 context,
@@ -417,7 +468,12 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                           fontFamily: 'Itim', fontSize: 20),
                                     ),
                                     Text(
-                                      "${dateFormat.format(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                      "วันที่ทำการผลิต ${dateFormat.format(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim', fontSize: 20),
+                                    ),
+                                    Text(
+                                      "ปริมาณสินค้า ${recordedManufacturings?[index].productQty} ${recordedManufacturings?[index].productUnit}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 20),
                                     ),

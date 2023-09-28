@@ -13,6 +13,8 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
 import '../../model/manufacturer_certificate.dart';
+import '../../service/config_service.dart';
+import 'list_manufacturing.dart';
 import 'navbar_manufacturer.dart';
 
 class ListAllSentAgriculturalProductsScreen extends StatefulWidget {
@@ -58,6 +60,10 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
     rmsExists = json.decode(rmsExistResponse);
     if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true) {
       showMnCertExpireError();
+    } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
+      showMnCertIsWaitAcceptError();
+    } else if (manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
+      showMnCertWasRejectedError();
     }
     splitRmsByType();
     setState(() {
@@ -66,6 +72,38 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
     raw_material_shippings?.forEach((element) {
       print(element.rawMatShpDate);
     });
+  }
+
+  void showMnCertWasRejectedError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองเกษตรกรของท่านถูกปฏิเสธโดยผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showMnCertIsWaitAcceptError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถเพิ่มการปลูกได้ เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListManufacturingScreen()));
+        });
+        Navigator.pop(context);
+      }
+    );
   }
 
   void showMnCertExpireError () {
@@ -225,49 +263,64 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                               borderRadius:
                                   BorderRadius.circular(10)),
                           child: ListTile(
-                            title: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                            title: Row(
                               children: [
-                                 
-                                Text(
-                                  "ผลผลิตที่ส่งมา : " +
-                                      "${notUsedRms?[index].planting?.plantName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: SizedBox(
+                                    child: Image.network(baseURL + '/planting/${notUsedRms?[index].planting?.plantingImg ?? ""}'),
+                                    width: 100,
+                                    height: 100,
+                                  ),
                                 ),
-                              
-                                Text(
-                                  "จาก : " +
-                                      "${notUsedRms?[index].planting?.farmer?.farmerName}"+" "+"${notUsedRms?[index].planting?.farmer?.farmerLastname}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                SizedBox(
+                                  width: 50,
                                 ),
-                                Text(
-                                  "ชื่อฟาร์ม : " +
-                                      "${notUsedRms?[index].planting?.farmer?.farmName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                ),
-                                Text(
-                                  "วันที่ส่ง : " +
-                                      "${dateFormat.format(notUsedRms?[index].rawMatShpDate ?? DateTime.now())}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                ),
-                                 Text(
-                                  "จำนวน : " +
-                                      "${notUsedRms?[index].rawMatShpQty}" +
-                                      " " +
-                                      "${notUsedRms?[index].rawMatShpQtyUnit}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                     
+                                    Text(
+                                      "ผลผลิตที่ส่งมา : " +
+                                          "${notUsedRms?[index].planting?.plantName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                  
+                                    Text(
+                                      "จาก : " +
+                                          "${notUsedRms?[index].planting?.farmer?.farmerName}"+" "+"${notUsedRms?[index].planting?.farmer?.farmerLastname}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "ชื่อฟาร์ม : " +
+                                          "${notUsedRms?[index].planting?.farmer?.farmName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "วันที่ส่ง : " +
+                                          "${dateFormat.format(notUsedRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                     Text(
+                                      "จำนวน : " +
+                                          "${notUsedRms?[index].rawMatShpQty}" +
+                                          " " +
+                                          "${notUsedRms?[index].rawMatShpQtyUnit}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -310,46 +363,61 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                               borderRadius:
                                   BorderRadius.circular(10)),
                           child: ListTile(
-                            title: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                            title: Row(
                               children: [
-                                Text(
-                                  "ผลผลิตที่ส่งมา : " +
-                                      "${usedRms?[index].planting?.plantName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: SizedBox(
+                                    child: Image.network(baseURL + '/planting/${usedRms?[index].planting?.plantingImg ?? ""}'),
+                                    width: 100,
+                                    height: 100,
+                                  ),
                                 ),
-                                Text(
-                                  "จาก : " +
-                                      "${usedRms?[index].planting?.farmer?.farmerName}"+" "+"${usedRms?[index].planting?.farmer?.farmerLastname}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                SizedBox(
+                                  width: 50,
                                 ),
-                                Text(
-                                  "ชื่อฟาร์ม : " +
-                                      "${usedRms?[index].planting?.farmer?.farmName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "ผลผลิตที่ส่งมา : " +
+                                          "${usedRms?[index].planting?.plantName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "จาก : " +
+                                          "${usedRms?[index].planting?.farmer?.farmerName}"+" "+"${usedRms?[index].planting?.farmer?.farmerLastname}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "ชื่อฟาร์ม : " +
+                                          "${usedRms?[index].planting?.farmer?.farmName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "วันที่ส่ง : " +
+                                          "${dateFormat.format(usedRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                    
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "คงเหลือ : ${usedRms?[index].rawMatShpQtyUnit == "กิโลกรัม"? remQtyOfRms[usedRms?[index].rawMatShpId] / 1000.0 : remQtyOfRms[usedRms?[index].rawMatShpId]} " + "${usedRms?[index].rawMatShpQtyUnit}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "วันที่ส่ง : " +
-                                      "${dateFormat.format(usedRms?[index].rawMatShpDate ?? DateTime.now())}",
-                                
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                ),
-                                Text(
-                                  "ปริมาณผลผลิตคงเหลือ : ${usedRms?[index].rawMatShpQtyUnit == "กิโลกรัม"? remQtyOfRms[usedRms?[index].rawMatShpId] / 1000.0 : remQtyOfRms[usedRms?[index].rawMatShpId]} " + "${usedRms?[index].rawMatShpQtyUnit}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                )
                               ],
                             ),
                             onTap: () async {
@@ -392,45 +460,60 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                               borderRadius:
                                   BorderRadius.circular(10)),
                           child: ListTile(
-                            title: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                            title: Row(
                               children: [
-                                Text(
-                                  "ผลผลิตที่ส่งมา : " +
-                                      "${emptyRms?[index].planting?.plantName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: SizedBox(
+                                    child: Image.network(baseURL + '/planting/${emptyRms?[index].planting?.plantingImg ?? ""}'),
+                                    width: 100,
+                                    height: 100,
+                                  ),
                                 ),
-                                Text(
-                                  "จาก : " +
-                                      "${emptyRms?[index].planting?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmer?.farmerLastname}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                SizedBox(
+                                  width: 50,
                                 ),
-                                Text(
-                                  "ชื่อฟาร์ม : " +
-                                      "${emptyRms?[index].planting?.farmer?.farmName}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "ผลผลิตที่ส่งมา : " +
+                                          "${emptyRms?[index].planting?.plantName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "จาก : " +
+                                          "${emptyRms?[index].planting?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmer?.farmerLastname}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "ชื่อฟาร์ม : " +
+                                          "${emptyRms?[index].planting?.farmer?.farmName}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "วันที่ส่ง : " +
+                                          "${dateFormat.format(emptyRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      "ผลผลิตที่ใช้ : "+"${emptyRms?[index].rawMatShpQty}"+" ${emptyRms?[index].rawMatShpQtyUnit}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim',
+                                          fontSize: 20),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "วันที่ส่ง : " +
-                                      "${dateFormat.format(emptyRms?[index].rawMatShpDate ?? DateTime.now())}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                ),
-                                Text(
-                                  "ปริมาณผลผลิตที่ใช้ : "+"${emptyRms?[index].rawMatShpQty}"+"${emptyRms?[index].rawMatShpQtyUnit}",
-                                  style: const TextStyle(
-                                      fontFamily: 'Itim',
-                                      fontSize: 20),
-                                )
                               ],
                             ),
                           ),

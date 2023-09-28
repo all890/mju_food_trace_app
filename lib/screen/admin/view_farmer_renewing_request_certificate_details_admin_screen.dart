@@ -59,7 +59,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
       context: context,
       showCancelBtn: true,
       title: "คุณแน่ใจหรือไม่?",
-      text: "ว่าต้องการที่จะอนุมัติปฎิเสธการขออนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของเกษตรกร",
+      text: "ว่าต้องการที่จะอนุมัติการลงทะเบียนใบรับรองฉบับใหม่ของเกษตรกร",
       type: QuickAlertType.confirm,
       confirmBtnText: "ตกลง",
       cancelBtnText: "ยกเลิก",
@@ -184,7 +184,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                                 width: 5.0,
                               ),
                               Text(
-                                "กลับไปหน้ารายการร้องขอใบรับรองของเกษตรกร",
+                                "กลับไปหน้ารายการร้องขอ",
                                 style: TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20

@@ -74,7 +74,7 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
               ),
             ],
           ) : 
-          Container(
+          farmerCertificates?.isNotEmpty == true? Container(
             padding: EdgeInsets.all(10.0),
             child: ListView.builder(
               itemCount: farmerCertificates?.length,
@@ -131,6 +131,25 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                   ),
                 );
               },
+            ),
+          ) :
+          Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    height: 350,
+                    width: 350,
+                    image: AssetImage("images/rice_action6.png"),
+                  ),
+                  Text(
+                    "ไม่มีการร้องขอต่ออายุใบรับรองเกษตรกร",
+                    style:
+                        TextStyle(fontFamily: "Itim", fontSize: 20),
+                  ),
+                ],
+              ),
             ),
           )
         ),

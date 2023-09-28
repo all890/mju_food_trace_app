@@ -55,6 +55,19 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
         });
   }
 
+  void showErrorToUpdateBecauseFmCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถอัพเดตข้อมูลการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
   void showErrorToSendBecauseFmCertIsExpire() {
     QuickAlert.show(
         context: context,
@@ -68,12 +81,38 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
         });
   }
 
+  void showErrorToSendBecauseFmCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถส่งผลผลิตของการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
   void showErrorToDeleteBecauseFmCertIsExpire() {
     QuickAlert.show(
         context: context,
         title: "เกิดข้อผิดพลาด",
         text:
             "ไม่สามารถลบข้อมูลการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        });
+  }
+
+  void showErrorToDeleteBecauseFmCertIsWaitToAccept() {
+    QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text:
+            "ไม่สามารถลบข้อมูลการปลูกได้เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
         type: QuickAlertType.error,
         confirmBtnText: "ตกลง",
         onConfirmBtnTap: () {
@@ -341,9 +380,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToDeleteBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToDeleteBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     print("print this");
                                                     showConfirmToDeleteAlert(
@@ -364,9 +405,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToUpdateBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToUpdateBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     Navigator.pushReplacement(
                                                       context,
@@ -473,9 +516,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToDeleteBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToDeleteBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     showConfirmToDeleteAlert(
                                                         didNotSentPlantings?[
@@ -496,9 +541,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToUpdateBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToUpdateBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     Navigator.pushReplacement(
                                                       context,
@@ -524,9 +571,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToSendBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToSendBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     Navigator.pushReplacement(
                                                       context,
@@ -630,9 +679,11 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                                       .now()) ==
                                                           true ||
                                                       farmerCertificate
-                                                              ?.fmCertStatus !=
-                                                          "อนุมัติ") {
+                                                              ?.fmCertStatus ==
+                                                          "ไม่อนุมัติ") {
                                                     showErrorToSendBecauseFmCertIsExpire();
+                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                    showErrorToSendBecauseFmCertIsWaitToAccept();
                                                   } else {
                                                     print("Send Pressed!");
                                                     Navigator.pushReplacement(

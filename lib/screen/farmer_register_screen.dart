@@ -466,6 +466,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                       setState(() {
                                         farmerCertRegDate = tempDate;
                                         farmerCertRegDateTextController.text = dateFormat.format(farmerCertRegDate!);
+                                        farmerCertExpireDateTextController.text = dateFormat.format(farmerCertRegDate!.add(Duration(days: 365)));
                                       });
                                       print(farmerCertRegDate);
                                     },
@@ -508,6 +509,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                       print(farmerCertExpireDate);
                                     },
                                     readOnly: true,
+                                    enabled: false,
                                     controller: farmerCertExpireDateTextController,
                                     decoration: InputDecoration(
                                       labelText: "วันที่หมดอายุใบรับรองมาตรฐานเกษตรกร",

@@ -141,11 +141,39 @@ class _ListProductScreenState extends State<ListProductScreen> {
     );
   }
 
+  void showErrorToUpdateBecauseMnCertIsWaitToAccept () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถแก้ไขข้อมูลสินค้าได้เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showErrorToDeleteBecauseMnCertIsExpire () {
     QuickAlert.show(
       context: context,
       title: "เกิดข้อผิดพลาด",
       text: "ไม่สามารถลบข้อมูลสินค้าได้เนื่องจากใบรับรองการผลิตของท่านหมดอายุ",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showErrorToDeleteBecauseMnCertIsWaitToAccept () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ไม่สามารถลบข้อมูลสินค้าได้เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -282,14 +310,14 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 ),
                               ),
                               Text(
-                                "ปริมาตรสุทธิ : "+"${notManufacturedProducts?[index].netVolume}",
+                                "ปริมาตรสุทธิ : "+"${notManufacturedProducts?[index].netVolume} กรัม",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20
                                 ),
                               ),
                               Text(
-                                "พลังงานที่ได้รับสุทธิ : "+"${notManufacturedProducts?[index].netEnergy}",
+                                "พลังงานสุทธิ : "+"${notManufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20
@@ -306,8 +334,10 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Edit Pressed!");
-                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
                                       showErrorToUpdateBecauseMnCertIsExpire();
+                                    } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
+                                      showErrorToUpdateBecauseMnCertIsWaitToAccept();
                                     } else {
                                       Navigator.pushReplacement(
                                         context,
@@ -320,8 +350,10 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Delete Pressed!");
-                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus != "อนุมัติ") {
+                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
                                       showErrorToDeleteBecauseMnCertIsExpire();
+                                    } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
+                                      showErrorToDeleteBecauseMnCertIsWaitToAccept();
                                     } else {
                                       showConfirmToDeleteAlert(notManufacturedProducts?[index].productId ?? "");
                                     }
@@ -366,14 +398,14 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 ),
                               ),
                                 Text(
-                                "ปริมาตรสุทธิ : "+"${manufacturedProducts?[index].netVolume}",
+                                "ปริมาตรสุทธิ : "+"${manufacturedProducts?[index].netVolume} กรัม",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20
                                 ),
                               ),
                               Text(
-                                "พลังงานที่ได้รับสุทธิ : "+"${manufacturedProducts?[index].netEnergy}",
+                                "พลังงานสุทธิ : "+"${manufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 20

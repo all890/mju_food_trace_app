@@ -455,6 +455,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                       setState(() {
                                         manuftCertRegDate = tempDate;
                                         manuftCertRegDateTextController.text = dateFormat.format(manuftCertRegDate!);
+                                        manuftCertExpireDateTextController.text = dateFormat.format(manuftCertRegDate!.add(Duration(days: 365*3)));
                                       });
                                       print(manuftCertRegDate);
                                     },
@@ -497,6 +498,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                       print(manuftCertExpireDate);
                                     },
                                     readOnly: true,
+                                    enabled: false,
                                     controller: manuftCertExpireDateTextController,
                                     decoration: InputDecoration(
                                       labelText: "วันที่หมดอายุใบรับรองมาตรฐานผู้ผลิต",

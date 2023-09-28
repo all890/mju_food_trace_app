@@ -72,7 +72,7 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
               ),
             ],
           ) : 
-          Container(
+          manufacturers?.isNotEmpty == true? Container(
             padding: EdgeInsets.all(10.0),
             child: ListView.builder(
               itemCount: manufacturers?.length,
@@ -127,6 +127,25 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                   ),
                 );
               },
+            ),
+          ) :
+          Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    height: 350,
+                    width: 350,
+                    image: AssetImage("images/bean_action5.png"),
+                  ),
+                  Text(
+                    "ไม่มีการลงทะเบียนของผู้ผลิต",
+                    style:
+                        TextStyle(fontFamily: "Itim", fontSize: 20),
+                  ),
+                ],
+              ),
             ),
           )
         ),

@@ -261,7 +261,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 ),
                                 CustomTextFormField(
                                   controller: netVolumeTextController,
-                                  hintText: "ปริมาตรสุทธิ",
+                                  hintText: "ปริมาตรสุทธิ (กรัม)",
                                   maxLength: 50,
                                   numberOnly: true,
                                   validator: (value) {
@@ -275,7 +275,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 ),
                                 CustomTextFormField(
                                   controller: netEnergyTextController,
-                                  hintText: "พลังงานที่ได้รับสุทธิ (kcal)",
+                                  hintText: "พลังงานที่ได้รับสุทธิ (กิโลแคลอรี่)",
                                   maxLength: 50,
                                   numberOnly: true,
                                   validator: (value) {
@@ -289,7 +289,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 ),
                                 CustomTextFormField(
                                   controller: saturatedFatTextController,
-                                  hintText: "ปริมาณไขมันอิ่มตัว (kcal)",
+                                  hintText: "ปริมาณไขมันอิ่มตัว (%)",
                                   maxLength: 50,
                                   numberOnly: true,
                                   validator: (value) {
