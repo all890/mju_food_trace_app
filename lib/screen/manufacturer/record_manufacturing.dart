@@ -256,7 +256,7 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า : " +
+                        "จำนวนของผลผลิตที่ใช้ : " +
                             "${manufacturings?.usedRawMatQty}" +
                             " " +
                             "${manufacturings?.usedRawMatQtyUnit}",
@@ -264,13 +264,8 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 200,
-                    height: 200,
-                    child: Image(
-                      image: AssetImage('images/assembly-line.gif'),
-                    ),
-                  ),
+                  Padding(padding: EdgeInsets.only(top: 20),
+                  child: Align(alignment: Alignment.center,child: Icon(Icons.keyboard_double_arrow_down),),),
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Align(

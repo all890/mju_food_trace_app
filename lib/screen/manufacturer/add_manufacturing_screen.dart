@@ -568,7 +568,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: DropdownButtonFormField<String>(
                                            value: selected_usedRawMatQtyUnit_items,
-                                    icon: const Icon(Icons.arrow_downward),
+                                    icon: const Icon(Icons.expand_more),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,

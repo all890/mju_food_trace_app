@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
 import 'package:mju_food_trace_app/model/farmer_certificate.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
@@ -58,6 +59,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   double? midY;
 
   String? strokeStatus = "";
+   var dateFormat = DateFormat('dd-MM-yyyy');
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -70,7 +72,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า")),
+        title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
         content: Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -79,25 +81,29 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "${widget.qrCode?.manufacturing?.product?.productName}"
+                    "${widget.qrCode?.manufacturing?.product?.productName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ปริมาตรสุทธิ : ${widget.qrCode?.manufacturing?.product?.netVolume} กรัม"
+                    "ปริมาตรสุทธิ : ${widget.qrCode?.manufacturing?.product?.netVolume} กรัม",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "คุณค่าทางโภชนาการต่อหนึ่งหน่วยบริโภค"
+                    "คุณค่าทางโภชนาการต่อหนึ่งหน่วยบริโภค",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "พลังงานที่จะได้รับสุทธิ : ${widget.qrCode?.manufacturing?.product?.netEnergy} kcal"
+                    "พลังงานที่จะได้รับสุทธิ : ${widget.qrCode?.manufacturing?.product?.netEnergy} kcal",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Divider(
@@ -107,61 +113,71 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ไขมันทั้งหมด ${widget.qrCode?.manufacturing?.product?.saturatedFat} g : ไขมันอิ่มตัว ${widget.qrCode?.manufacturing?.product?.saturatedFat} g"
+                    "ไขมันทั้งหมด ${widget.qrCode?.manufacturing?.product?.saturatedFat} g : ไขมันอิ่มตัว ${widget.qrCode?.manufacturing?.product?.saturatedFat} g",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "โปรตีน ${widget.qrCode?.manufacturing?.product?.protein} g"
+                    "โปรตีน ${widget.qrCode?.manufacturing?.product?.protein} g",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "โซเดียม ${widget.qrCode?.manufacturing?.product?.sodium} mg"
+                    "โซเดียม ${widget.qrCode?.manufacturing?.product?.sodium} mg",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "คอเลสเตอรอล ${widget.qrCode?.manufacturing?.product?.cholesterol} mg"
+                    "คอเลสเตอรอล ${widget.qrCode?.manufacturing?.product?.cholesterol} mg",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "คาร์โบไฮเดรตทั้งหมด ${totalCarb} mg"
+                    "คาร์โบไฮเดรตทั้งหมด ${totalCarb} มิลลิกรัม",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ใยอาหาร ${widget.qrCode?.manufacturing?.product?.fiber} g  น้ำตาล ${widget.qrCode?.manufacturing?.product?.sugar} g"
+                    "ใยอาหาร ${widget.qrCode?.manufacturing?.product?.fiber} g  น้ำตาล ${widget.qrCode?.manufacturing?.product?.sugar} g",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "แร่ธาตุและวิตามิน"
+                    "แร่ธาตุและวิตามิน",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "แคลเซียม ${widget.qrCode?.manufacturing?.product?.calcium} %  เหล็ก ${widget.qrCode?.manufacturing?.product?.iron} %"
+                    "แคลเซียม ${widget.qrCode?.manufacturing?.product?.calcium} %  เหล็ก ${widget.qrCode?.manufacturing?.product?.iron} %",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วิตามินบี2 ${widget.qrCode?.manufacturing?.product?.vitB2} %  วิตามินเอ ${widget.qrCode?.manufacturing?.product?.vitA} %"
+                    "วิตามินบี2 ${widget.qrCode?.manufacturing?.product?.vitB2} %  วิตามินเอ ${widget.qrCode?.manufacturing?.product?.vitA} %",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วิตามินบี1 ${widget.qrCode?.manufacturing?.product?.vitB1} %"
+                    "วิตามินบี1 ${widget.qrCode?.manufacturing?.product?.vitB1} %",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ],
@@ -234,7 +250,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
             ],
           ),
         ],
-        title: Center(child: Text("ผู้ผลิต")),
+        title: Center(child: Text("ผู้ผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
         content: mnPage == 0? Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -243,80 +260,96 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ข้อมูลผู้ผลิต"
+                    "ข้อมูลผู้ผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftName}"
+                    "ชื่อผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อผู้ดูแล : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupName} ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupLastname}"
+                    "ชื่อผู้ดูแล : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupName} ${widget.qrCode?.manufacturing?.product?.manufacturer?.factorySupLastname}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "เบอร์โทรศัพท์ : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factoryTelNo}"
+                    "เบอร์โทรศัพท์ : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factoryTelNo}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "อีเมลผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftEmail}"
+                    "อีเมลผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.manuftEmail}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ตำแหน่ง : ${widget.manufacturerCertificate?.manufacturer?.factoryLatitude}, ${widget.manufacturerCertificate?.manufacturer?.factoryLongitude}"
+                    "ตำแหน่ง : ${widget.manufacturerCertificate?.manufacturer?.factoryLatitude}, ${widget.manufacturerCertificate?.manufacturer?.factoryLongitude}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Divider(
+                  thickness: 2,
+                  color: Colors.black,
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ใบรับรอง GMP"
+                    "ใบรับรอง GMP",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รหัสใบรับรอง : ${widget.manufacturerCertificate?.mnCertNo}"
+                    "รหัสใบรับรอง : ${widget.manufacturerCertificate?.mnCertNo}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  height: 430,
+                  
                   child: Image.network(baseURL + '/manuftcertificate/' + imgMnCertFileName!),
                 ),
                 const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ทำการอัปโหลด : ${widget.manufacturerCertificate?.mnCertUploadDate}"
+                    "วันที่ทำการอัปโหลด : ${dateFormat.format(widget.manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ออกใบรับรอง : ${widget.manufacturerCertificate?.mnCertRegDate}"
+                    "วันที่ออกใบรับรอง : ${dateFormat.format(widget.manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ใบรับรองหมดอายุ : ${widget.manufacturerCertificate?.mnCertExpireDate}"
+                    "วันที่ใบรับรองหมดอายุ :  ${dateFormat.format(widget.manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "สถานะการอนุมัติ : ${widget.manufacturerCertificate?.mnCertStatus}"
+                    "สถานะการอนุมัติ : ${widget.manufacturerCertificate?.mnCertStatus}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ],
@@ -330,31 +363,36 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รายละเอียดการผลิต"
+                    "รายละเอียดการผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ผลิตสินค้า : ${widget.qrCode?.manufacturing?.manufactureDate}"
+                    "วันที่ผลิตสินค้า :   ${dateFormat.format(widget.qrCode?.manufacturing?.manufactureDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่หมดอายุของสินค้า : ${widget.qrCode?.manufacturing?.expireDate}"
+                    "วันที่หมดอายุของสินค้า :   ${dateFormat.format(widget.qrCode?.manufacturing?.expireDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "จำนวนสินค้าที่ผลิตได้ : ${widget.qrCode?.manufacturing?.productQty} ${widget.qrCode?.manufacturing?.productUnit}"
+                    "จำนวนสินค้าที่ผลิตได้ : ${widget.qrCode?.manufacturing?.productQty} ${widget.qrCode?.manufacturing?.productUnit}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า : ${widget.qrCode?.manufacturing?.usedRawMatQty} ${widget.qrCode?.manufacturing?.usedRawMatQtyUnit}"
+                    "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า : ${widget.qrCode?.manufacturing?.usedRawMatQty} ${widget.qrCode?.manufacturing?.usedRawMatQtyUnit}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ]
@@ -427,7 +465,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
             ],
           ),
         ],
-        title: Center(child: Text("เกษตรกร")),
+        title: Center(child: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim'),)),
         content: page == 0? Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -436,80 +474,99 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ข้อมูลเกษตรกร"
+                    "ข้อมูลเกษตรกร",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อฟาร์ม : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmName}"
+                    "ชื่อฟาร์ม : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อเกษตรกร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerName}"
+                    "ชื่อเกษตรกร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "เบอร์โทร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerMobileNo}"
+                    "เบอร์โทร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerMobileNo}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "อีเมล : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerEmail}"
+                    "อีเมล : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerEmail}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ตำแหน่ง : ${widget.farmerCertificate?.farmer?.farmLatitude}, ${widget.farmerCertificate?.farmer?.farmLongitude}"
+                    "ตำแหน่ง : ${widget.farmerCertificate?.farmer?.farmLatitude}, ${widget.farmerCertificate?.farmer?.farmLongitude}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                Divider(
+                  thickness: 2,
+                  color: Colors.black,
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ใบรับรอง IFOAM"
+                    "ใบรับรอง IFOAM",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รหัสใบรับรอง : ${widget.farmerCertificate?.fmCertNo}"
+                    "รหัสใบรับรอง : ${widget.farmerCertificate?.fmCertNo}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  height: 430,
+                  
                   child: Image.network(baseURL + '/farmercertificate/' + imgFmCertFileName!),
                 ),
                 const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ทำการอัปโหลด : ${widget.farmerCertificate?.fmCertUploadDate}"
+                    "วันที่ทำการอัปโหลด : ${dateFormat.format(widget.farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ออกใบรับรอง : ${widget.farmerCertificate?.fmCertRegDate}"
+                    "วันที่ออกใบรับรอง : ${dateFormat.format(widget.farmerCertificate?.fmCertRegDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ใบรับรองหมดอายุ : ${widget.farmerCertificate?.fmCertExpireDate}"
+                    "วันที่ใบรับรองหมดอายุ : ${dateFormat.format(widget.farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "สถานะการอนุมัติ : ${widget.farmerCertificate?.fmCertStatus}"
+                    "สถานะการอนุมัติ : ${widget.farmerCertificate?.fmCertStatus}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ],
@@ -524,7 +581,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รายละเอียดการปลูก"
+                    "รายละเอียดการปลูก",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -536,55 +594,66 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อของผลผลิตที่ปลูก : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantName}"
+                    "ชื่อของผลผลิตที่ปลูก : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ปลูกผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantDate}"
+                    "วันที่ปลูกผลผลิต : ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+                
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ประเภทของน้ำหมัก : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.bioextract}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ประเภทของน้ำหมัก : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.bioextract}"
+                    "วิธีการปลูกผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantingMethod}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วิธีการปลูกผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantingMethod}"
+                    "วันที่คาดว่าจะเก็บเกี่ยวผลผลิต :  ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.approxHarvDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+               
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ปริมาณผลผลิตสุทธิ : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.netQuantity} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.netQuantityUnit}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่คาดว่าจะเก็บเกี่ยวผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.approxHarvDate}"
+                    "จำนวนตารางเมตร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.squareMeters} ตารางเมตร",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ปริมาณผลผลิตสุทธิ : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.netQuantity} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.netQuantityUnit}"
+                    "จำนวนตารางวา : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.squareYards} ตารางวา",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "จำนวนตารางเมตร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.squareMeters} ตารางเมตร"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "จำนวนตารางวา : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.squareYards} ตารางวา"
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "จำนวนไร่ : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.rai} ไร่"
+                    "จำนวนไร่ : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.rai} ไร่",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ]
@@ -611,9 +680,10 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ส่งผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate}"
+                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}"
                   ),
                 ),
+              
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(

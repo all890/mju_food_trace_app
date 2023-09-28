@@ -326,6 +326,11 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
+                                      "รหัสการผลิต "+"${notRecordedManufacturings?[index].manufacturingId}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim', fontSize: 20),
+                                    ),
+                                    Text(
                                       "${notRecordedManufacturings?[index].product?.productName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 20),
@@ -463,6 +468,11 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
+                                        "รหัสการผลิต "+"${recordedManufacturings?[index].manufacturingId}",
+                                      style: const TextStyle(
+                                          fontFamily: 'Itim', fontSize: 20),
+                                    ),
+                                    Text(
                                       "${recordedManufacturings?[index].product?.productName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 20),
@@ -477,6 +487,8 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 20),
                                     ),
+                                 
+                                    
                                   ],
                                 ),
                               ),
