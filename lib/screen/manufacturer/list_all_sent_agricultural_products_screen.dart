@@ -43,7 +43,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
   List<RawMaterialShipping>? usedRms = [];
   List<RawMaterialShipping>? emptyRms = [];
 
-  var dateFormat = DateFormat('dd-MM-yyyy');
+  var dateFormat = DateFormat('dd-MMM-yyyy');
 
   void fetchData() async {
     var username = await SessionManager().get("username");
@@ -295,21 +295,21 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                           "${notUsedRms?[index].planting?.farmer?.farmerName}"+" "+"${notUsedRms?[index].planting?.farmer?.farmerLastname}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
-                                          fontSize: 20),
+                                          fontSize: 18),
                                     ),
                                     Text(
                                       "ชื่อฟาร์ม : " +
                                           "${notUsedRms?[index].planting?.farmer?.farmName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
-                                          fontSize: 20),
+                                          fontSize: 18),
                                     ),
                                     Text(
                                       "วันที่ส่ง : " +
                                           "${dateFormat.format(notUsedRms?[index].rawMatShpDate ?? DateTime.now())}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
-                                          fontSize: 20),
+                                          fontSize: 18),
                                     ),
                                      Text(
                                       "จำนวน : " +
@@ -318,7 +318,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                           "${notUsedRms?[index].rawMatShpQtyUnit}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
-                                          fontSize: 20),
+                                          fontSize: 18),
                                     ),
                                   ],
                                 ),

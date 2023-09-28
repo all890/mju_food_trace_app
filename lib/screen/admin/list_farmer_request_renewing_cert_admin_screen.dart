@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/model/farmer_certificate.dart';
 import 'package:mju_food_trace_app/screen/admin/view_farmer_renewing_request_certificate_details_admin_screen.dart';
 
@@ -23,7 +24,8 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
   bool? isLoaded;
 
   List<FarmerCertificate>? farmerCertificates;
-
+  var dateFormat = DateFormat('dd-MMM-yyyy');
+  
   void fetchData () async {
     setState(() {
       isLoaded = false;
@@ -111,7 +113,7 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                           ),
                         ),
                         Text(
-                          "${farmerCertificates?[index].fmCertUploadDate}",
+                          "${dateFormat.format(farmerCertificates?[index].fmCertUploadDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18

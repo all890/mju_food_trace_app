@@ -40,7 +40,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
   List<Planting>? sendPlantings = [];
   List<Planting>? emptyQtyPlantings = [];
 
-  var dateFormat = DateFormat('dd-MM-yyyy');
+  var dateFormat = DateFormat('dd-MMM-yyyy');
 
   void showErrorToUpdateBecauseFmCertIsExpire() {
     QuickAlert.show(
@@ -259,7 +259,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                 ),
                 Tab(
                   child: Text(
-                    "ส่งแล้ว",
+                    "คงเหลือ",
                     style: TextStyle(
                       fontFamily: 'Itim',
                       color: kClipPathColorTextFM,
@@ -766,11 +766,17 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                               fontFamily: 'Itim',
                                               fontSize: 18)),
                                       Text(
-                                          "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                          "วันที่เก็บเกี่ยว : " +
                                               dateFormat.format(
                                                   emptyQtyPlantings?[index]
                                                           .approxHarvDate ??
                                                       DateTime.now()),
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18)),
+                                               Text(
+                                          "ปริมาณผลผลิต : " +
+                                              "${emptyQtyPlantings?[index].netQuantity}"+" ${emptyQtyPlantings?[index].netQuantityUnit}",
                                           style: const TextStyle(
                                               fontFamily: 'Itim',
                                               fontSize: 18)),

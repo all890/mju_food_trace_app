@@ -428,6 +428,17 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                     ),
                                   ],
                                 ),
+                                  const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "สามารถเลือกไฟล์ที่มีนามสกุล png,jpg,pdf",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Itim'
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
                                 //Text(fileName != null? fileName.toString() : ""),
                                 CustomTextFormField(
                                   controller: manuftCertNoTextController,

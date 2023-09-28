@@ -37,7 +37,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
   List<Manufacturing>? recordedManufacturings = [];
   List<Manufacturing>? notRecordedManufacturings = [];
 
-  var dateFormat = DateFormat('dd-MM-yyyy');
+  var dateFormat = DateFormat('dd-MMM-yyyy');
 
   void fetchData() async {
     var username = await SessionManager().get("username");

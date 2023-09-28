@@ -202,6 +202,19 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                   color: Color.fromARGB(255, 33, 82, 35)),
                             ),
                           ),
+                          const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "ข้อมูลใบรับรอง GMP ฉบับใหม่",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Itim'
+                                  ),
+                                ),
+                              ),
+                            ),
                           CustomTextFormField(
                             controller: mnCertNoTextController,
                             hintText: "หมายเลขใบรับรอง",
@@ -211,13 +224,13 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                               if (value!.isEmpty) {
                                 return "กรุณากรอกหมายเลขใบรับรอง";
                               }
-                              if (value.length < 27 || value.length > 27) {
-                                return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 27 ตัวอักษร";
-                              }
-                              final mnCertRegEx = RegExp(r'กษ \d{2}-\d{4}-\d{4}-\d{11}');
-                              if (!mnCertRegEx.hasMatch(value)) {
-                                return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
-                              }
+                              // if (value.length < 27 || value.length > 27) {
+                              //   return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 27 ตัวอักษร";
+                              // }
+                              // final mnCertRegEx = RegExp(r'กษ \d{2}-\d{4}-\d{4}-\d{11}');
+                              // if (!mnCertRegEx.hasMatch(value)) {
+                              //   return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
+                              // }
                             },
                             icon: const Icon(Icons.account_circle)
                           ),
@@ -327,7 +340,17 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                   )),
                             ],
                           ),
-                    
+                    const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "สามารถเลือกไฟล์ที่มีนามสกุล png,jpg,pdf",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Itim'
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
@@ -341,7 +364,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                       RoundedRectangleBorder(
                                         borderRadius:
                                         BorderRadius.circular(50.0))),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                  backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorMN)
                                 ),
                                 onPressed: () async {
                                   if (mnCertImgTextController.text == "") {
@@ -390,7 +413,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
-                                    Text("ยื่นใบรับรอง",
+                                    Text("ยื่นคำร้องขอ",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontFamily: 'Itim'

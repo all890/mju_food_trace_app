@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/screen/admin/view_farmer_regist_details_admin_screen.dart';
 
 import '../../constant/constant.dart';
@@ -21,6 +22,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
   bool? isLoaded;
 
   List<Farmer>? farmers;
+  var dateFormat = DateFormat('dd-MMM-yyyy');
 
   void fetchData () async {
     setState(() {
@@ -109,7 +111,8 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                           ),
                         ),
                         Text(
-                          "${farmers?[index].farmerRegDate}",
+                          "${dateFormat.format(farmers?[index].farmerRegDate ?? DateTime.now())}",
+                       
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18

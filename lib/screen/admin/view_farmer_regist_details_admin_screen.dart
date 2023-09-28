@@ -471,7 +471,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "ข้อมูลชื่อผู้ใช้และรหัสผ่าน",
+                      "ข้อมูลชื่อผู้ใช้",
                       style: TextStyle(
                         fontSize: 22,
                         fontFamily: 'Itim'

@@ -59,7 +59,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   double? midY;
 
   String? strokeStatus = "";
-   var dateFormat = DateFormat('dd-MM-yyyy');
+   var dateFormat = DateFormat('dd-MMM-yyyy');
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -281,7 +281,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "เบอร์โทรศัพท์ : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factoryTelNo}",
+                    "เบอร์โทรผู้ผลิต : ${widget.qrCode?.manufacturing?.product?.manufacturer?.factoryTelNo}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -668,32 +668,37 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "การส่งผลผลิต"
+                    "การส่งผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รหัสการส่งผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpId}"
+                    "รหัสการส่งผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpId}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}"
+                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "จำนวนผลผลิตที่ส่ง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQty} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQtyUnit}"
+                    "จำนวนผลผลิตที่ส่ง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQty} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQtyUnit}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ผู้รับผลผลิตปลายทาง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.manufacturer?.manuftName}"
+                    "ผู้รับผลผลิตปลายทาง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.manufacturer?.manuftName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
               ],

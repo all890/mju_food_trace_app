@@ -195,9 +195,9 @@ class _RequestRenewingFarmerCertificateState
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "ข้อมูลใบรับรองฉบับใหม่",
+                                  "ข้อมูลใบรับรอง IFOAM ฉบับใหม่",
                                   style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 20,
                                     fontFamily: 'Itim'
                                   ),
                                 ),
@@ -330,6 +330,17 @@ class _RequestRenewingFarmerCertificateState
                                 ),
                               ],
                             ),
+                              const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "สามารถเลือกไฟล์ที่มีนามสกุล png,jpg,pdf",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Itim'
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
                             Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
@@ -343,7 +354,7 @@ class _RequestRenewingFarmerCertificateState
                                           RoundedRectangleBorder(
                                             borderRadius:
                                             BorderRadius.circular(50.0))),
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                      backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
                                     ),
                                     onPressed: () async {
 
@@ -384,7 +395,7 @@ class _RequestRenewingFarmerCertificateState
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
-                                        Text("ลงทะเบียน",
+                                        Text("ยื่นคำร้องขอ",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontFamily: 'Itim'

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/manufacturer_certificate_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
 import 'package:mju_food_trace_app/screen/admin/view_manuft_renewing_request_certificate_details_admin_screen.dart';
@@ -22,6 +23,7 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
   bool? isLoaded;
 
   List<ManufacturerCertificate>? manufacturerCertificates;
+  var dateFormat = DateFormat('dd-MMM-yyyy');
 
   void fetchData () async {
     setState(() {
@@ -110,7 +112,7 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                           ),
                         ),
                         Text(
-                          "${manufacturerCertificates?[index].mnCertUploadDate}",
+                          "${dateFormat.format(manufacturerCertificates?[index].mnCertUploadDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
