@@ -543,69 +543,76 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                               
-                               ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(50.0))),
-                                  backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
-                                ),
-                                onPressed: () async {
-
-                                  if (selectedManuftName == "") {
-                                    return showManuftNameIsEmptyError();
-                                  }
-
-                                  if (selected_rawMatShpQtyUnit_items == "หน่วยของปริมาณผลผลิตสุทธิ") {
-                                    return showSelectedRawMatShpQtyUnitIsEmptyError();
-                                  }
-
-                                  if (formKey.currentState!.validate()) {
-                                    String? manuftId = "";
-
-                                    manufacturers?.forEach((manufacturer) {
-                                      if (manufacturer.manuftName == selectedManuftName) {
-                                        manuftId = manufacturer.manuftId;
-                                      }
-                                    });
-
-                                    print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
-
-                                    http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
-                                          manuftId??"",
-                                          rawMatShpDateTextController.text,
-                                          double.parse(rawMatShpQtyTextController.text),
-                                          selected_rawMatShpQtyUnit_items??"",
-                                          planting?.plantingId??"");
-
-                                    if (response.statusCode == 200) {
-                                      print("Add rms successfully!");
-                                      Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(builder:
-                                              (BuildContext context) {
-                                        return const ListPlantingScreen();
-                                      }));
-                                    } else if (response.statusCode == 480) {
-                                      print("Sum of rawMatShpQty greater than plantingNetQty");
-                                    } else {
-                                      print("Error!");
-                                    }
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text("ส่งผลผลิต",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Itim'
-                                      )
+                               Padding(
+                                 padding: const EdgeInsets.all(10.0),
+                                 child: SizedBox(
+                                  height: 53,
+                                  width: 170,
+                                   child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(50.0))),
+                                      backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorFM)
                                     ),
-                                  ],
-                                ),
-                              ),
+                                    onPressed: () async {
+                                 
+                                      if (selectedManuftName == "") {
+                                        return showManuftNameIsEmptyError();
+                                      }
+                                 
+                                      if (selected_rawMatShpQtyUnit_items == "หน่วยของปริมาณผลผลิตสุทธิ") {
+                                        return showSelectedRawMatShpQtyUnitIsEmptyError();
+                                      }
+                                 
+                                      if (formKey.currentState!.validate()) {
+                                        String? manuftId = "";
+                                 
+                                        manufacturers?.forEach((manufacturer) {
+                                          if (manufacturer.manuftName == selectedManuftName) {
+                                            manuftId = manufacturer.manuftId;
+                                          }
+                                        });
+                                 
+                                        print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
+                                 
+                                        http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
+                                              manuftId??"",
+                                              rawMatShpDateTextController.text,
+                                              double.parse(rawMatShpQtyTextController.text),
+                                              selected_rawMatShpQtyUnit_items??"",
+                                              planting?.plantingId??"");
+                                 
+                                        if (response.statusCode == 200) {
+                                          print("Add rms successfully!");
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(builder:
+                                                  (BuildContext context) {
+                                            return const ListPlantingScreen();
+                                          }));
+                                        } else if (response.statusCode == 480) {
+                                          print("Sum of rawMatShpQty greater than plantingNetQty");
+                                        } else {
+                                          print("Error!");
+                                        }
+                                      }
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        Text("ส่งผลผลิต",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Itim'
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                                               ),
+                                 ),
+                               ),
                               ],
                             ),
                           ),
