@@ -130,6 +130,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
             print("Update successfully!");
           }
 
+        }else{
+          Navigator.pop(context);
         }
       }
     );
@@ -267,12 +269,17 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: productNameTextController,
                                   hintText: "ชื่อสินค้า",
-                                  maxLength: 50,
+                                  maxLength: 40,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                     final productNameRegEx = RegExp(r'^[ก-์a-zA-Z-()" "]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อสินค้า";
+                                    }
+                                    if (value.length < 5) {
+                                      return "กรุณากรอกชื่อสินค้าให้มีความยาวตั้งแต่ 5 - 40 ตัวอักษร";
+                                    }
+                                    if (!productNameRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกชื่อสินค้าให้เป็นภาษาไทยหรือภาษาอังกฤษ \nหรือสามารถประกอบไปด้วยช่องว่าง - และ ()";
                                     }
                                   },
                                   icon: const Icon(Icons.compost)
@@ -280,13 +287,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: netVolumeTextController,
                                   hintText: "ปริมาตรสุทธิ",
-                                  maxLength: 50,
+                                  maxLength: 5,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                     final netVolumeRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาตรสุทธิ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาตรสุทธิต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!netVolumeRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาตรสุทธิเป็นตัวเลขจำนวนเต็มบวกเท่านั้น";
+                                    }
+                                    if (int.parse(value) < 100 || int.parse(value) > 10000) {
+                                      return "กรุณากรอกปริมาณสุทธิให้มีค่าตั้งแต่ 100 - 10,000 กรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.equalizer)
@@ -294,13 +309,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: netEnergyTextController,
                                   hintText: "พลังงานที่ได้รับสุทธิ (kcal)",
-                                  maxLength: 50,
+                                  maxLength: 4,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                     final netEnergyRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกพลังงานที่ได้รับสุทธิ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "พลังงานที่ได้รับสุทธิต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!netEnergyRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกพลังงานที่ได้รับสุทธิเป็นตัวเลขจำนวนเต็มบวกเท่านั้น";
+                                    }
+                                    if (int.parse(value) <= 0 || int.parse(value) > 1000) {
+                                      return "กรุณากรอกพลังงานที่ได้รับสุทธิให้มีค่าตั้งแต่ 0 - 1000 กิโลแคลอรี่";
                                     }
                                   },
                                   icon: const Icon(Icons.bolt)
@@ -308,13 +331,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: saturatedFatTextController,
                                   hintText: "ปริมาณไขมันอิ่มตัว (kcal)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final netEnergyRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณไขมันอิ่มตัว";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณไขมันอิ่มตัวต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!netEnergyRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณไขมันอิ่มตัวเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณากรอกปริมาณไขมันอิ่มตัวให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.opacity)
@@ -322,13 +353,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: cholesteralTextController,
                                   hintText: "ปริมาณคอเลสเตอรอล (มิลลิกรัม)",
-                                  maxLength: 50,
+                                  maxLength: 4,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                   final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณคอเลสเตอรอล";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณคอเลสเตอรอลต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณคอเลสเตอรอลตัวเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 1000) {
+                                      return "กรุณากรอกปริมาณคอเลสเตอรอลให้มีค่าตั้งแต่ 0 - 1000 มิลลิกรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.water_drop)
@@ -336,13 +375,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: proteinTextController,
                                   hintText: "ปริมาณโปรตีน (กรัม)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                   final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณโปรตีน";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณโปรตีนต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณโปรตีนเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณากรอกปริมาณโปรตีนให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.water_drop)
@@ -350,13 +397,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: sodiumTextController,
                                   hintText: "ปริมาณโซเดียม (มิลลิกรัม)",
-                                  maxLength: 50,
+                                  maxLength: 4,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                   final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณโซเดียม";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณโซเดียมต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณโซเดียมเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 1000) {
+                                      return "กรุณากรอกปริมาณโซเดียมให้มีค่าตั้งแต่ 0 - 1000 มิลลิกรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.water_drop)
@@ -364,13 +419,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: fiberTextController,
                                   hintText: "ปริมาณใยอาหาร (กรัม)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณใยอาหาร";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณใยอาหารต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณใยอาหารเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณใยอาหารให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.water_drop)
@@ -378,13 +441,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: sugarTextController,
                                   hintText: "ปริมาณน้ำตาล (กรัม)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                      final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณน้ำตาล";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณน้ำตาลต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณน้ำตาลเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณน้ำตาลให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
                                   icon: const Icon(Icons.water_drop)
@@ -412,13 +483,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: ironTextController,
                                   hintText: "ปริมาณเหล็ก (%)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return "กรุณากรอกปริมาณเหล็ก";
+                                     final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
+                                      return "กรุณากรอกปริมาณธาตุเหล็ก";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณธาตุเหล็กต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณธาตุเหล็กเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณธาตุเหล็กให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.hdr_strong)
@@ -426,13 +505,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: vitATextController,
                                   hintText: "ปริมาณวิตามินเอ (%)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                     final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณวิตามินเอ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณวิตามินเอต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณวิตามินเอเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณวิตามินเอให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.hub)
@@ -440,13 +527,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: vitB1TextController,
                                   hintText: "ปริมาณวิตามินบี 1 (%)",
-                                  maxLength: 50,
+                                  maxLength:3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณวิตามินบี 1";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณวิตามินบี 1 ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณวิตามินบี 1 เป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณวิตามินบี 1 ให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.hub)
@@ -454,13 +549,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: vitB2TextController,
                                   hintText: "ปริมาณวิตามินบี 2 (%)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                     final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณวิตามินบี 2";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณวิตามินบี 2 ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณวิตามินบี 2 เป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณวิตามินบี 2 ให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.hub)
@@ -468,13 +571,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                 CustomTextFormField(
                                   controller: calciumTextController,
                                   hintText: "ปริมาณแคลเซียม (%)",
-                                  maxLength: 50,
+                                  maxLength: 3,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                      final cholesteralRegEx = RegExp(r'^[0-9]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณแคลเซียม";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ปริมาณแคลเซียมต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (!cholesteralRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกปริมาณแคลเซียมเป็นตัวเลขจำนวนเต็มบวก\nหรือจำนวนเต็มศูนย์เท่านั้น";
+                                    }
+                                    if (int.parse(value) < 0 || int.parse(value) > 100) {
+                                      return "กรุณาปริมาณแคลเซียมให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
                                   icon: const Icon(Icons.hdr_strong)

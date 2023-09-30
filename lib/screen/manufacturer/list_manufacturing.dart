@@ -317,10 +317,10 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               child: ListTile(
-                                leading: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [Icon(Icons.compost)],
-                                ),
+                                // leading: Column(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [Icon(Icons.compost)],
+                                // ),
                                 title: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -459,10 +459,10 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               child: ListTile(
-                                leading: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [Icon(Icons.compost)],
-                                ),
+                                // leading: Column(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [Icon(Icons.compost)],
+                                // ),
                                 title: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
