@@ -45,7 +45,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
       isLoaded = false;
     });
     manufacturings =
-        await manufacturingController.getListAllManufacturingUsername(username);
+        await manufacturingController.getListAllManuftByUsername(username);
     var manuftCertResponse = await manufacturerCertificateController
         .getLastestManufacturerCertificateByManufacturerUsername(username);
     manufacturerCertificate =

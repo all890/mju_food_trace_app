@@ -59,7 +59,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
   startScan () async {
     print("OK");
     String? scanResult = await scanner.scan();
-    http.Response qrResponse = await qrCodeController.getProductDetailsByQRCodeId(scanResult??"");
+    http.Response qrResponse = await qrCodeController.traceProductByQRCode(scanResult??"");
     
     if (qrResponse.statusCode == 200) {
       qrCode = QRCode.fromJsonToQRCode(json.decode(utf8.decode(qrResponse.bodyBytes)));
@@ -213,7 +213,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                                   return showError("กรุณากรอกรหัสคิวอาร์โค้ดให้มีความยาว 10 ตัวอักษร");
                                 }
                   
-                                http.Response response = await qrCodeController.getProductDetailsByQRCodeId(qrcodeIdTextController.text);
+                                http.Response response = await qrCodeController.traceProductByQRCode(qrcodeIdTextController.text);
                                 
                                 print("Response code is ${response.statusCode}");
 

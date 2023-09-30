@@ -14,7 +14,7 @@ class QRCodeController {
 
   }
 
-  Future getProductDetailsByQRCodeId (String qrcodeId) async {
+  Future traceProductByQRCode (String qrcodeId) async {
     var url = Uri.parse(baseURL + '/qrcode/getproddetails/' + qrcodeId);
 
     http.Response response = await http.get(url);

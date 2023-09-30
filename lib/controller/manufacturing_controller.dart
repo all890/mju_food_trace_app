@@ -50,7 +50,7 @@ class ManufacturingController {
     return response.statusCode;
   }
   
-  Future getListAllManufacturingUsername(String username)async {
+  Future getListAllManuftByUsername(String username)async {
     Map data = {};
 
     var body = json.encode(data);
