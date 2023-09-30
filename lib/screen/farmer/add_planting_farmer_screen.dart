@@ -71,6 +71,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
   double? calSquareYards = 0.00;
   double? calRai = 0.00;
 
+  DateTime? tempPlantDate;
+
   void showFmCertExpireError () {
     QuickAlert.show(
       context: context,
@@ -400,6 +402,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       setState(() {
                                         plantDate = tempDate;
                                         plantDateTextController.text = dateFormat.format(plantDate!);
+                                        tempPlantDate = tempDate;
                                         enabledToSelectApproxHarvDate = true;
                                       });
                                       print(plantDate);
@@ -431,8 +434,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate.add(Duration(days: 3)),
-                                        firstDate: currentDate.add(Duration(days: 3)),
+                                        initialDate: tempPlantDate!.add(Duration(days: 3)),
+                                        firstDate: tempPlantDate!.add(Duration(days: 3)),
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
@@ -630,7 +633,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                 CustomTextFormField(
                                   controller: squareYardsTextController,
                                   hintText: "จำนวนตารางวา",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -649,7 +652,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                  CustomTextFormField(
                                   controller: raiTextController,
                                   hintText: "จำนวนไร่",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
                                     if (value!.isEmpty) {

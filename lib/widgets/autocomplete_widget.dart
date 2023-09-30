@@ -6,7 +6,8 @@ import 'custom_text_form_field_widget.dart';
 class AutoCompleteStateful extends StatefulWidget {
   final List<String> itemList;
   final ValueChanged<String> onItemChanged;
-  const AutoCompleteStateful({super.key, required this.itemList, required this.onItemChanged});
+  final ValueChanged<String> onTextChanged;
+  const AutoCompleteStateful({super.key, required this.itemList, required this.onItemChanged, required this.onTextChanged});
 
   @override
   State<AutoCompleteStateful> createState() => _AutoCompleteStatefulState();
@@ -39,6 +40,9 @@ class _AutoCompleteStatefulState extends State<AutoCompleteStateful> {
             prefixIcon: Icon(Icons.person),
           prefixIconColor: Colors.black,
         ),
+        onChanged: (value) {
+          widget.onTextChanged(value);
+        },
         
         style: TextStyle(
           fontFamily: 'Itim',
@@ -49,6 +53,7 @@ class _AutoCompleteStatefulState extends State<AutoCompleteStateful> {
         },
         onSelected: (String selection) {
           widget.onItemChanged(selection);
+          widget.onTextChanged(selection);
         },
       );
   }

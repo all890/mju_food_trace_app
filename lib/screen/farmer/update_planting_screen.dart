@@ -104,6 +104,19 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
     });
   }
 
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showConfirmToUpdateProductAlert () {
     QuickAlert.show(
       context: context,
@@ -121,40 +134,63 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
         print("PRESSED!");
         if (formKey.currentState!.validate()) {
 
-          print("UPDATE PLANTING!");
-          //String username = await SessionManager().get("username");
-
-          DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-
-          Planting plantingUpdate = Planting(
-            plantingId: planting?.plantingId,
-            plantName: plantNameTextController.text,
-            plantDate: dateFormat.parse(plantDateTextController.text),
-            plantingImg: plantingImgTextController.text,
-            bioextract: planting?.bioextract,
-            approxHarvDate: dateFormat.parse(approxHarvDateTextController.text),
-            plantingMethod: planting?.plantingMethod,
-            netQuantity: double.parse(netQuantityTextController.text),
-            netQuantityUnit: planting?.netQuantityUnit,
-            squareMeters: double.parse(squareMetersTextController.text),
-            squareYards: double.parse(squareYardsTextController.text),
-            rai: double.parse(raiTextController.text),
-            ptPrevBlockHash: "0",
-            ptCurrBlockHash: null,
-            farmer: planting?.farmer
-          );
-
-          http.Response response = await plantingController.updatePlanting(fileToDisplay, plantingUpdate);
-
-          if (response.statusCode == 500) {
-            //showFailToSaveProductAlert();
-            print("Failed to update!");
+          if (plantingImgTextController.text == "") {
+            Navigator.pop(context);
+            showError("กรุณาเลือกรูปภาพการปลูก");
+            //Navigator.pop(context);
+            return;
+          } else if (planting?.bioextract == "ประเภทของน้ำหมัก") {
+            Navigator.pop(context);
+            showError("กรุณาเลือกประเภทของน้ำหมัก");
+            //Navigator.pop(context);
+            return;
+          } else if (planting?.plantingImg == "วิธีการปลูก") {
+            Navigator.pop(context);
+            showError("กรุณาเลือกวิธีการปลูก");
+            //Navigator.pop(context);
+            return;
+          } else if (planting?.netQuantityUnit == "หน่วยของปริมาณผลผลิตสุทธิ") {
+            Navigator.pop(context);
+            showError("กรุณาเลือกหน่วยของปริมาณผลผลิตสุทธิ");
+            //Navigator.pop(context);
+            return;
           } else {
-            showUpdatePlantingSuccessAlert();
-            print("Update successfully!");
-          }
-          
+            print("UPDATE PLANTING!");
+            //String username = await SessionManager().get("username");
 
+            DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
+            Planting plantingUpdate = Planting(
+              plantingId: planting?.plantingId,
+              plantName: plantNameTextController.text,
+              plantDate: dateFormat.parse(plantDateTextController.text),
+              plantingImg: plantingImgTextController.text,
+              bioextract: planting?.bioextract,
+              approxHarvDate: dateFormat.parse(approxHarvDateTextController.text),
+              plantingMethod: planting?.plantingMethod,
+              netQuantity: double.parse(netQuantityTextController.text),
+              netQuantityUnit: planting?.netQuantityUnit,
+              squareMeters: double.parse(squareMetersTextController.text),
+              squareYards: double.parse(squareYardsTextController.text),
+              rai: double.parse(raiTextController.text),
+              ptPrevBlockHash: "0",
+              ptCurrBlockHash: null,
+              farmer: planting?.farmer
+            );
+
+            http.Response response = await plantingController.updatePlanting(fileToDisplay, plantingUpdate);
+
+            if (response.statusCode == 500) {
+              //showFailToSaveProductAlert();
+              print("Failed to update!");
+            } else {
+              Navigator.pop(context);
+              showUpdatePlantingSuccessAlert();
+              print("Update successfully!");
+            }
+          }
+        } else {
+          Navigator.pop(context);
         }
       }
     );
@@ -171,6 +207,10 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
     //selected_bioextract_items = planting?.bioextract ?? "";
     //selected_plantingMethod_items = planting?.plantingMethod ?? "";
     //selected_netQuantityUnit_items = planting?.netQuantityUnit ?? "";
+    setState(() {
+      plantDate = planting?.plantDate;
+      approxHarvDate = planting?.approxHarvDate;
+    });
   }
   
    void _pickFile () async {
@@ -347,10 +387,15 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                   maxLength: 50,
                                   numberOnly: false,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final plantNameRegEx = RegExp(r'^[ก-์a-zA-Z-()]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผลผลิตที่ปลูก";
+                                    }
+                                    if (!plantNameRegEx.hasMatch(value)) {
+                                      return "ชื่อผลผลิตที่ปลูกต้องเป็นภาษาไทย ภาษาอังกฤษ และมีอักขระ - () ได้";
+                                    }
+                                    if (value.length < 4) {
+                                      return "กรุณากรอกชื่อผลผลิตให้มีความยาวตั้งแต่ 4 - 35 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle)
@@ -413,13 +458,17 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
+                                        initialDate: plantDate ?? DateTime.now(),
                                         firstDate: DateTime(1950),
-                                        lastDate: DateTime(2100)
+                                        lastDate: currentDate
                                       );
                                       setState(() {
                                         plantDate = tempDate;
                                         plantDateTextController.text = dateFormat.format(plantDate!);
+                                        if (plantDate!.isAfter(approxHarvDate ?? currentDate) || plantDate!.isAtSameMomentAs(approxHarvDate ?? currentDate)) {
+                                          approxHarvDate = approxHarvDate?.add(Duration(days: 3));
+                                          approxHarvDateTextController.text = dateFormat.format(approxHarvDate ?? DateTime.now());
+                                        }
                                       });
                                       print(plantDate);
                                     },
@@ -450,8 +499,8 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
-                                        firstDate: DateTime(1950),
+                                        initialDate: approxHarvDate ?? DateTime.now(),
+                                        firstDate: plantDate!.add(Duration(days: 3)),
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
@@ -577,13 +626,14 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                 CustomTextFormField(
                                   controller: netQuantityTextController,
                                   hintText: "ปริมาณผลผลิตสุทธิ",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกปริมาณผลผลิตสุทธิ";
+                                    }
+                                    if (double.parse(value) <= 0.0 || double.parse(value) > 100000.0) {
+                                      return "กรุณากรอกปริมาณผลผลิตสุทธิให้มีค่าตั้งแต่ 1 - 100,000";
                                     }
                                   },
                                   icon: const Icon(Icons.bubble_chart)
@@ -638,13 +688,14 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                 CustomTextFormField(
                                   controller: squareMetersTextController,
                                   hintText: "จำนวนตารางเมตร",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนตารางเมตร";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนตารางเมตรให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {
@@ -656,13 +707,14 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                 CustomTextFormField(
                                   controller: squareYardsTextController,
                                   hintText: "จำนวนตารางวา",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนตารางวา";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนตารางวาให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {
@@ -674,13 +726,14 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                  CustomTextFormField(
                                   controller: raiTextController,
                                   hintText: "จำนวนไร",
-                                  maxLength: 50,
+                                  maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return "กรุณากรอกจำนวนไร";
+                                    if (value!.isEmpty) {
+                                      return "กรุณากรอกจำนวนไร่";
+                                    }
+                                    if (double.parse(value) <= 0.0) {
+                                      return "กรุณากรอกจำนวนไร่ให้มีค่ามากกว่า 0";
                                     }
                                   },
                                   onChanged: (value) {

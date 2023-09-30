@@ -78,6 +78,16 @@ class ManufacturerController {
 
   }
 
+  Future isManufacturerAvailable(String manuftName) async {
+    var url = Uri.parse(baseURL + '/manuft/ismanuftavailable/' + manuftName);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response;
+  }
+
   Future getManufacturerDetails(String manuftId) async {
 
     var url = Uri.parse(baseURL + '/manuft/getmndetails/' + manuftId);
