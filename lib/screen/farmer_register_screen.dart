@@ -30,6 +30,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
 
   DateTime currentDate = DateTime.now();
   DateTime? farmerCertRegDate;
+  DateTime? tempFarmerCertDate;
   DateTime? farmerCertExpireDate;
 
   double? latitude;
@@ -529,14 +530,20 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
+                                        initialDate: tempFarmerCertDate ?? currentDate,
                                         firstDate: DateTime(1950),
                                         lastDate: currentDate
                                       );
                                       setState(() {
-                                        farmerCertRegDate = tempDate;
-                                        farmerCertRegDateTextController.text = dateFormat.format(farmerCertRegDate!);
-                                        farmerCertExpireDateTextController.text = dateFormat.format(farmerCertRegDate!.add(Duration(days: 365)));
+                                        if (tempDate != null) {
+                                          tempFarmerCertDate = tempDate;
+                                          farmerCertRegDate = tempDate;
+                                          farmerCertRegDateTextController.text = dateFormat.format(farmerCertRegDate!);
+                                          farmerCertExpireDateTextController.text = dateFormat.format(farmerCertRegDate!.add(Duration(days: 365)));
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
+                                        
                                       });
                                       print(farmerCertRegDate);
                                     },

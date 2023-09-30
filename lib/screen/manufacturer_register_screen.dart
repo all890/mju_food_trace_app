@@ -28,6 +28,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
 
   DateTime currentDate = DateTime.now();
   DateTime? manuftCertRegDate;
+  DateTime? tempManuftCertRegDate;
   DateTime? manuftCertExpireDate;
 
   double? latitude;
@@ -62,6 +63,32 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
   TextEditingController manuftUsernameTextController = TextEditingController();
   TextEditingController manuftPasswordTextController = TextEditingController();
   TextEditingController manuftConfirmPasswordTextController = TextEditingController();
+
+  void showLatLongIsNullAlert() {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกตำแหน่งละติจูดและลองติจูดของโรงงานผู้ผลิต",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showManuftCertIsNullAlert() {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกรูปภาพใบรับรองมาตรฐานผู้ผลิต",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
 
   @override
   void initState() {
@@ -213,12 +240,17 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftNameTextController,
                                   hintText: "ชื่อผู้ผลิต",
-                                  maxLength: 50,
+                                  maxLength: 60,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final manuftNameRegEx = RegExp(r'^[ก-์a-zA-Z-()" "]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผู้ผลิต";
+                                    }
+                                    if (!manuftNameRegEx.hasMatch(value!)) {
+                                      return "ชื่อผู้ผลิตต้องเป็นภาษาไทยหรือภาษาอังกฤษ และประกอบไปด้วยช่องว่าง - () ได้";
+                                    }
+                                    if (value.length < 8) {
+                                      return "กรุณากรอกชื่อผู้ผลิตให้มีความยาวตั้งแต่ 8 - 60 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.home_filled)
@@ -226,12 +258,20 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftEmailTextController,
                                   hintText: "อีเมลผู้ผลิต",
-                                  maxLength: 50,
+                                  maxLength: 60,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final farmerEmailRegEx = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกอีเมลผู้ผลิต";
+                                    }
+                                    if (!farmerEmailRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกอีเมลผู้ผลิตให้ถูกต้องตามรูปแบบ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "อีเมลผู้ผลิตต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 10) {
+                                      return "กรุณากรอกอีเมลผู้ผลิตให้มีความยาวตั้งแต่ 10 - 60 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.email)
@@ -322,12 +362,21 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: factoryTelNoTextController,
                                   hintText: "เบอร์โทรศัพท์โรงงานผู้ผลิต",
-                                  maxLength: 50,
+                                  maxLength: 9,
+                                  numberOnly: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final factoryTelNoNoRegEx = RegExp(r'^((02|03[2-9]{1}|04[2-5]{1}|05[3-6]{1}|07[3-7]{1})[0-9]{6,7})+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกเบอร์โทรศัพท์โรงงานผู้ผลิต";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "เบอร์โทรศัพท์โรงงานผู้ผลิตต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 9) {
+                                      return "กรุณากรอกกรอกเบอร์โทรศัพท์โรงงานผู้ผลิตให้มีความยาว 9 หลัก";
+                                    }
+                                    if (!factoryTelNoNoRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกเบอร์โทรศัพท์โรงงานผู้ผลิตให้ถูกต้องตามรูปแบบ";
                                     }
                                   },
                                   icon: const Icon(Icons.call),
@@ -337,10 +386,18 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                   hintText: "ชื่อผู้ดูแลโรงงานผู้ผลิต",
                                   maxLength: 50,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final factorySupNameRegEx = RegExp(r'^[ก-์a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผู้ดูแลโรงงานผู้ผลิต";
+                                    } 
+                                    if (!factorySupNameRegEx.hasMatch(value!)) {
+                                      return "กรุณากรอกชื่อผู้ดูแลโรงงานผู้ผลิตเป็นภาษาไทยหรือภาษาอังกฤษ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ชื่อผู้ดูแลโรงงานผู้ผลิตต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 2) {
+                                      return "กรุณากรอกชื่อผู้ดูแลโรงงานผู้ผลิตให้มีความยาวตั้งแต่ 2 - 50 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle),
@@ -350,10 +407,18 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                   hintText: "นามสกุลผู้ดูแลโรงงานผู้ผลิต",
                                   maxLength: 50,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final factorySupLastnameRegEx = RegExp(r'^[ก-์a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกนามสกุลผู้ดูแลโรงงานผู้ผลิต";
+                                    } 
+                                    if (!factorySupLastnameRegEx.hasMatch(value!)) {
+                                      return "กรุณากรอกนามสกุลผู้ดูแลโรงงานผู้ผลิตเป็นภาษาไทยหรือภาษาอังกฤษ";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "นามสกุลผู้ดูแลโรงงานผู้ผลิตต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 2) {
+                                      return "กรุณากรอกนามสกุลผู้ดูแลโรงงานผู้ผลิตให้มีความยาวตั้งแต่ 2 - 50 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle),
@@ -443,12 +508,14 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftCertNoTextController,
                                   hintText: "หมายเลขใบรับรองมาตรฐานผู้ผลิต",
-                                  maxLength: 50,
+                                  maxLength: 30,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final manuftCertNoRegEx = RegExp(r'^((กษ|AC) [0-9-]{18,27})+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกหมายเลขใบรับรองมาตรฐานผู้ผลิต";
+                                    }
+                                    if (!manuftCertNoRegEx.hasMatch(value)) {
+                                      return "กรุณากรอกหมายเลขใบรับรองมาตรฐานผู้ผลิตให้ถูกต้องตามรูปแบบ";
                                     }
                                   },
                                   icon: const Icon(Icons.description),
@@ -459,16 +526,21 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
+                                        initialDate: tempManuftCertRegDate ?? currentDate,
                                         firstDate: DateTime(1950),
-                                        lastDate: DateTime(2100)
+                                        lastDate: currentDate
                                       );
                                       setState(() {
-                                        manuftCertRegDate = tempDate;
-                                        manuftCertRegDateTextController.text = dateFormat.format(manuftCertRegDate!);
-                                        manuftCertExpireDateTextController.text = dateFormat.format(manuftCertRegDate!.add(Duration(days: 365*3)));
+                                        if (tempDate != null) {
+                                          tempManuftCertRegDate = tempDate;
+                                          manuftCertRegDate = tempDate;
+                                          manuftCertRegDateTextController.text = dateFormat.format(manuftCertRegDate!);
+                                          manuftCertExpireDateTextController.text = dateFormat.format(manuftCertRegDate!.add(Duration(days: 365*3)));
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
-                                      print(manuftCertRegDate);
+                                      //print(manuftCertRegDate);
                                     },
                                     readOnly: true,
                                     controller: manuftCertRegDateTextController,
@@ -495,18 +567,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
                                     onTap: () async {
-                                      DateTime? tempDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: currentDate,
-                                        firstDate: DateTime(1950),
-                                        lastDate: DateTime(2100),
-                                        helpText: "วันที่หมดอายุใบรับรองมาตรฐานผู้ผลิต"
-                                      );
-                                      setState(() {
-                                        manuftCertExpireDate = tempDate;
-                                        manuftCertExpireDateTextController.text = dateFormat.format(manuftCertExpireDate!);
-                                      });
-                                      print(manuftCertExpireDate);
+                                      
                                     },
                                     readOnly: true,
                                     enabled: false,
@@ -551,12 +612,20 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftUsernameTextController,
                                   hintText: "ชื่อผู้ใช้ระบบ",
-                                  maxLength: 50,
+                                  maxLength: 16,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final manuftUsernameRegEx = RegExp(r'^[0-9a-zA-Z]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกชื่อผู้ใช้ระบบ";
+                                    }
+                                    if (!manuftUsernameRegEx.hasMatch(value)) {
+                                      return "ชื่อผู้ใช้ระบบต้องเป็นภาษาอังกฤษหรือตัวเลขเท่านั้น";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "ชื่อผู้ใช้ระบบต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 4) {
+                                      return "กรุณากรอกชื่อผู้ใช้ระบบให้มีความยาวตั้งแต่ 4 - 16 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.account_circle),
@@ -564,12 +633,22 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftPasswordTextController,
                                   hintText: "รหัสผ่าน",
-                                  maxLength: 50,
+                                  maxLength: 20,
+                                  maxLines: 1,
+                                  obscureText: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else {
+                                    final manuftPasswordRegEx = RegExp(r'^[a-zA-Z0-9!#@_.]+$');
+                                    if (value!.isEmpty) {
                                       return "กรุณากรอกรหัสผ่าน";
+                                    }
+                                    if (!manuftPasswordRegEx.hasMatch(value)) {
+                                      return "ต้องเป็นภาษาอังกฤษหรือตัวเลข และสามารถมีอักขระ ! # @ _ . ได้เท่านั้น";
+                                    }
+                                    if (value!.contains(" ")) {
+                                      return "รหัสผ่านต้องไม่ประกอบไปด้วยช่องว่าง";
+                                    }
+                                    if (value.length < 8) {
+                                      return "กรุณากรอกรหัสผ่านให้มีความยาวตั้งแต่ 8 - 20 ตัวอักษร";
                                     }
                                   },
                                   icon: const Icon(Icons.lock),
@@ -577,14 +656,15 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                 CustomTextFormField(
                                   controller: manuftConfirmPasswordTextController,
                                   hintText: "ยืนยันรหัสผ่าน",
-                                  maxLength: 50,
+                                  maxLength: 20,
+                                  maxLines: 1,
+                                  obscureText: true,
                                   validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      return null;
-                                    } else if (value != manuftPasswordTextController.text) {
-                                      return "กรุณากรอกยืนยันรหัสผ่านให้ตรงกับรหัสผ่าน";
-                                    } else {
+                                    if (value!.isEmpty) {
                                       return "กรุณายืนยันรหัสผ่าน";
+                                    }
+                                    if (value != manuftPasswordTextController.text) {
+                                      return "กรุณากรอกยืนยันรหัสผ่านให้ตรงกับรหัสผ่าน";
                                     }
                                   },
                                   icon: const Icon(Icons.lock),
@@ -607,39 +687,46 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                       onPressed: () async {
                                         if (formKey.currentState!.validate()) {
                                           
-                                          print(manuftCertRegDateTextController.text);
-
-                                          var code = await manufacturerController.addManufacturer(
-                                            manuftNameTextController.text,
-                                            manuftEmailTextController.text,
-                                            factoryLatitudeTextController.text,
-                                            factoryLongitudeTextController.text,
-                                            factoryTelNoTextController.text,
-                                            factorySupNameTextController.text,
-                                            factorySupLastnameTextController.text,
-                                            manuftUsernameTextController.text,
-                                            manuftPasswordTextController.text,
-                                            fileToDisplay!,
-                                            manuftCertNoTextController.text,
-                                            manuftCertRegDateTextController.text,
-                                            manuftCertExpireDateTextController.text
-                                          );
-
-                                          //print("Status code is " + code.toString());
-    
-                                          if (code == 409) {
-                                            print("Username is already exists!");
-                                            showUsernameDuplicationAlert();
+                                          if (factoryLatitudeTextController.text.isEmpty) {
+                                            showLatLongIsNullAlert();
+                                            return;
+                                          } else if (manuftCertImgTextController.text.isEmpty) {
+                                            showManuftCertIsNullAlert();
+                                            return;
                                           } else {
-                                            Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                builder: (BuildContext context) {
-                                                  return const RegisterSuccessScreen();
-                                                }
-                                              )
-                                            );
-                                          }
+                                            print(manuftCertRegDateTextController.text);
 
+                                            var code = await manufacturerController.addManufacturer(
+                                              manuftNameTextController.text,
+                                              manuftEmailTextController.text,
+                                              factoryLatitudeTextController.text,
+                                              factoryLongitudeTextController.text,
+                                              factoryTelNoTextController.text,
+                                              factorySupNameTextController.text,
+                                              factorySupLastnameTextController.text,
+                                              manuftUsernameTextController.text,
+                                              manuftPasswordTextController.text,
+                                              fileToDisplay!,
+                                              manuftCertNoTextController.text,
+                                              manuftCertRegDateTextController.text,
+                                              manuftCertExpireDateTextController.text
+                                            );
+
+                                            //print("Status code is " + code.toString());
+      
+                                            if (code == 409) {
+                                              print("Username is already exists!");
+                                              showUsernameDuplicationAlert();
+                                            } else {
+                                              Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (BuildContext context) {
+                                                    return const RegisterSuccessScreen();
+                                                  }
+                                                )
+                                              );
+                                            }
+                                          }
                                         }
                                       },
                                       child: Row(

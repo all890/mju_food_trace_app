@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     this.obscureText,
+    this.readOnly,
     this.numberOnly,
     this.validator,
     this.onChanged,
@@ -21,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? obscureText;
   final bool? numberOnly;
   final bool? enabled;
+  final bool? readOnly;
   final String hintText;
   final String? hT;
   final int? maxLength;
@@ -37,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         maxLength: maxLength,
         enabled: enabled,
+        readOnly: readOnly ?? false,
         maxLines: maxLines,
         obscureText: obscureText ?? false,
         keyboardType: numberOnly == true? TextInputType.number : TextInputType.text,

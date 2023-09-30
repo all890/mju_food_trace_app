@@ -35,7 +35,9 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
   
   DateTime currentDate = DateTime.now();
   DateTime? plantDate;
+  DateTime? tempPlantDate;
   DateTime? approxHarvDate;
+  DateTime? tempApproxHarvDate;
 
   FilePickerResult? filePickerResult;
   String? fileName;
@@ -458,19 +460,23 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: plantDate ?? DateTime.now(),
+                                        initialDate: tempPlantDate ?? plantDate!,
                                         firstDate: DateTime(1950),
                                         lastDate: currentDate
                                       );
                                       setState(() {
-                                        plantDate = tempDate;
-                                        plantDateTextController.text = dateFormat.format(plantDate!);
-                                        if (plantDate!.isAfter(approxHarvDate ?? currentDate) || plantDate!.isAtSameMomentAs(approxHarvDate ?? currentDate)) {
-                                          approxHarvDate = approxHarvDate?.add(Duration(days: 3));
-                                          approxHarvDateTextController.text = dateFormat.format(approxHarvDate ?? DateTime.now());
+                                        if (tempDate != null) {
+                                          plantDate = tempDate;
+                                          tempPlantDate = plantDate;
+                                          plantDateTextController.text = dateFormat.format(plantDate!);
+                                          if (plantDate!.isAfter(approxHarvDate ?? currentDate) || plantDate!.isAtSameMomentAs(approxHarvDate ?? currentDate)) {
+                                            approxHarvDate = plantDate?.add(Duration(days: 3));
+                                            approxHarvDateTextController.text = dateFormat.format(approxHarvDate ?? DateTime.now());
+                                          }
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
                                         }
                                       });
-                                      print(plantDate);
                                     },
                                     readOnly: true,
                                     controller: plantDateTextController,
@@ -488,7 +494,7 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                     ),
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return "กรุณาเลือกวันวันที่ปลูก";
+                                        return "กรุณาเลือกวันที่ปลูก";
                                       }
                                     },
                                   ),
@@ -504,8 +510,12 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
-                                        approxHarvDate = tempDate;
-                                        approxHarvDateTextController.text = dateFormat.format(approxHarvDate!);
+                                        if (tempDate != null) {
+                                          approxHarvDate = tempDate;
+                                          approxHarvDateTextController.text = dateFormat.format(approxHarvDate!);
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
                                       print(plantDate);
                                     },

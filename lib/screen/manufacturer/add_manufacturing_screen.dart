@@ -156,6 +156,19 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
     );
   }
 
+  void showusedRawMatShpQtyUnitIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showFailToSaveManufacuringAlert() {
     QuickAlert.show(
       context: context,
@@ -340,13 +353,18 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                 CustomTextFormField(
                                     controller: productQtyTextController,
                                     hintText: "ปริมาณสินค้าที่ผลิตได้",
-                                    maxLength: 50,
+                                    maxLength: 6,
                                     numberOnly: true,
                                     validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
+                                      var productQtyRegEx = RegExp(r'^\d+$');
+                                      if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
+                                      }
+                                      if (!productQtyRegEx.hasMatch(value)) {
+                                        return "ปริมาณสินค้าที่ผลิตได้ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                      }
+                                      if (int.parse(value) > 100000 || int.parse(value) <= 0) {
+                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
                                       }
                                     },
                                     icon: const Icon(Icons.equalizer)),
@@ -413,18 +431,21 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           context: context,
                                           initialDate: currentDate,
                                           firstDate: rawMaterialShipping?.rawMatShpDate ?? DateTime.now(),
-                                          lastDate: DateTime(2100));
+                                          lastDate: currentDate);
                                       setState(() {
                                         manufactureDate = tempDate;
-                                        manufactureDateTextController.text =
+                                        if (manufactureDate != null) {
+                                          manufactureDateTextController.text =
                                             dateFormat.format(manufactureDate??DateTime.now());
-                                        if (manufactureDateTextController.text != "") {
-                                          enableExpireDateField = true;
+                                          if (manufactureDateTextController.text != "") {
+                                            enableExpireDateField = true;
+                                          } else {
+                                            enableExpireDateField = false;
+                                          }
                                         } else {
-                                          enableExpireDateField = false;
+                                          FocusManager.instance.primaryFocus?.unfocus();
                                         }
                                       });
-                                      print(manufactureDate);
                                     },
                                     readOnly: true,
                                     controller: manufactureDateTextController,
@@ -458,9 +479,13 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           lastDate: DateTime(2100));
                                       setState(() {
                                         expireDate = tempDate;
-                                        expireDateTextController.text =
-                                            dateFormat.format(expireDate??DateTime.now());
-                                        print(expireDate);
+                                        if (expireDate != null) {
+                                          expireDateTextController.text =
+                                          dateFormat.format(expireDate??DateTime.now());
+                                          print(expireDate);
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
                                       
                                     },
@@ -518,10 +543,12 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       actualGrams = double.parse(value);
                                     }
 
+                                    /*
                                     if (selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
                                       showUsedRawMatQtyIsEmptyError();
                                       return "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า";
                                     }
+                                    */
 
                                     double rmsNetQuantityGrams = 0;
                                     if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
@@ -623,61 +650,46 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                                   kClipPathColorMN)),
                                       onPressed: () async {
 
-                                        if (selected_productUnit_items == "หน่วยของสินค้า") {
-                                          return showProductUnitIsEmptyError();
-                                        }
-
                                         if (formKey.currentState!.validate()) {
-                                          //Farmer data insertion
-                                          /*
-                                          Provider.of<FarmersData>(context, listen: false)
-                                                          .addFarmer(
-                                                            farmerNameTextController.text,
-                                                            farmerLastnameTextController.text,
-                                                            farmerEmailTextController.text,
-                                                            farmerMobileNoTextController.text,
-                                                            farmNameTextController.text,
-                                                            double.parse(farmLatitudeTextController.text),
-                                                            double.parse(farmLongitudeTextController.text),
-                                                            farmerUsernameTextController.text,
-                                                            farmerPasswordTextController.text
-                                                          );
-                                          */
 
-                                          //Farmer's data insertion using farmer controller
-                                          var username = await SessionManager()
-                                              .get("username");
-                                          products?.forEach((product) {
-                                            if(product.productName == selected_productName){
-                                              productId = product.productId;
-                                              
-                                            }
-                                     
-                                            
-                                          });
-                                         
-                                          http.Response response =
-                                              await manufacturingController
-                                                  .addManufacturing(
-                                                     manufactureDateTextController.text,
-                                                     expireDateTextController.text,
-                                                     productQtyTextController.text,
-                                                     selected_productUnit_items!,
-                                                     usedRawMatQtyTextController.text,
-                                                     selected_usedRawMatQtyUnit_items!,
-                                                     widget.rawMatShpId,
-                                                      productId??"");
-
-                                          //print("Status code is " + code.toString());
-
-                                          if (response.statusCode == 500) {
-                                            print("Error!");
-                                            //showUsernameDuplicationAlert();
+                                          if (selected_productUnit_items == "หน่วยของสินค้า") {
+                                            return showProductUnitIsEmptyError();
+                                          } else if (selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+                                            return showusedRawMatShpQtyUnitIsEmptyError();
                                           } else {
-                                            print(
-                                                "Add manufacuring successfully!");
-                                            // showSavePlantingSuccessAlert();
-                                            showSaveManufacuringSuccessAlert();
+                                            //Farmer's data insertion using farmer controller
+                                            var username = await SessionManager()
+                                                .get("username");
+                                            products?.forEach((product) {
+                                              if(product.productName == selected_productName){
+                                                productId = product.productId;
+                                                
+                                              }
+                                            });
+                                          
+                                            http.Response response =
+                                                await manufacturingController
+                                                    .addManufacturing(
+                                                      manufactureDateTextController.text,
+                                                      expireDateTextController.text,
+                                                      productQtyTextController.text,
+                                                      selected_productUnit_items!,
+                                                      usedRawMatQtyTextController.text,
+                                                      selected_usedRawMatQtyUnit_items!,
+                                                      widget.rawMatShpId,
+                                                        productId??"");
+
+                                            //print("Status code is " + code.toString());
+
+                                            if (response.statusCode == 500) {
+                                              print("Error!");
+                                              //showUsernameDuplicationAlert();
+                                            } else {
+                                              print(
+                                                  "Add manufacuring successfully!");
+                                              // showSavePlantingSuccessAlert();
+                                              showSaveManufacuringSuccessAlert();
+                                            }
                                           }
                                         }
                                       },

@@ -43,7 +43,9 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
 
   DateTime currentDate = DateTime.now();
   DateTime? plantDate;
+  DateTime? tempPlantDate;
   DateTime? approxHarvDate;
+  DateTime? tempApproxHarvDate;
 
   TextEditingController plantNameTextController = TextEditingController();
   TextEditingController plantingImgTextController = TextEditingController();
@@ -70,8 +72,6 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
   double? calSquareMetres = 0.00;
   double? calSquareYards = 0.00;
   double? calRai = 0.00;
-
-  DateTime? tempPlantDate;
 
   void showFmCertExpireError () {
     QuickAlert.show(
@@ -395,17 +395,21 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: currentDate,
+                                        initialDate: tempPlantDate ?? currentDate,
                                         firstDate: DateTime(1950),
                                         lastDate: currentDate
                                       );
                                       setState(() {
-                                        plantDate = tempDate;
-                                        plantDateTextController.text = dateFormat.format(plantDate!);
-                                        tempPlantDate = tempDate;
-                                        enabledToSelectApproxHarvDate = true;
+                                        if (tempDate != null) {
+                                          tempPlantDate = tempDate;
+                                          plantDate = tempDate;
+                                          plantDateTextController.text = dateFormat.format(plantDate!);
+                                          tempPlantDate = tempDate;
+                                          enabledToSelectApproxHarvDate = true;
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
-                                      print(plantDate);
                                     },
                                     readOnly: true,
                                     controller: plantDateTextController,
@@ -434,15 +438,19 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: tempPlantDate!.add(Duration(days: 3)),
+                                        initialDate: tempApproxHarvDate ?? tempPlantDate!.add(Duration(days: 3)),
                                         firstDate: tempPlantDate!.add(Duration(days: 3)),
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
-                                        approxHarvDate = tempDate;
-                                        approxHarvDateTextController.text = dateFormat.format(approxHarvDate!);
+                                        if (tempDate != null) {
+                                          tempApproxHarvDate = tempDate;
+                                          approxHarvDate = tempDate;
+                                          approxHarvDateTextController.text = dateFormat.format(approxHarvDate!);
+                                        } else {
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
-                                      print(plantDate);
                                     },
                                     readOnly: true,
                                     enabled: enabledToSelectApproxHarvDate,

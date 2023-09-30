@@ -37,8 +37,8 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
   Manufacturer? manufacturer;
 
   DateTime currentDate = DateTime.now();
-  DateTime? plantDate;
-  DateTime? approxHarvDate;
+  DateTime? mnCertRegDate;
+  DateTime? tempMnCertRegDate;
   var dateFormat = DateFormat('dd-MM-yyyy');
 
   TextEditingController mnCertNoTextController = TextEditingController();
@@ -218,19 +218,15 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                           CustomTextFormField(
                             controller: mnCertNoTextController,
                             hintText: "หมายเลขใบรับรอง",
-                            maxLength: 50,
-                            numberOnly: false,
+                            maxLength: 30,
                             validator: (value) {
+                              final manuftCertNoRegEx = RegExp(r'^((กษ|AC) [0-9-]{18,27})+$');
                               if (value!.isEmpty) {
                                 return "กรุณากรอกหมายเลขใบรับรอง";
                               }
-                              // if (value.length < 27 || value.length > 27) {
-                              //   return "กรุณากรอกหมายเลขใบรับรองให้มีความยาว 27 ตัวอักษร";
-                              // }
-                              // final mnCertRegEx = RegExp(r'กษ \d{2}-\d{4}-\d{4}-\d{11}');
-                              // if (!mnCertRegEx.hasMatch(value)) {
-                              //   return "กรุณากรอกหมายเลขใบรับรองให้ถูกต้องตามรูปแบบ";
-                              // }
+                              if (!manuftCertNoRegEx.hasMatch(value)) {
+                                return "กรุณากรอกหมายเลขใบรับรองมาตรฐานผู้ผลิตให้ถูกต้องตามรูปแบบ";
+                              }
                             },
                             icon: const Icon(Icons.account_circle)
                           ),
@@ -240,17 +236,22 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                               onTap: () async {
                                 DateTime? tempDate = await showDatePicker(
                                     context: context,
-                                    initialDate: currentDate,
+                                    initialDate: tempMnCertRegDate ?? currentDate,
                                     firstDate: DateTime(1950),
-                                    lastDate: DateTime(2100));
+                                    lastDate: currentDate);
                                 setState(() {
-                                  plantDate = tempDate;
-                                  mnCertRegDateTextController.text =
-                                    dateFormat.format(plantDate!);
-                                  mnCertExpireDateTextController.text =
-                                    dateFormat.format(plantDate!.add(Duration(days: 365*3)));
+                                  if (tempDate != null) {
+                                    tempMnCertRegDate = tempDate;
+                                    mnCertRegDate = tempDate;
+                                    mnCertRegDateTextController.text =
+                                      dateFormat.format(mnCertRegDate!);
+                                    mnCertExpireDateTextController.text =
+                                      dateFormat.format(mnCertRegDate!.add(Duration(days: 365*3)));
+                                  } else {
+                                    FocusManager.instance.primaryFocus?.unfocus();
+                                  }
                                 });
-                                print(plantDate);
+                                //print(mnCertRegDate);
                               },
                               readOnly: true,
                               controller: mnCertRegDateTextController,
@@ -264,7 +265,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                               style: const TextStyle(fontFamily: 'Itim', fontSize: 18),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "กรุณาเลือกวันวันที่ออกใบรับรอง";
+                                  return "กรุณาเลือกวันที่ออกใบรับรอง";
                                 }
                               },
                             ),
@@ -273,17 +274,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                             padding: const EdgeInsets.all(10.0),
                             child: TextFormField(
                               onTap: () async {
-                                DateTime? tempDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: currentDate,
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime(2100));
-                                setState(() {
-                                  plantDate = tempDate;
-                                  mnCertExpireDateTextController.text =
-                                      dateFormat.format(plantDate!);
-                                });
-                                print(plantDate);
+                                //print(mnCertRegDate);
                               },
                               readOnly: true,
                               enabled: false,
@@ -367,47 +358,31 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
                                   backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorMN)
                                 ),
                                 onPressed: () async {
-                                  if (mnCertImgTextController.text == "") {
-                                    return showMnCertImgIsEmptyError();
-                                  }
-
                                   if (formKey.currentState!.validate()) {
                                     
-                                    //Farmer data insertion
-                                    /*
-                                    Provider.of<FarmersData>(context, listen: false)
-                                                    .addFarmer(
-                                                      farmerNameTextController.text,
-                                                      farmerLastnameTextController.text,
-                                                      farmerEmailTextController.text,
-                                                      farmerMobileNoTextController.text,
-                                                      farmNameTextController.text,
-                                                      double.parse(farmLatitudeTextController.text),
-                                                      double.parse(farmLongitudeTextController.text),
-                                                      farmerUsernameTextController.text,
-                                                      farmerPasswordTextController.text
-                                                    );
-                                    */
-
-                                    //Farmer's data insertion using farmer controller
-                                    var username = await SessionManager().get("username");
-
-                                    http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
-                                                              mnCertNoTextController.text,
-                                                              mnCertRegDateTextController.text,
-                                                              mnCertExpireDateTextController.text,
-                                                              username.toString());
-
-                                    //print("Status code is " + code.toString());
-
-                                    if (response.statusCode == 500) {
-                                      print("Error!");
-                                      //showUsernameDuplicationAlert();
+                                    if (mnCertImgTextController.text == "") {
+                                      return showMnCertImgIsEmptyError();
                                     } else {
-                                      print("Farmer registration successfully!");
+                                      //Farmer's data insertion using farmer controller
+                                      var username = await SessionManager().get("username");
 
-                                    showSaveManufacuringSuccessAlert();
-                                    }
+                                      http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
+                                                                mnCertNoTextController.text,
+                                                                mnCertRegDateTextController.text,
+                                                                mnCertExpireDateTextController.text,
+                                                                username.toString());
+
+                                      //print("Status code is " + code.toString());
+
+                                      if (response.statusCode == 500) {
+                                        print("Error!");
+                                        //showUsernameDuplicationAlert();
+                                      } else {
+                                        print("Farmer registration successfully!");
+
+                                      showSaveManufacuringSuccessAlert();
+                                      }
+                                    } 
                                   }
                                 },
                                 child: Row(

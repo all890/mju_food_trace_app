@@ -40,7 +40,8 @@ class _RequestRenewingFarmerCertificateState
   Farmer? farmer;
 
   DateTime currentDate = DateTime.now();
-  DateTime? plantDate;
+  DateTime? fmCertRegDate;
+  DateTime? tempFmCertRegDate;
   var dateFormat = DateFormat('dd-MM-yyyy');
 
   TextEditingController fmCertNoTextController = TextEditingController();
@@ -229,17 +230,22 @@ class _RequestRenewingFarmerCertificateState
                                 onTap: () async {
                                   DateTime? tempDate = await showDatePicker(
                                       context: context,
-                                      initialDate: currentDate,
+                                      initialDate: tempFmCertRegDate ?? currentDate,
                                       firstDate: DateTime(1950),
                                       lastDate: currentDate);
                                   setState(() {
-                                    plantDate = tempDate;
-                                    fmCertRegDateTextController.text =
-                                        dateFormat.format(plantDate!);
-                                    fmCertExpireDateTextController.text =
-                                        dateFormat.format(plantDate!.add(Duration(days: 365)));
+                                    if (tempDate != null) {
+                                      tempFmCertRegDate = tempDate;
+                                      fmCertRegDate = tempDate;
+                                      fmCertRegDateTextController.text =
+                                          dateFormat.format(fmCertRegDate!);
+                                      fmCertExpireDateTextController.text =
+                                          dateFormat.format(fmCertRegDate!.add(Duration(days: 365)));
+                                    } else {
+                                      FocusManager.instance.primaryFocus?.unfocus();
+                                    }
                                   });
-                                  print(plantDate);
+                                  //print(fmCertRegDate);
                                 },
                                 readOnly: true,
                                 controller: fmCertRegDateTextController,
@@ -262,17 +268,7 @@ class _RequestRenewingFarmerCertificateState
                               padding: const EdgeInsets.all(10.0),
                               child: TextFormField(
                                 onTap: () async {
-                                  DateTime? tempDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: currentDate,
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2100));
-                                  setState(() {
-                                    plantDate = tempDate;
-                                    fmCertExpireDateTextController.text =
-                                        dateFormat.format(plantDate!);
-                                  });
-                                  print(plantDate);
+                                  //print(plantDate);
                                 },
                                 readOnly: true,
                                 enabled: false,

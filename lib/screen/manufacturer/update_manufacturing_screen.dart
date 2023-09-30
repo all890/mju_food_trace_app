@@ -31,9 +31,13 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
   
   final ManufacturingController manufacturingController = ManufacturingController();
   final ProductController productController = ProductController();
-
+  final RawMaterialShippingController rawMaterialShippingController = RawMaterialShippingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  double? remQtyOfRms;
+  double? canUseKg;
+  double? canUseGrams;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
@@ -69,8 +73,13 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
     var response = await manufacturingController.getManufacturingById(manufacturingId);
     manufacturing = Manufacturing.fromJsonToManufacturing(response);
     products = await productController.getListProduct(username);
-    //  print(rawMaterialShipping?.planting?.plantName);
-    
+    var remQtyResponse = await rawMaterialShippingController.getRemQtyOfRmsIndivByManufacturingId(manufacturing?.manufacturingId ?? "");
+    remQtyOfRms = double.parse(remQtyResponse);
+    print("REMQTYOFRMS : ${remQtyOfRms}");
+    canUseGrams = remQtyOfRms;
+    canUseKg = remQtyOfRms! / 1000;
+    print("GRAMS : ${canUseGrams}");
+    print("KGS : ${canUseKg}");
     fetchName();
     setTextToData();
     setState(() {
@@ -88,6 +97,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
 
     print(productNames?.length);
   }
+
   void setTextToData(){
     selected_productName = manufacturing?.product?.productName??"";
     productQtyTextController.text =  (manufacturing?.productQty ?? 0).toString();
@@ -97,7 +107,10 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
     plantNameTextController.text = manufacturing?.rawMaterialShipping?.planting?.plantName??"";
     usedRawMatQtyTextController.text =  (manufacturing?.usedRawMatQty ?? 0.0).toString();
     selected_usedRawMatQtyUnit_items = manufacturing?.usedRawMatQtyUnit??"";
-
+    setState(() {
+      manufactureDate = manufacturing?.manufactureDate;
+      expireDate = manufacturing?.expireDate;
+    });
   }
 
 
@@ -105,7 +118,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
     QuickAlert.show(
       context: context,
       title: "แก้ไขข้อมูลสำเร็จ",
-      text: "แก้ไขข้อมูลการผลิตสินค้า",
+      text: "แก้ไขข้อมูลการผลิตสินค้าสำเร็จ",
       type: QuickAlertType.success,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -115,6 +128,33 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       }
     );
   }
+
+  void showProductUnitIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของสินค้า",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showusedRawMatShpQtyUnitIsEmptyError () {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showConfirmToUpdateManufacturingAlert ()  {
     QuickAlert.show(
       context: context,
@@ -130,9 +170,17 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       },
       onConfirmBtnTap: () async {
         print("PRESSED!");
+
+
+
         if (formKey.currentState!.validate()) {
 
-          print("UPDATE MANUFACTURING!");
+          if (selected_productUnit_items == "หน่วยของสินค้า") {
+            return showProductUnitIsEmptyError();
+          } else if (selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+            return showusedRawMatShpQtyUnitIsEmptyError();
+          } else {
+            print("UPDATE MANUFACTURING!");
           //String username = await SessionManager().get("username");
             products?.forEach((p) {
                if(p.productName == selected_productName){
@@ -140,36 +188,39 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
 
                }              
             });
-           print("สินค้า :" +"${product}");                          
+            print("สินค้า :" +"${product}");                          
 
-          DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+            DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
-          Manufacturing manufacturings = Manufacturing(
-            manufacturingId: widget.manufacturingId,
-            manufactureDate: dateFormat.parse(manufactureDateTextController.text),
-            expireDate:  dateFormat.parse(expireDateTextController.text),
-            productQty: int.parse(productQtyTextController.text),
-            productUnit: selected_productUnit_items??"",
-            usedRawMatQty: double.parse(usedRawMatQtyTextController.text),
-            usedRawMatQtyUnit: selected_usedRawMatQtyUnit_items??"",
-            manuftPrevBlockHash: manufacturing?.manuftPrevBlockHash,
-            manuftCurrBlockHash: null,
-            rawMaterialShipping: manufacturing?.rawMaterialShipping,
-            product:product
-          );
+            Manufacturing manufacturings = Manufacturing(
+              manufacturingId: widget.manufacturingId,
+              manufactureDate: dateFormat.parse(manufactureDateTextController.text),
+              expireDate:  dateFormat.parse(expireDateTextController.text),
+              productQty: int.parse(productQtyTextController.text),
+              productUnit: selected_productUnit_items??"",
+              usedRawMatQty: double.parse(usedRawMatQtyTextController.text),
+              usedRawMatQtyUnit: selected_usedRawMatQtyUnit_items??"",
+              manuftPrevBlockHash: manufacturing?.manuftPrevBlockHash,
+              manuftCurrBlockHash: null,
+              rawMaterialShipping: manufacturing?.rawMaterialShipping,
+              product:product
+            );
 
-          http.Response response = await manufacturingController.updateManufacturing(manufacturings);
+            http.Response response = await manufacturingController.updateManufacturing(manufacturings);
 
-          if (response.statusCode == 500) {
-            //showFailToSaveProductAlert();
-            print("Failed to update!");
-          } else {
-            showUpdateManufacturingSuccessAlert();
-            print("Update successfully!");
-          }
-      
-        }
+            if (response.statusCode == 500) {
+              //showFailToSaveProductAlert();
+              print("Failed to update!");
+            } else {
+              Navigator.pop(context);
+              showUpdateManufacturingSuccessAlert();
+              print("Update successfully!");
             }
+          }
+        } else {
+          Navigator.pop(context);
+        }
+      }
       
     );
         }
@@ -336,13 +387,18 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                 CustomTextFormField(
                                     controller: productQtyTextController,
                                     hintText: "ปริมาณสินค้าที่ผลิตได้",
-                                    maxLength: 50,
+                                    maxLength: 6,
                                     numberOnly: true,
                                     validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
+                                      var productQtyRegEx = RegExp(r'^\d+$');
+                                      if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
+                                      }
+                                      if (!productQtyRegEx.hasMatch(value)) {
+                                        return "ปริมาณสินค้าที่ผลิตได้ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                      }
+                                      if (int.parse(value) > 100000 || int.parse(value) <= 0) {
+                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
                                       }
                                     },
                                     icon: const Icon(Icons.equalizer)),
@@ -405,15 +461,23 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: currentDate,
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2100));
+                                          initialDate: manufacturing?.manufactureDate ?? DateTime.now(),
+                                          firstDate: manufacturing?.manufactureDate ?? DateTime.now(),
+                                          lastDate: currentDate);
                                       setState(() {
-                                        manufactureDate = tempDate;
-                                        manufactureDateTextController.text =
+                                        if (tempDate != null) {
+                                          manufactureDate = tempDate;
+                                          manufactureDateTextController.text =
                                             dateFormat.format(manufactureDate!);
+                                          if (manufactureDate!.isAfter(expireDate ?? DateTime.now()) || manufactureDate!.isAtSameMomentAs(expireDate ?? DateTime.now())) {
+                                            expireDate = manufactureDate!.add(Duration(days: 1));
+                                            expireDateTextController.text = dateFormat.format(expireDate ?? DateTime.now());
+                                          }
+                                        } else {
+                                          print("TEST 123");
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
-                                      print(manufactureDate);
                                     },
                                     readOnly: true,
                                     controller: manufactureDateTextController,
@@ -441,13 +505,18 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: currentDate,
-                                          firstDate: DateTime(1950),
+                                          initialDate: expireDate ?? DateTime.now(),
+                                          firstDate: manufactureDate!.add(Duration(days: 1)),
                                           lastDate: DateTime(2100));
                                       setState(() {
-                                        expireDate = tempDate;
-                                        expireDateTextController.text =
-                                            dateFormat.format(expireDate!);
+                                        if (tempDate != null) {
+                                          expireDate = tempDate;
+                                          expireDateTextController.text =
+                                          dateFormat.format(expireDate!);
+                                        } else {
+                                          print("TEST 1234");
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        }
                                       });
                                       print(expireDate);
                                     },
@@ -476,6 +545,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     hintText: "ผลผลิตที่นำมาใช้",
                                     maxLength: 50,
                                     numberOnly: false,
+                                    enabled: false,
                                     validator: (value) {
                                       if (value!.isNotEmpty) {
                                         return null;
@@ -485,18 +555,57 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     },
                                     icon: const Icon(Icons.grass)),
                                 CustomTextFormField(
-                                    controller: usedRawMatQtyTextController,
-                                    hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
-                                    maxLength: 50,
-                                    numberOnly: true,
-                                    validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        return null;
-                                      } else {
-                                        return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
-                                      }
-                                    },
-                                    icon: const Icon(Icons.bubble_chart)),
+                                  controller: usedRawMatQtyTextController,
+                                  hintText: "จำนวนของผลผลิตที่ใช้ในการผลิตสินค้า",
+                                  hT: "ไม่เกิน ${canUseKg} กิโลกรัม หรือ ${canUseGrams} กรัม",
+                                  maxLength: 50,
+                                  numberOnly: true,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
+                                    }
+
+                                    double actualGrams = 0;
+
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
+                                      actualGrams = double.parse(value) * 1000;
+                                    } else {
+                                      actualGrams = double.parse(value);
+                                    }
+
+                                    /*
+                                    if (selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+                                      showUsedRawMatQtyIsEmptyError();
+                                      return "กรุณาเลือกหน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า";
+                                    }
+                                    */
+
+                                    double rmsNetQuantityGrams = 0;
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
+                                      rmsNetQuantityGrams = (remQtyOfRms??0) / 1000.0;
+                                    } else {
+                                      rmsNetQuantityGrams = (remQtyOfRms??0);
+                                    }
+
+                                    print("KILOGRAMS : ${actualGrams/1000} <> ${rmsNetQuantityGrams}");
+                                    print("GRAMS : ${actualGrams} <> ${rmsNetQuantityGrams*1000}");
+
+                                    print("NORMAL : ${actualGrams} <> ${rmsNetQuantityGrams}");
+
+                                    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม" && actualGrams/1000 > rmsNetQuantityGrams) {
+                                      return "ปริมาณผลผลิตที่ใช้ต้องไม่เกินปริมาณผลผลิตที่มีอยู่";
+                                    }
+                                    else if (selected_usedRawMatQtyUnit_items == "กรัม" && actualGrams > rmsNetQuantityGrams*1000) {
+                                      return "ปริมาณผลผลิตที่ใช้ต้องไม่เกินปริมาณผลผลิตที่มีอยู่";
+                                    }
+                                    else {
+                                      return null;
+                                    }
+                                    
+                                    
+                                  },
+                                  icon: const Icon(Icons.bubble_chart)
+                                ),
                                        Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: SizedBox(

@@ -48,6 +48,14 @@ class RawMaterialShippingController{
 
   }
 
+  Future getRemQtyOfRmsIndivByManufacturingId (String manufacturingId) async {
+    var url = Uri.parse(baseURL + '/rms/getremqtyofrmsindiv/' + manufacturingId);
+
+    http.Response response = await http.get(url);
+
+    return response.body;
+  }
+
   Future getRmsExistInManufacturingByManutftUsername (String username) async {
 
     var url = Uri.parse(baseURL + '/rms/getrmsexists/' + username);
