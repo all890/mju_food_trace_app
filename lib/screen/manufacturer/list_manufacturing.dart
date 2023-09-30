@@ -306,7 +306,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                       ],
                     )
                   : TabBarView(children: [
-                      Container(
+                      notRecordedManufacturings?.isNotEmpty == true? Container(
                         padding: EdgeInsets.all(10.0),
                         child: ListView.builder(
                           itemCount: notRecordedManufacturings?.length,
@@ -447,8 +447,27 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                             );
                           },
                         ),
+                      ) :
+                      Center(
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/corn_action1.png"),
+                              ),
+                              Text(
+                                "ไม่มีการผลิตสินค้าที่ไม่ถูกบันทึก",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      Container(
+                      recordedManufacturings?.isNotEmpty == true? Container(
                         padding: EdgeInsets.all(10.0),
                         child: ListView.builder(
                           itemCount: recordedManufacturings?.length,
@@ -494,6 +513,25 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               ),
                             );
                           },
+                        ),
+                      ) :
+                      Center(
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/corn_action2.png"),
+                              ),
+                              Text(
+                                "ไม่มีการผลิตสินค้าที่ถูกบันทึก",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ])),

@@ -251,7 +251,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
               :
               TabBarView(
                 children: [
-                  Container(
+                  notUsedRms?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: notUsedRms?.length,
@@ -350,8 +350,27 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                         );
                       },
                     ),
+                  ) :
+                  Center(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            height: 350,
+                            width: 350,
+                            image: AssetImage("images/bean_action3.png"),
+                          ),
+                          Text(
+                            "ไม่มีผลผลิตที่ยังไม่เคยใช้",
+                            style:
+                                TextStyle(fontFamily: "Itim", fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  Container(
+                  usedRms?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: usedRms?.length,
@@ -447,8 +466,27 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                         );
                       },
                     ),
+                  ) :
+                  Center(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            height: 350,
+                            width: 350,
+                            image: AssetImage("images/bean_action6.png"),
+                          ),
+                          Text(
+                            "ไม่มีผลผลิตที่คงเหลือ",
+                            style:
+                                TextStyle(fontFamily: "Itim", fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  Container(
+                  emptyRms?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: emptyRms?.length,
@@ -519,6 +557,25 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                           ),
                         );
                       },
+                    ),
+                  ) :
+                  Center(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            height: 350,
+                            width: 350,
+                            image: AssetImage("images/bean_action7.png"),
+                          ),
+                          Text(
+                            "ไม่มีผลผลิตที่ใช้ครบจำนวน",
+                            style:
+                                TextStyle(fontFamily: "Itim", fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ]

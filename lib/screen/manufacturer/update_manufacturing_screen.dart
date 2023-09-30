@@ -42,7 +42,9 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? manufactureDate;
+  DateTime? tempManufactureDate;
   DateTime? expireDate;
+  DateTime? tempExpireDate;
   bool? isLoaded;
 
   String? selected_productName;
@@ -57,7 +59,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
   TextEditingController expireDateTextController = TextEditingController();
 
   TextEditingController productQtyTextController = TextEditingController();
-  List<String> productUnit_items = ["หน่วยของสินค้า", "กรัม", "กิโลกรัม"];
+  List<String> productUnit_items = ["หน่วยของสินค้า", "หน่วย", "ถุง", "แพ็ค", "ขวด", "ชุด", "ห่อ", "กระสอบ"];
   String? selected_productUnit_items = "หน่วยของสินค้า";
 
   TextEditingController plantNameTextController = TextEditingController();
@@ -461,15 +463,17 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: manufacturing?.manufactureDate ?? DateTime.now(),
-                                          firstDate: manufacturing?.manufactureDate ?? DateTime.now(),
+                                          initialDate: tempManufactureDate ?? manufactureDate!,
+                                          firstDate: manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now(),
                                           lastDate: currentDate);
                                       setState(() {
                                         if (tempDate != null) {
+                                          tempManufactureDate = tempDate;
                                           manufactureDate = tempDate;
                                           manufactureDateTextController.text =
                                             dateFormat.format(manufactureDate!);
                                           if (manufactureDate!.isAfter(expireDate ?? DateTime.now()) || manufactureDate!.isAtSameMomentAs(expireDate ?? DateTime.now())) {
+                                            tempExpireDate = manufactureDate!.add(Duration(days: 1));
                                             expireDate = manufactureDate!.add(Duration(days: 1));
                                             expireDateTextController.text = dateFormat.format(expireDate ?? DateTime.now());
                                           }
@@ -505,11 +509,12 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: expireDate ?? DateTime.now(),
+                                          initialDate: tempExpireDate ?? expireDate!,
                                           firstDate: manufactureDate!.add(Duration(days: 1)),
                                           lastDate: DateTime(2100));
                                       setState(() {
                                         if (tempDate != null) {
+                                          tempExpireDate = tempDate;
                                           expireDate = tempDate;
                                           expireDateTextController.text =
                                           dateFormat.format(expireDate!);
@@ -565,6 +570,10 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                       return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
                                     }
 
+                                    if (double.parse(value) <= 0) {
+                                      return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้าให้มีค่ามากกว่า 0";
+                                    }
+
                                     double actualGrams = 0;
 
                                     if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
@@ -598,9 +607,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                     else if (selected_usedRawMatQtyUnit_items == "กรัม" && actualGrams > rmsNetQuantityGrams*1000) {
                                       return "ปริมาณผลผลิตที่ใช้ต้องไม่เกินปริมาณผลผลิตที่มีอยู่";
                                     }
-                                    else {
-                                      return null;
-                                    }
+                                    
                                     
                                     
                                   },

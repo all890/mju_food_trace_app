@@ -38,14 +38,16 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   var dateFormat = DateFormat('dd-MM-yyyy');
   DateTime currentDate = DateTime.now();
   DateTime? manufactureDate;
+  DateTime? tempManufactureDate;
   DateTime? expireDate;
+  DateTime? tempExpireDate;
   bool? isLoaded;
 
   TextEditingController manufactureDateTextController = TextEditingController();
   TextEditingController expireDateTextController = TextEditingController();
 
   TextEditingController productQtyTextController = TextEditingController();
-  List<String> productUnit_items = ["หน่วยของสินค้า", "กรัม", "กิโลกรัม"];
+  List<String> productUnit_items = ["หน่วยของสินค้า", "หน่วย", "ถุง", "แพ็ค", "ขวด", "ชุด", "ห่อ", "กระสอบ"];
   String? selected_productUnit_items = "หน่วยของสินค้า";
 
   TextEditingController plantNameTextController = TextEditingController();
@@ -429,12 +431,13 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: currentDate,
+                                          initialDate: tempManufactureDate ?? currentDate,
                                           firstDate: rawMaterialShipping?.rawMatShpDate ?? DateTime.now(),
                                           lastDate: currentDate);
                                       setState(() {
-                                        manufactureDate = tempDate;
-                                        if (manufactureDate != null) {
+                                        if (tempDate != null) {
+                                          tempManufactureDate = tempDate;
+                                          manufactureDate = tempDate;
                                           manufactureDateTextController.text =
                                             dateFormat.format(manufactureDate??DateTime.now());
                                           if (manufactureDateTextController.text != "") {
@@ -474,12 +477,13 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: DateFormat('dd-MM-yyyy').parse(manufactureDateTextController.text).add(Duration(days: 1)),
-                                          firstDate: DateFormat('dd-MM-yyyy').parse(manufactureDateTextController.text).add(Duration(days: 1)),
+                                          initialDate: tempExpireDate ?? manufactureDate!.add(Duration(days: 1)),
+                                          firstDate: manufactureDate!.add(Duration(days: 1)),
                                           lastDate: DateTime(2100));
                                       setState(() {
-                                        expireDate = tempDate;
-                                        if (expireDate != null) {
+                                        if (tempDate != null) {
+                                          tempExpireDate = tempDate;
+                                          expireDate = tempDate;
                                           expireDateTextController.text =
                                           dateFormat.format(expireDate??DateTime.now());
                                           print(expireDate);
@@ -533,6 +537,10 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
+                                    }
+
+                                    if (double.parse(value) <= 0) {
+                                      return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้าให้มีค่ามากกว่า 0";
                                     }
 
                                     double actualGrams = 0;

@@ -229,97 +229,136 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                       ),
                     ),
                   ),
+                  Card(
+                    elevation: 10,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 15, left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "รหัสผลผลิตที่นำมาใช้ : " +
+                                    "${manufacturings?.rawMaterialShipping?.rawMatShpId}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "ชื่อของผลผลิต : " +
+                                    "${manufacturings?.rawMaterialShipping?.planting?.plantName}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 15, left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "จำนวนของผลผลิตที่ใช้ : " +
+                                    "${manufacturings?.usedRawMatQty}" +
+                                    " " +
+                                    "${manufacturings?.usedRawMatQtyUnit}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: 20),
+                  //   child: Align(
+                  //     alignment: Alignment.center,
+                  //     child: Icon(
+                  //       Icons.arrow_downward
+                  //     ),
+                  //   ),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Image(
+                        image: AssetImage("images/assembly-line.gif")
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 10,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 15, left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "ผลิตเป็นสินค้า : " +
+                                    "${manufacturings?.product?.productName}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "จำนวนสินค้าที่ได้ : " +
+                                    "${manufacturings?.productQty}" +
+                                    " " +
+                                    "${manufacturings?.productUnit}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "วันที่ผลิตสินค้า : " +
+                                    "${dateFormat.format(manufacturings?.manufactureDate ?? DateTime.now())}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 15, left: 15),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "วันหมดอายุของสินค้า : " +
+                                    "${dateFormat.format(manufacturings?.expireDate ?? DateTime.now())}",
+                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "รหัสผลผลิตที่นำมาใช้ : " +
-                            "${manufacturings?.rawMaterialShipping?.rawMatShpId}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "ชื่อของผลผลิต : " +
-                            "${manufacturings?.rawMaterialShipping?.planting?.plantName}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "จำนวนของผลผลิตที่ใช้ : " +
-                            "${manufacturings?.usedRawMatQty}" +
-                            " " +
-                            "${manufacturings?.usedRawMatQtyUnit}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 20),
-                  child: Align(alignment: Alignment.center,child: Icon(Icons.keyboard_double_arrow_down),),),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "ผลิตเป็นสินค้า : " +
-                            "${manufacturings?.product?.productName}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "จำนวนสินค้าที่ได้ : " +
-                            "${manufacturings?.productQty}" +
-                            " " +
-                            "${manufacturings?.productUnit}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "วันที่ผลิตสินค้า : " +
-                            "${dateFormat.format(manufacturings?.manufactureDate ?? DateTime.now())}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "วันหมดอายุของสินค้า : " +
-                            "${dateFormat.format(manufacturings?.expireDate ?? DateTime.now())}",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "คำเตือน กรุณาตรวจสอบข้อมูลข้างต้นให้เรียบร้อยหลังจากที่ทำการบันทึกจะไม่สามารถแก้ไขข้อมูลได้อีก",
-                        style: TextStyle(fontSize: 18, fontFamily: 'Itim',color: Colors.red),
+                        "คำเตือน : กรุณาตรวจสอบข้อมูลข้างต้นให้เรียบร้อยหลังจากที่ทำการบันทึกจะไม่สามารถแก้ไขข้อมูลได้อีก",
+                        style: TextStyle(fontSize: 18, fontFamily: 'Itim',color: Colors.red,
                         
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

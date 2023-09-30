@@ -55,7 +55,10 @@ flutter:
     - images/bean_action3.png
     - images/bean_action4.png
     - images/bean_action5.png
+    - images/bean_action6.png
+    - images/bean_action7.png
     - images/corn_action1.png
+    - images/corn_action2.png
 
   fonts:
     - family: Itim

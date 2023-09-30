@@ -255,6 +255,19 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                     ),
                   ),
                   Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "${farmerCertificate?.farmer?.farmerRegDate}",
+                        style: TextStyle(
+                          fontFamily: 'Itim',
+                          fontSize: 16
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
                       controller: farmerNameTextController,

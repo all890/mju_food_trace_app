@@ -105,19 +105,19 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                           ),
                         ),
                         Text(
-                          "${manufacturerCertificates?[index].manufacturer?.manuftEmail}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          ),
-                        ),
-                        Text(
-                          "${dateFormat.format(manufacturerCertificates?[index].mnCertUploadDate ?? DateTime.now())}",
+                          "วันที่ลงทะเบียน : ${dateFormat.format(manufacturerCertificates?[index].mnCertRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
                           )
-                        )
+                        ),
+                        Text(
+                          "วันที่หมดอายุ : ${dateFormat.format(manufacturerCertificates?[index].mnCertExpireDate ?? DateTime.now())}",
+                          style: const TextStyle(
+                            fontFamily: 'Itim',
+                            fontSize: 18
+                          )
+                        ),
                       ],
                     ),
                     trailing: const Icon(Icons.zoom_in),

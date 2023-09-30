@@ -65,6 +65,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
   String? selectedManuftName = "";
   String? textSelectedManuftName = "";
   var dateFormat = DateFormat('dd-MM-yyyy');
+  var newDateFormat = DateFormat('dd-MMM-yyyy');
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -88,7 +89,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
   }
 
   void fetchDateTimeNow () {
-    rawMatShpDateTextController.text = dateFormat.format(DateTime.now());
+    rawMatShpDateTextController.text = newDateFormat.format(DateTime.now());
   }
 
   void showManuftNameIsEmptyError () {
@@ -259,16 +260,22 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                fileToDisplay == null
-                                    ? SizedBox(
+                                    ? Padding(
+                                      padding: const EdgeInsets.only(top: 25, bottom: 25),
+                                      child: SizedBox(
+                                            width: 300,
+                                            height: 300,
+                                          child: Image.network(baseURL +
+                                              '/planting/' +
+                                              imgPlantingFileName)),
+                                    )
+                                    : Padding(
+                                      padding: const EdgeInsets.only(top: 25, bottom: 25),
+                                      child: SizedBox(
                                           width: 300,
                                           height: 300,
-                                        child: Image.network(baseURL +
-                                            '/planting/' +
-                                            imgPlantingFileName))
-                                    : SizedBox(
-                                        width: 300,
-                                        height: 300,
-                                        child: Image.file(fileToDisplay!)),
+                                          child: Image.file(fileToDisplay!)),
+                                    ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: 2),
                                   child: Align(
@@ -287,7 +294,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "วันที่ปลูกผลผลิต : " +
-                                          "${planting?.plantDate}",
+                                          "${newDateFormat.format(planting?.plantDate ?? DateTime.now())}",
                                       style: TextStyle(
                                           fontSize: 18, fontFamily: 'Itim'),
                                     ),
@@ -323,7 +330,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                          "${planting?.approxHarvDate}",
+                                          "${newDateFormat.format(planting?.approxHarvDate ?? DateTime.now())}",
                                       style: TextStyle(
                                           fontSize: 18, fontFamily: 'Itim'),
                                     ),
@@ -466,6 +473,10 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
 
                                       if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณผลผลิต";
+                                      }
+
+                                      if (double.parse(value) <= 0) {
+                                        return "กรุณากรอกปริมาณผลผลิตให้มากกว่า 0";
                                       }
 
                                       if (planting?.ptCurrBlockHash == null) {

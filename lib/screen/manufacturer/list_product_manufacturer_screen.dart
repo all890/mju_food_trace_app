@@ -280,7 +280,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
             ) : 
             TabBarView(
               children: [
-                Container(
+                notManufacturedProducts?.isNotEmpty == true? Container(
                   padding: EdgeInsets.all(10.0),
                   child: ListView.builder(
                     itemCount: notManufacturedProducts?.length,
@@ -367,8 +367,27 @@ class _ListProductScreenState extends State<ListProductScreen> {
                       );
                     },
                   ),
+                ) :
+                Center(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/bean_action1.png"),
+                        ),
+                        Text(
+                          "ไม่มีสินค้าที่ยังไม่ถูกผลิต",
+                          style:
+                              TextStyle(fontFamily: "Itim", fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Container(
+                manufacturedProducts?.isNotEmpty == true? Container(
                   padding: EdgeInsets.all(10.0),
                   child: ListView.builder(
                     itemCount: manufacturedProducts?.length,
@@ -416,6 +435,25 @@ class _ListProductScreenState extends State<ListProductScreen> {
                         ),
                       );
                     },
+                  ),
+                ) :
+                Center(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          height: 350,
+                          width: 350,
+                          image: AssetImage("images/bean_action2.png"),
+                        ),
+                        Text(
+                          "ไม่มีสินค้าที่ถูกผลิต",
+                          style:
+                              TextStyle(fontFamily: "Itim", fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

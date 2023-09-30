@@ -106,19 +106,26 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                           ),
                         ),
                         Text(
-                          "${farmerCertificates?[index].farmer?.farmerEmail}",
+                          "${farmerCertificates?[index].farmer?.farmName}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
                           ),
                         ),
                         Text(
-                          "${dateFormat.format(farmerCertificates?[index].fmCertUploadDate ?? DateTime.now())}",
+                          "วันที่ลงทะเบียน : ${dateFormat.format(farmerCertificates?[index].fmCertRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
                           )
-                        )
+                        ),
+                        Text(
+                          "วันที่หมดอายุ : ${dateFormat.format(farmerCertificates?[index].fmCertExpireDate ?? DateTime.now())}",
+                          style: const TextStyle(
+                            fontFamily: 'Itim',
+                            fontSize: 18
+                          )
+                        ),
                       ],
                     ),
                     trailing: const Icon(Icons.zoom_in),

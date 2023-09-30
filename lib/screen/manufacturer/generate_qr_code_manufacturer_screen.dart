@@ -154,7 +154,23 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                               ),
                             ),
                           ),
-                          Image.network(baseURL + '/qrcode/getqrcodebyid/${qrCode?.qrcodeId}', scale: 0.9),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 20),
+                            child: Card(
+                              elevation: 30,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: SizedBox(
+                                width: 300,
+                                child: Image.network(
+                                  baseURL + '/qrcode/getqrcodebyid/${qrCode?.qrcodeId}',
+                                  scale: 0.5
+                                )
+                              ),
+                            ),
+                          ),
+                          //Image.network(baseURL + '/qrcode/getqrcodebyid/${qrCode?.qrcodeId}', scale: 0.9),
                           Padding(
                             padding: EdgeInsets.only(top: 8),
                             child: Text(
