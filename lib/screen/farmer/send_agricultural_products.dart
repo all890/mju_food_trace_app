@@ -89,7 +89,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
   }
 
   void fetchDateTimeNow () {
-    rawMatShpDateTextController.text = newDateFormat.format(DateTime.now());
+    rawMatShpDateTextController.text = dateFormat.format(DateTime.now());
   }
 
   void showManuftNameIsEmptyError () {
