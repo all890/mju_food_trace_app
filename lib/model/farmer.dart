@@ -18,6 +18,8 @@ class Farmer {
   String? farmName;
   String? farmLatitude;
   String? farmLongitude;
+  String? fmPrevBlockHash;
+  String? fmCurrBlockHash;
 
   User? user;
  
@@ -33,6 +35,8 @@ class Farmer {
     this.farmName,
     this.farmLatitude,
     this.farmLongitude,
+    this.fmPrevBlockHash,
+    this.fmCurrBlockHash,
     this.user,
   });
 
@@ -49,6 +53,8 @@ class Farmer {
       farmName: json["farmName"],
       farmLatitude: json["farmLatitude"].toString(),
       farmLongitude: json["farmLongitude"].toString(),
+      fmPrevBlockHash: json["fmPrevBlockHash"],
+      fmCurrBlockHash: json["fmCurrBlockHash"],
       user: json["user"] == null ? null : User.fromJsonToUser(json["user"]),
     );
   }
@@ -65,6 +71,8 @@ class Farmer {
       'farmName': farmName,
       'farmLatitude': farmLatitude,
       'farmLongitude': farmLongitude,
+      'fmPrevBlockHash': fmPrevBlockHash,
+      'fmCurrBlockHash': fmCurrBlockHash,
       'user': user?.fromUserToJson()
     };
   }

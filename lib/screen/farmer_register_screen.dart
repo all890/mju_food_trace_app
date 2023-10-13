@@ -117,6 +117,20 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
       });
     }
 
+    void showFarmerMobileNoDuplicationAlert() {
+      QuickAlert.show(
+        context: context,
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถใช้งานเบอร์โทรเกษตรกรได้ เนื่องจากมีผู้ใช้อื่นลงทะเบียนในระบบไปแล้ว",
+        type: QuickAlertType.error,
+        confirmBtnText: "ตกลง",
+        onConfirmBtnTap: () {
+          
+          Navigator.pop(context);
+        }
+      );
+    }
+
     void showUsernameDuplicationAlert() {
       QuickAlert.show(
         context: context,
@@ -344,18 +358,17 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                 ),
                                 CustomTextFormField(
                                   controller: farmNameTextController,
-                                  hintText: "ชื่อฟาร์ม",
+                                  hintText: "ชื่อฟาร์ม (กรอกหรือไม่กรอกก็ได้)",
                                   maxLength: 60,
                                   validator: (value) {
                                     final farmNameRegEx = RegExp(r'^[ก-์a-zA-Z-." "]+$');
-                                    if (value!.isEmpty) {
-                                      return "กรุณากรอกชื่อฟาร์ม";
+                                    if (value!.length > 60) {
+                                      return "กรุณากรอกชื่อฟาร์มให้มีความยาวตั้งแต่ 0 - 60 ตัวอักษร";
                                     }
-                                    if (value.length < 6) {
-                                      return "กรุณากรอกชื่อฟาร์มให้มีความยาวตั้งแต่ 6 - 60 ตัวอักษร";
-                                    }
-                                    if (!farmNameRegEx.hasMatch(value)) {
-                                      return "กรุณากรอกชื่อฟาร์มให้เป็นภาษาไทยหรือภาษาอังกฤษ โดยสามารถประกอบไปด้วยช่องว่าง - และ .";
+                                    if (value.isNotEmpty) {
+                                      if (!farmNameRegEx.hasMatch(value)) {
+                                        return "กรุณากรอกชื่อฟาร์มให้เป็นภาษาไทยหรือภาษาอังกฤษ โดยสามารถ\nประกอบไปด้วยช่องว่าง - และ .";
+                                      }
                                     }
                                   },
                                   icon: const Icon(Icons.gite)
@@ -730,6 +743,9 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                             if (response.statusCode == 409) {
                                               print("Username is already exists!");
                                               showUsernameDuplicationAlert();
+                                            } else if (response.statusCode == 406) {
+                                              print("Farmer mobile number is already exists!");
+                                              showFarmerMobileNoDuplicationAlert();
                                             } else {
                                               print("Farmer registration successfully!");
                                               Navigator.of(context).pushReplacement(

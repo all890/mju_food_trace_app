@@ -41,37 +41,53 @@ class ManufacturerController {
     //var usernameJsonResponse = jsonDecode(usernameResponse.body);
 
     if (usernameResponse.statusCode == 200) {
-      Map data = {
-        "manuftName" : manuftName,
-        "manuftEmail" : manuftEmail,
-        "factoryLatitude" : factoryLatitude,
-        "factoryLongitude" : factoryLongitude,
-        "factoryTelNo" : factoryTelNo,
-        "factorySupName" : factorySupName,
-        "factorySupLastname" : factorySupLastname,
-        "username" : username,
-        "password" : password,
-        "mnCertNo" : mnCertNo,
-        "mnCertRegDate" : mnCertRegDate,
-        "mnCertExpireDate" : mnCertExpireDate
+      Map manuftNameData = {
+        "manuftName" : manuftName
       };
 
-      var path = await upload(mnCertImg);
-    
-      data["mnCertImg"] = path;
+      var manuftNameBody = json.encode(manuftName);
+      var manuftNameUrl = Uri.parse(baseURL + '/manuft/ismnnameavailable/' + manuftName);
 
-      print(path);
-
-      var body = json.encode(data);
-      var url = Uri.parse(baseURL + '/manuft/add');
-
-      http.Response response = await http.post(
-        url,
+      http.Response manuftNameResponse = await http.post(
+        manuftNameUrl,
         headers: headers,
-        body: body
+        body: manuftNameBody
       );
-      //print(response.statusCode);
-      return response;
+      if (manuftNameResponse.statusCode == 200) {
+        Map data = {
+          "manuftName" : manuftName,
+          "manuftEmail" : manuftEmail,
+          "factoryLatitude" : factoryLatitude,
+          "factoryLongitude" : factoryLongitude,
+          "factoryTelNo" : factoryTelNo,
+          "factorySupName" : factorySupName,
+          "factorySupLastname" : factorySupLastname,
+          "username" : username,
+          "password" : password,
+          "mnCertNo" : mnCertNo,
+          "mnCertRegDate" : mnCertRegDate,
+          "mnCertExpireDate" : mnCertExpireDate
+        };
+
+        var path = await upload(mnCertImg);
+      
+        data["mnCertImg"] = path;
+
+        print(path);
+
+        var body = json.encode(data);
+        var url = Uri.parse(baseURL + '/manuft/add');
+
+        http.Response response = await http.post(
+          url,
+          headers: headers,
+          body: body
+        );
+        //print(response.statusCode);
+        return response;
+      } else if (manuftNameResponse.statusCode == 406) {
+        return manuftNameResponse.statusCode;
+      }
     } else {
       return usernameResponse.statusCode;
     }

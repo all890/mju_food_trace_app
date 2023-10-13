@@ -90,6 +90,19 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
     );
   }
 
+  void showFactoryTelNoDuplicateAlert() {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: "ชื่อผู้ผลิตไม่สามารถใช้งานได้ เนื่องจากถูกลงทะเบียนในระบบแล้ว",
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -717,6 +730,9 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                             if (code == 409) {
                                               print("Username is already exists!");
                                               showUsernameDuplicationAlert();
+                                            } else if (code == 406) {
+                                              print("Factory tel no is already exists!");
+                                              showFactoryTelNoDuplicateAlert();
                                             } else {
                                               Navigator.of(context).pushReplacement(
                                                 MaterialPageRoute(

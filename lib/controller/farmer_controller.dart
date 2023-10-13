@@ -40,38 +40,57 @@ class FarmerController {
     //var usernameJsonResponse = jsonDecode(usernameResponse.body);
 
     if (usernameResponse.statusCode == 200) {
-      Map data = {
-        "farmerName" : farmerName,
-        "farmerLastname" : farmerLastname,
-        "farmerEmail" : farmerEmail,
-        "farmerMobileNo" : farmerMobileNo,
-        "farmName" : farmName,
-        "farmLatitude" : farmLatitude,
-        "farmLongitude" : farmLongitude,
-        "username" : username,
-        "password" : password,
-        "fmCertNo" : fmCertNo,
-        "fmCertRegDate" : fmCertRegDate,
-        "fmCertExpireDate" : fmCertExpireDate
+      Map farmerMobileNoData = {
+        "farmerMobileNo" : farmerMobileNo
       };
 
-      var path = await upload(fmCertImg);
-    
-      data["fmCertImg"] = path;
+      var farmerMobileNoBody = json.encode(farmerMobileNoData);
+      var farmerMobileNoUrl = Uri.parse(baseURL + '/farmer/isfmmobileavailable/' + farmerMobileNo);
 
-      print(path);
-
-      var body = json.encode(data);
-      var url = Uri.parse(baseURL + '/farmer/add');
-
-      http.Response response = await http.post(
-        url,
+      http.Response farmerMobileNoResponse = await http.post(
+        farmerMobileNoUrl,
         headers: headers,
-        body: body
+        body: farmerMobileNoBody
       );
-      //print(response.statusCode);
-      //var jsonResponse = jsonDecode(response.body);
-      return response;
+
+      if (farmerMobileNoResponse.statusCode == 200) {
+        print("OKAY");
+        Map data = {
+          "farmerName" : farmerName,
+          "farmerLastname" : farmerLastname,
+          "farmerEmail" : farmerEmail,
+          "farmerMobileNo" : farmerMobileNo,
+          "farmName" : farmName,
+          "farmLatitude" : farmLatitude,
+          "farmLongitude" : farmLongitude,
+          "username" : username,
+          "password" : password,
+          "fmCertNo" : fmCertNo,
+          "fmCertRegDate" : fmCertRegDate,
+          "fmCertExpireDate" : fmCertExpireDate
+        };
+
+        var path = await upload(fmCertImg);
+      
+        data["fmCertImg"] = path;
+
+        print(path);
+
+        var body = json.encode(data);
+        var url = Uri.parse(baseURL + '/farmer/add');
+
+        http.Response response = await http.post(
+          url,
+          headers: headers,
+          body: body
+        );
+        //print(response.statusCode);
+        //var jsonResponse = jsonDecode(response.body);
+        return response;
+      } else if (farmerMobileNoResponse.statusCode == 406) {
+        print("FARMER MOBILE NO IS DUPLICATE!");
+        return farmerMobileNoResponse;
+      }
     } else {
       return usernameResponse;
     }

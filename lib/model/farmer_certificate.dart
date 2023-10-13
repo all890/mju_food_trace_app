@@ -12,6 +12,8 @@ class FarmerCertificate {
   DateTime? fmCertRegDate;
   DateTime? fmCertExpireDate;
   String? fmCertStatus;
+  String? fmCertPrevBlockHash;
+  String? fmCertCurrBlockHash;
 
   Farmer? farmer;
 
@@ -23,6 +25,8 @@ class FarmerCertificate {
     this.fmCertRegDate,
     this.fmCertExpireDate,
     this.fmCertStatus,
+    this.fmCertPrevBlockHash,
+    this.fmCertCurrBlockHash,
     this.farmer,
   });
 
@@ -34,6 +38,8 @@ class FarmerCertificate {
     fmCertRegDate: DateTime.parse(json["fmCertRegDate"]).toLocal(),
     fmCertExpireDate: DateTime.parse(json["fmCertExpireDate"]).toLocal(),
     fmCertStatus: json["fmCertStatus"],
+    fmCertPrevBlockHash: json["fmCertPrevBlockHash"],
+    fmCertCurrBlockHash: json["fmCertCurrBlockHash"],
     farmer: json["farmer"] == null ? null : Farmer.fromJsonToFarmer(json["farmer"])
   );
 
@@ -46,6 +52,8 @@ class FarmerCertificate {
       'fmCertRegDate': fmCertRegDate,
       'fmCertExpireDate': fmCertExpireDate,
       'fmCertStatus': fmCertStatus,
+      'fmCertPrevBlockHash': fmCertPrevBlockHash,
+      'fmCertCurrBlockHash': fmCertCurrBlockHash,
       'farmer': farmer?.user?.username
     };
   }
