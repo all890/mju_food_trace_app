@@ -38,8 +38,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
   String? selected_bioextract_items = "ประเภทของน้ำหมัก";
   List<String> plantingMethod_items = ["วิธีการปลูก", "การหว่านเมล็ด","การปลูกด้วยต้นกล้า","การหยอดเมล็ด","ฝังในแปลงปลูก"];
   String? selected_plantingMethod_items  = "วิธีการปลูก";
-  List<String> netQuantityUnit_items = ["หน่วยของปริมาณผลผลิตสุทธิ","กรัม","กิโลกรัม"];
-  String? selected_netQuantityUnit_items  = "หน่วยของปริมาณผลผลิตสุทธิ";
+  List<String> netQuantityUnit_items = ["หน่วยของปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ","กรัม","กิโลกรัม"];
+  String? selected_netQuantityUnit_items  = "หน่วยของปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ";
 
   DateTime currentDate = DateTime.now();
   DateTime? plantDate;
@@ -148,6 +148,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
     } else if (farmerCertificate?.fmCertStatus == "ไม่อนุมัติ") {
       showFmCertWasRejectedError();
     }
+    plantDateTextController.text = dateFormat.format(DateTime.now());
     setState(() {
       isLoaded = true;
     });
@@ -395,7 +396,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: tempPlantDate ?? currentDate,
+                                        initialDate: currentDate,
                                         firstDate: DateTime(1950),
                                         lastDate: currentDate
                                       );
@@ -412,6 +413,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       });
                                     },
                                     readOnly: true,
+                                    enabled: false,
                                     controller: plantDateTextController,
                                     decoration: InputDecoration(
                                       labelText: "วันที่ปลูก",
@@ -438,8 +440,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                         context: context,
-                                        initialDate: tempApproxHarvDate ?? tempPlantDate!.add(Duration(days: 3)),
-                                        firstDate: tempPlantDate!.add(Duration(days: 3)),
+                                        initialDate: DateTime.now().add(Duration(days: 3)),
+                                        firstDate: DateTime.now().add(Duration(days: 3)),
                                         lastDate: DateTime(2100)
                                       );
                                       setState(() {
@@ -453,7 +455,6 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       });
                                     },
                                     readOnly: true,
-                                    enabled: enabledToSelectApproxHarvDate,
                                     controller: approxHarvDateTextController,
                                     decoration: InputDecoration(
                                       labelText: "วันที่คาดว่าจะเก็บเกี่ยว",
@@ -562,7 +563,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
 
                                 CustomTextFormField(
                                   controller: netQuantityTextController,
-                                  hintText: "ปริมาณผลผลิตสุทธิ",
+                                  hintText: "ปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ",
                                   maxLength: 10,
                                   numberOnly: true,
                                   validator: (value) {
@@ -703,8 +704,8 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                           } else if (selected_plantingMethod_items == "วิธีการปลูก") {
                                             showError("กรุณาเลือกวิธีการปลูก");
                                             return;
-                                          } else if (selected_netQuantityUnit_items == "หน่วยของปริมาณผลผลิตสุทธิ") {
-                                            showError("กรุณาเลือกหน่วยของปริมาณผลผลิตสุทธิ");
+                                          } else if (selected_netQuantityUnit_items == "หน่วยของปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ") {
+                                            showError("หน่วยของปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ");
                                             return;
                                           } else {
                                             //Farmer's data insertion using farmer controller

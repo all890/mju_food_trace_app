@@ -19,6 +19,26 @@ class FarmerCertificateController {
     return list;
   }
 
+  Future getFmCertsByFarmerUsername (String username) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/getfmcertsbyusername/' + username);
+
+    http.Response response = await http.get(url);
+    
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<FarmerCertificate> list = jsonResponse.map((e) => FarmerCertificate.fromJsonToFarmerCertificate(e)).toList();
+    return list;
+  }
+
+  Future hasCertWaitToAccept (String username) async {
+    var url = Uri.parse(baseURL + '/farmercertificate/haswaittoacceptcert/' + username);
+
+    http.Response response = await http.get(url);
+
+    return response.statusCode;
+  }
+
   Future getLastestFarmerCertificateByFarmerUsername (String username) async {
     var url = Uri.parse(baseURL + '/farmercertificate/getlatestfmcertbyusername/' + username);
 

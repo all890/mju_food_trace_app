@@ -35,8 +35,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
   List<Product>? notManufacturedProducts = [];
   List<Product>? manufacturedProducts = [];
 
-  Map<String, dynamic>? productExisting;
-
   ManufacturerCertificate? manufacturerCertificate;
 
   void showFailToDeleteProductAlert () {
@@ -117,8 +115,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
     });
     String username = await SessionManager().get("username");
     products = await productController.getListProduct(username);
-    var productJson = await productController.getProductExistingByManuftUsername(username);
-    productExisting = json.decode(productJson);
     var responseMnCert = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
     manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(responseMnCert);
     splitProductByType();
@@ -185,7 +181,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
 
   void splitProductByType () {
     products?.forEach((product) {
-      if (productExisting?.containsKey(product.productId) == true) {
+      if (product.pdCurrBlockHash != null) {
         manufacturedProducts?.add(product);
       } else {
         notManufacturedProducts?.add(product);

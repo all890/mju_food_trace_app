@@ -336,28 +336,13 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     ),
                                   ),
                                 ),
-                                planting?.ptCurrBlockHash == null ?
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      "ปริมาณผลผลิตสุทธิ : " +
+                                      "ปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ : " +
                                           "${planting?.netQuantity}" +
-                                          " " +
-                                          "${planting?.netQuantityUnit}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
-                                    ),
-                                  ),
-                                ) :
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "ปริมาณผลผลิตคงเหลือ : " +
-                                          "${widget.remQtyOfPt}" +
                                           " " +
                                           "${planting?.netQuantityUnit}",
                                       style: TextStyle(
@@ -479,6 +464,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                         return "กรุณากรอกปริมาณผลผลิตให้มากกว่า 0";
                                       }
 
+                                      /*
                                       if (planting?.ptCurrBlockHash == null) {
                                         double actualGrams = 0;
 
@@ -525,6 +511,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                           return "ปริมาณผลผลิตที่ส่งต้องไม่เกินปริมาณผลผลิตคงเหลือของการปลูก";
                                         }
                                       }
+                                      */
 
                                     },
                                     icon: const Icon(Icons.bubble_chart)),
@@ -624,7 +611,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                             }
                                           });
                                   
-                                          print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
+                                          //print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
                                   
                                           http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
                                                 manuftId??"",

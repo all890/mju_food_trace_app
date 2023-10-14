@@ -139,9 +139,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
     } else if (manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
       showMnCertWasRejectedError();
     }
+    setZeroToNutrientFields();
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void setZeroToNutrientFields () {
+    saturatedFatTextController.text = "0";
+    cholesteralTextController.text = "0";
+    proteinTextController.text = "0";
+    sodiumTextController.text = "0";
+    fiberTextController.text = "0";
+    sugarTextController.text = "0";
+    ironTextController.text = "0";
+    vitATextController.text = "0";
+    vitB1TextController.text = "0";
+    vitB2TextController.text = "0";
+    calciumTextController.text = "0";
   }
 
   @override

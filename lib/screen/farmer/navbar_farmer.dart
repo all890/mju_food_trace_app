@@ -29,6 +29,11 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
 
   FarmerCertificateController farmerCertificateController = FarmerCertificateController();
 
+  Duration? differenceDuration;
+  int? differenceDays;
+
+  bool? showBadge = false;
+
   void fetchFarmerCertificateData () async {
     setState(() {
       isLoaded = false;
@@ -42,6 +47,12 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
      userType = userTypeDynamic.toString();
     setState(() {
       isLoaded = true;
+      differenceDuration = farmerCertificate?.fmCertExpireDate?.difference(DateTime.now());
+      differenceDays = differenceDuration?.inDays;
+      if (differenceDays! <= 30) {
+        showBadge = true;
+      }
+      print("DURATION IS : ${differenceDuration?.inDays}");
     });
   }
  
@@ -79,9 +90,16 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
               // )
             ),
           ),
-          farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?
+          //farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?
           ListTile(
-            leading: const Icon(Icons.newspaper_sharp, color: Color.fromARGB(255, 124, 94, 4),),
+            leading: Badge(
+              label: Text("!"),
+              isLabelVisible: showBadge ?? false,
+              child: const Icon(
+                Icons.newspaper_sharp,
+                color: Color.fromARGB(255, 124, 94, 4),
+              )
+            ),
             title:Text("ต่ออายุใบรับรอง",style: TextStyle(
                     fontFamily: 'Itim',
                     color: kClipPathColorTextNavbarFM,
@@ -94,7 +112,7 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
               });
               Navigator.pop(context);
             },
-          ) : Container(),
+          ),
           ListTile(
             leading: const Icon(Icons.add , color: Color.fromARGB(255, 124, 94, 4),),
             title: Text("เพิ่มการปลูกผลผลิต",style: TextStyle(
