@@ -256,6 +256,8 @@ class ManufacturerController {
       return response;
   }
 
+  
+
     Future getManufacturerByUsername(String username) async {
 
     var url = Uri.parse(baseURL + '/manuft/getmnbyusername/' + username);

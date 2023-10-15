@@ -81,7 +81,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     QuickAlert.show(
       context: context,
       title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองเกษตรกรของท่านถูกปฏิเสธโดยผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองผู้ผลิตของท่านถูกปฏิเสธโดยผู้ดูแลระบบเนื่องจากข้อมูลที่ไม่ถูกต้อง กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
@@ -97,12 +97,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
     QuickAlert.show(
       context: context,
       title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถเพิ่มการปลูกได้ เนื่องจากใบรับรองเกษตรกรของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
+      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองผู้ผลิตของท่านกำลังอยู่ในระหว่างการตรวจสอบโดยผู้ดูแลระบบ",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ListProductScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RequestRenewingManufacturerCertificateScreen()));
         });
         Navigator.pop(context);
       }
@@ -113,7 +113,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     QuickAlert.show(
       context: context,
       title: "เกิดข้อผิดพลาด",
-      text: "ไม่สามารถเพิ่มการปลูกได้ เนื่องจากใบรับรองเกษตรกรของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
+      text: "ไม่สามารถเพิ่มสินค้าได้ เนื่องจากใบรับรองผู้ผลิตของท่านหมดอายุ กรุณาทำการต่ออายุใบรับรองแล้วลองใหม่อีกครั้ง",
       type: QuickAlertType.error,
       confirmBtnText: "ตกลง",
       onConfirmBtnTap: () {

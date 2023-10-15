@@ -19,6 +19,25 @@ class ManufacturerCertificateController {
     List<ManufacturerCertificate> list = jsonResponse.map((e) => ManufacturerCertificate.fromJsonToManufacturerCertificate(e)).toList();
     return list;
   }
+  
+  Future getMnCertsByManuftUsername (String username) async {
+
+    var url = Uri.parse(baseURL + '/manuftcertificate/getmncertsbyusername/' + username);
+
+    http.Response response = await http.get(url);
+    
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<ManufacturerCertificate> list = jsonResponse.map((e) => ManufacturerCertificate.fromJsonToManufacturerCertificate(e)).toList();
+    return list;
+  }
+   Future hasCertWaitToAccept (String username) async {
+    var url = Uri.parse(baseURL + '/manuftcertificate/haswaittoacceptcert/' + username);
+
+    http.Response response = await http.get(url);
+
+    return response.statusCode;
+  }
 
   Future getLastestManufacturerCertificateByManufacturerUsername (String username) async {
     var url = Uri.parse(baseURL + '/manuftcertificate/getlatestmncertbyusername/' + username);
@@ -29,6 +48,7 @@ class ManufacturerCertificateController {
     var jsonResponse = json.decode(utf8Body);
     return jsonResponse;
   }
+  
 
   Future getNewMnCertCurrBlockHash (String mnCertId) async {
 

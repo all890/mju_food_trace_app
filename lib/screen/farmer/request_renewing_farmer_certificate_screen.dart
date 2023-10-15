@@ -135,13 +135,36 @@ class _RequestRenewingFarmerCertificateState
       differenceDays = differenceDuration?.inDays;
       print("DURATION IS : ${differenceDuration?.inDays}");
       if (differenceDays! > 30) {
-        statusColorCurrentCert = TextStyle(color: Colors.green);
+        statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.green, shadows: [
+                  Shadow(color: Color.fromARGB(255, 5, 53, 1).withOpacity(0.8), // สีของเงา 
+                  offset: Offset(1, 1), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 0, // ความคมของเงา
+                  ),
+                ],);
       } else if (differenceDays! <= 30 && differenceDays! > 20) {
-        statusColorCurrentCert = TextStyle(color: Colors.yellow);
+        statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.yellow,shadows: [
+                  Shadow(color: Color.fromARGB(255, 53, 45, 1)
+                        .withOpacity(0.8), // สีของเงา
+                    offset: Offset(1, 1), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 0, // ความคมของเงา
+                  ),
+                ],);
       } else if (differenceDays! <= 20 && differenceDays! > 10) {
-        statusColorCurrentCert = TextStyle(color: Colors.orange.shade800);
+        statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.orange.shade800,shadows: [
+                  Shadow(color: Color.fromARGB(255, 53, 32, 1)
+                        .withOpacity(0.8), // สีของเงา
+                    offset: Offset(1, 1), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 0, // ความคมของเงา
+                  ),
+                ],);
       } else {
-        statusColorCurrentCert = TextStyle(color: Colors.red);
+        statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.red,shadows: [
+                  Shadow(color: Color.fromARGB(255, 53, 8, 1)
+                        .withOpacity(0.8), // สีของเงา
+                    offset: Offset(1, 1), // ตำแหน่งเงา (X, Y)
+                    blurRadius: 0, // ความคมของเงา
+                  ),
+                ],);
       }
       fmCertNoTextController.text = farmerCertificate?.fmCertNo ?? "";
       isLoaded = true;
@@ -273,10 +296,12 @@ class _RequestRenewingFarmerCertificateState
                               children: [
                                 Text(
                                   "ใบรับรองเกษตรกรที่ใช้ปัจจุบัน"
-                                ),
+                                ,style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 22),),
                                 Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text("ข้อมูลใบรับรอง")
+                                  child: Text("ข้อมูลใบรับรอง",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 18),)
                                 ),
                                 Stack(
                                   children: [
@@ -292,28 +317,32 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ออกใบรับรอง : ${newDateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now())}")
+                                                child: Text("วันที่ออกใบรับรอง : ${newDateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now())}",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่หมดอายุ : ${newDateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}")
+                                                child: Text("วันที่หมดอายุ : ${newDateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ทำการอัปโหลด : ${newDateFormat.format(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}")
+                                                child: Text("วันที่ทำการอัปโหลด : ${newDateFormat.format(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("สถานะใบรับรอง : ${farmerCertificate?.fmCertStatus}")
+                                                child: Text("สถานะใบรับรอง : ${farmerCertificate?.fmCertStatus}",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
                                             
@@ -321,7 +350,8 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("รูปใบรับรอง")
+                                                child: Text("รูปใบรับรอง",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
                                             SizedBox(
@@ -343,10 +373,11 @@ class _RequestRenewingFarmerCertificateState
                                           padding: const EdgeInsets.symmetric(vertical: 15),
                                           child: Column(
                                             children: [
-                                              Center(child: Text("หมายเลขใบรับรอง : ${farmerCertificate?.fmCertNo}")),
+                                              Center(child: Text("หมายเลขใบรับรอง : ${farmerCertificate?.fmCertNo}",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 18),)),
                                               Center(
                                                 child: Text(
-                                                  differenceDays! > 30 ? "ใบรับรองนี้จะมีอายุอีก : ${differenceDays} วัน" : "เหลืออายุเพียง ${differenceDays} วัน ควรต่ออายุใบรับรอง",
+                                                  differenceDays! > 30 ? "ใบรับรองนี้จะมีอายุอีก : ${differenceDays} วัน" : differenceDays! <= 0 ? "ใบรับรองนี้หมดอายุแล้ว กรุณาต่ออายุใบรับรอง" : "เหลืออายุเพียง ${differenceDays} วัน ควรต่ออายุใบรับรอง",
                                                   style: statusColorCurrentCert,
                                                 ),
                                               ),

@@ -25,21 +25,35 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
 
   ManufacturerCertificate? manufacturerCertficate;
   bool? isLoaded;
+  String? userType;
+
+  Duration? differenceDuration;
+  int? differenceDays;
+
+  bool? showBadge = false;
 
   void fetchManufacturerCertificateData() async {
     setState(() {
       isLoaded = false;
     });
     var username = await SessionManager().get("username");
-    var manuftCertficateResponse = await manufacturerCertificateController
-        .getLastestManufacturerCertificateByManufacturerUsername(username);
-    manufacturerCertficate =
-        ManufacturerCertificate.fromJsonToManufacturerCertificate(
-            manuftCertficateResponse);
-    print(manufacturerCertficate?.mnCertExpireDate);
+    var manuftCertficateResponse = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
+    manufacturerCertficate = ManufacturerCertificate.fromJsonToManufacturerCertificate(manuftCertficateResponse);
+    
+    //print(manufacturerCertficate?.mnCertExpireDate);
+
+   var userTypeDynamic = await SessionManager().get("userType");
+     userType = userTypeDynamic.toString();
     setState(() {
       isLoaded = true;
+      differenceDuration = manufacturerCertficate?.mnCertExpireDate?.difference(DateTime.now());
+      differenceDays = differenceDuration?.inDays;
+      if (differenceDays! <= 90) {
+        showBadge = true;
+      }
+      print("DURATION IS : ${differenceDuration?.inDays}");
     });
+    
   }
 
   @override
@@ -74,12 +88,18 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
                 //     image: AssetImage('images/ftmju_header_logo.png'))
                 ),
           ),
-          manufacturerCertficate?.mnCertExpireDate?.isBefore(DateTime.now()) ==
-                      true ||
-                  manufacturerCertficate?.mnCertStatus == "ไม่อนุมัติ"
-              ? ListTile(
-                  leading: Icon(Icons.newspaper_sharp,
-                      color: KClipPathIconsColorNavberMN),
+          // manufacturerCertficate?.mnCertExpireDate?.isBefore(DateTime.now()) ==
+          //             true ||
+          //         manufacturerCertficate?.mnCertStatus == "ไม่อนุมัติ"? 
+              ListTile(
+                leading: Badge(
+                label: Text("!"),
+                isLabelVisible: showBadge ?? false,
+                child: Icon(
+                Icons.newspaper_sharp,
+                color: KClipPathIconsColorNavberMN
+                )
+                 ),
                   title: Text(
                     "ต่ออายุใบรับรอง",
                     style: TextStyle(
@@ -100,8 +120,7 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
                     });
                     Navigator.pop(context);
                   },
-                )
-              : Container(),
+                ),
           ListTile(
             leading: Icon(Icons.add, color: KClipPathIconsColorNavberMN),
             title: Text(
