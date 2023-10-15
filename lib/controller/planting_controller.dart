@@ -96,6 +96,18 @@ class PlantingController {
        return list;
   }
 
+  Future getNewPtCurrBlockHash (String plantingId) async {
+
+    var url = Uri.parse(baseURL + '/planting/getnewptcurrblockhash/' + plantingId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future getRemQtyOfPtsByFarmerUsername (String username) async {
 
     var url = Uri.parse(baseURL + '/planting/getremqtyofpts/' + username);

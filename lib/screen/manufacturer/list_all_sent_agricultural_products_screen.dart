@@ -447,10 +447,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                               print(usedRms?[index]
                                   .rawMatShpId);
                               
-                              var response = await rawMaterialShippingController.isRmsAndPlantingChainValid(usedRms?[index].rawMatShpId??"");
-
-                              if (response == 200) {
-                                Navigator.pushReplacement(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
@@ -459,11 +456,18 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                               usedRms?[index].rawMatShpId ??"",
                                             remQtyOfRms: remQtyOfRms[usedRms?[index].rawMatShpId],)),
                                 );
+
+                              /*
+                              var response = await rawMaterialShippingController.isRmsAndPlantingChainValid(usedRms?[index].rawMatShpId??"");
+
+                              if (response == 200) {
+                                
                               } else if (response == 409) {
                                 showCannotUseRmsBecauseChainIsInvalidError();
                               } else if (response == 500) {
                                 print("Error!");
                               }
+                              */
                               
                             },
                           ),

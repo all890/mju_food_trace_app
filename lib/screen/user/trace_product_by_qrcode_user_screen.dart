@@ -83,8 +83,6 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
       );
     } else if (qrResponse.statusCode == 404) {
       showError("ไม่พบสินค้าที่ท่านค้นหา");
-    } else if (qrResponse.statusCode == 409) {
-      showError("ไม่สามารถตรวจสอบกลับสินค้าได้ เนื่องจากการเข้ารหัสของข้อมูลไม่ตรงกัน");
     } else {
       showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
     }
@@ -228,8 +226,6 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                                   );
                                 } else if (response.statusCode == 404) {
                                   showError("ไม่พบสินค้าที่ท่านค้นหา");
-                                } else if (response.statusCode == 409) {
-                                  showError("ไม่สามารถตรวจสอบกลับสินค้าได้ เนื่องจากการเข้ารหัสของข้อมูลไม่ตรงกัน");
                                 } else {
                                   showError("ไม่สามารถตรวจสอบกลับสินค้าได้ กรุณาลองใหม่อีกครั้ง");
                                 }

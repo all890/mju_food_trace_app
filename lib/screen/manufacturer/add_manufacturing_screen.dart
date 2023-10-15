@@ -66,9 +66,12 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
   String? productId;
 
   bool? enableExpireDateField = false;
+  bool? ableToFillRawMatShpQty = false;
 
   double? canUseKg;
   double? canUseGrams;
+
+  var maxProductQty = 0;
 
   void showErrorToAddManufacturingBecauseProductIsEmpty () {
     QuickAlert.show(
@@ -107,6 +110,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
     canUseKg = widget.remQtyOfRms! / 1000;
     canUseGrams = widget.remQtyOfRms;
     setState(() {
+      manufactureDateTextController.text = dateFormat.format(DateTime.now());
       isLoaded = true;
     });
   }
@@ -197,6 +201,37 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
         });
       }
     );
+  }
+
+  void calculateMaxProductQty () {
+    double maxGrams = 0;
+
+    if (selected_usedRawMatQtyUnit_items == "กิโลกรัม") {
+      maxGrams = double.parse(usedRawMatQtyTextController.text) * 1000;
+    } else {
+      maxGrams = double.parse(usedRawMatQtyTextController.text);
+    }
+    products?.forEach((product) {
+      if (product.productName == selected_productName){
+        maxProductQty = maxGrams ~/ (product.netVolume ?? 0);
+      }
+    });
+    
+  }
+
+  void checkUsedRawMatShpQtyNullState () {
+    if (usedRawMatQtyTextController.text.isEmpty || selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+      setState(() {
+        productQtyTextController.text = "";
+        ableToFillRawMatShpQty = false;
+      });
+    } else {
+      setState(() {
+        ableToFillRawMatShpQty = true;
+        calculateMaxProductQty();
+        print("MAX PROD QTY IS : ${maxProductQty}");
+      });
+    }
   }
 
   @override
@@ -334,8 +369,15 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                                   child: Text(item)),
                                         )
                                         .toList(),
-                                    onChanged: (item) => setState(
-                                        () => selected_productName = item),
+                                    onChanged: (item) {
+                                      setState(() {
+                                        selected_productName = item;
+                                        usedRawMatQtyTextController.text = "";
+                                        checkUsedRawMatShpQtyNullState();
+                                        productQtyTextController.text = "";
+                                        selected_usedRawMatQtyUnit_items = "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า";
+                                      });
+                                    },
                                             
                                             decoration: InputDecoration(
                                               prefixIcon: Icon(Icons.compost),
@@ -352,78 +394,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   ),
                                 ),
                                 
-                                CustomTextFormField(
-                                    controller: productQtyTextController,
-                                    hintText: "ปริมาณสินค้าที่ผลิตได้",
-                                    maxLength: 6,
-                                    numberOnly: true,
-                                    validator: (value) {
-                                      var productQtyRegEx = RegExp(r'^\d+$');
-                                      if (value!.isEmpty) {
-                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
-                                      }
-                                      if (!productQtyRegEx.hasMatch(value)) {
-                                        return "ปริมาณสินค้าที่ผลิตได้ต้องไม่ประกอบไปด้วยช่องว่าง";
-                                      }
-                                      if (int.parse(value) > 100000 || int.parse(value) <= 0) {
-                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
-                                      }
-                                    },
-                                    icon: const Icon(Icons.equalizer)),
-
-                                   Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: SizedBox(
-                                    width: 393,
-                                    height: 64,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: DropdownButtonFormField<String>(
-                                            value: selected_productUnit_items,
-                                    icon: const Icon(Icons.expand_more),
-                                    elevation: 5,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontFamily: 'Itim',
-                                    ),
-                                    isExpanded: true,
-                                 
-                                    items: productUnit_items
-                                        .map(
-                                          (String item) =>
-                                              DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(item)),
-                                        )
-                                        .toList(),
-                                    onChanged: (item) => setState(() =>
-                                        selected_productUnit_items = item),
-                                            
-                                            decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
-                                              prefixIconColor: Colors.black,
-                                              enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white)
-                                              )
-                                            ),
-                                            
-                                          )
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                
                            
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -451,6 +422,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       });
                                     },
                                     readOnly: true,
+                                    enabled: false,
                                     controller: manufactureDateTextController,
                                     decoration: InputDecoration(
                                         labelText: "วันที่ผลิต",
@@ -473,12 +445,11 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: TextFormField(
-                                    enabled: enableExpireDateField,
                                     onTap: () async {
                                       DateTime? tempDate = await showDatePicker(
                                           context: context,
-                                          initialDate: tempExpireDate ?? manufactureDate!.add(Duration(days: 1)),
-                                          firstDate: manufactureDate!.add(Duration(days: 1)),
+                                          initialDate: DateTime.now().add(Duration(days: 1)),
+                                          firstDate: DateTime.now().add(Duration(days: 1)),
                                           lastDate: DateTime(2100));
                                       setState(() {
                                         if (tempDate != null) {
@@ -534,6 +505,9 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   hT: "ไม่เกิน ${canUseKg} กิโลกรัม หรือ ${canUseGrams} กรัม",
                                   maxLength: 50,
                                   numberOnly: true,
+                                  onChanged: (value) {
+                                    checkUsedRawMatShpQtyNullState();
+                                  },
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return "กรุณากรอกจำนวนของผลผลิตที่ใช้ในการผลิตสินค้า";
@@ -620,9 +594,90 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                                   child: Text(item)),
                                         )
                                         .toList(),
+                                    onChanged: (item) {
+                                      setState(() {
+                                        selected_usedRawMatQtyUnit_items = item;
+                                        checkUsedRawMatShpQtyNullState();
+                                      });
+                                    },
+                                            
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIconColor: Colors.black,
+                                              enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.white)
+                                              )
+                                            ),
+                                            
+                                          )
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                CustomTextFormField(
+                                    controller: productQtyTextController,
+                                    hintText: "ปริมาณสินค้าที่ผลิตได้",
+                                    hT: "ปริมาณสินค้าที่ผลิตจะได้ไม่เกิน ${maxProductQty} หน่วย",
+                                    maxLength: 6,
+                                    numberOnly: true,
+                                    enabled: ableToFillRawMatShpQty,
+                                    validator: (value) {
+                                      var productQtyRegEx = RegExp(r'^\d+$');
+                                      if (value!.isEmpty) {
+                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
+                                      }
+                                      if (!productQtyRegEx.hasMatch(value)) {
+                                        return "ปริมาณสินค้าที่ผลิตได้ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                      }
+                                      if (int.parse(value) > 100000 || int.parse(value) <= 0) {
+                                        return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
+                                      }
+                                      if (int.parse(value) > maxProductQty) {
+                                        return "ปริมาณสินค้าที่ผลิตได้ต้องมีค่าไม่เกิน ${maxProductQty} หน่วย";
+                                      }
+                                    },
+                                    icon: const Icon(Icons.equalizer)),
+
+                                   Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: 393,
+                                    height: 64,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: DropdownButtonFormField<String>(
+                                            value: selected_productUnit_items,
+                                    icon: const Icon(Icons.expand_more),
+                                    elevation: 5,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontFamily: 'Itim',
+                                    ),
+                                    isExpanded: true,
+                                 
+                                    items: productUnit_items
+                                        .map(
+                                          (String item) =>
+                                              DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(item)),
+                                        )
+                                        .toList(),
                                     onChanged: (item) => setState(() =>
-                                        selected_usedRawMatQtyUnit_items =
-                                            item),
+                                        selected_productUnit_items = item),
                                             
                                             decoration: InputDecoration(
                                               prefixIcon: Icon(Icons.bubble_chart),

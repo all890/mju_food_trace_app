@@ -82,6 +82,18 @@ class RawMaterialShippingController{
 
   }
 
+  Future getNewRmsCurrBlockHash (String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/getnewrmscurrblockhash/' + rawMatShpId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future addRawMaterialShipping (String manuftId, String rawMatShpDate,
             double rawMatShpQty, String rawMatShpQtyUnit, String plantingId) async {
     

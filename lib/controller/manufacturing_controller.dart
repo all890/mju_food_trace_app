@@ -86,6 +86,18 @@ class ManufacturingController {
 
   }
 
+  Future getNewManuftCurrBlockHash (String manufacturingId) async {
+
+    var url = Uri.parse(baseURL + '/manufacturing/getnewmanuftcurrblockhash/' + manufacturingId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future updateManufacturing (Manufacturing manufacturing) async {
 
     print("รหัส :"+"${manufacturing.manufacturingId}");

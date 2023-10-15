@@ -94,6 +94,18 @@ class ManufacturerController {
 
   }
 
+  Future getNewMnCurrBlockHash (String manuftId) async {
+
+    var url = Uri.parse(baseURL + '/manuft/getnewmncurrblockhash/' + manuftId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future isManufacturerAvailable(String manuftName) async {
     var url = Uri.parse(baseURL + '/manuft/ismanuftavailable/' + manuftName);
 

@@ -102,6 +102,18 @@ class ProductController {
     return response;
   }
 
+  Future getNewPdCurrBlockHash (String productId) async {
+
+    var url = Uri.parse(baseURL + '/product/getnewpdcurrblockhash/' + productId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future deleteProduct (String productId) async {
     var url = Uri.parse(baseURL + '/product/delete/' + productId);
     http.Response response = await http.get(

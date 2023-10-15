@@ -30,6 +30,18 @@ class ManufacturerCertificateController {
     return jsonResponse;
   }
 
+  Future getNewMnCertCurrBlockHash (String mnCertId) async {
+
+    var url = Uri.parse(baseURL + '/manuftcertificate/getnewmncertcurrblockhash/' + mnCertId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
 
     Future getManuftCertDetails(String mnCertId) async {
     var url = Uri.parse(baseURL + '/manuftcertificate/getmncertdetails/' + mnCertId);

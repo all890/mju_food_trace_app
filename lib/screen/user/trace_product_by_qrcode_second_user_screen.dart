@@ -1,13 +1,17 @@
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/constant/constant.dart';
+import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
+import 'package:mju_food_trace_app/model/farmer.dart';
 import 'package:mju_food_trace_app/model/farmer_certificate.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
 import 'package:mju_food_trace_app/model/qrcode.dart';
@@ -16,6 +20,13 @@ import 'dart:ui' as ui;
 import 'package:mju_food_trace_app/screen/user/navbar_user.dart';
 import 'package:mju_food_trace_app/service/config_service.dart';
 
+import '../../controller/farmer_certificate_controller.dart';
+import '../../controller/farmer_controller.dart';
+import '../../controller/manufacturer_certificate_controller.dart';
+import '../../controller/manufacturer_controller.dart';
+import '../../controller/manufacturing_controller.dart';
+import '../../controller/planting_controller.dart';
+import '../../controller/product_controller.dart';
 import '../../model/manufacturer_certificate.dart';
 
 class TraceProductByQRCodeSecondScreen extends StatefulWidget {
@@ -66,6 +77,96 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+
+  bool? showFarmerDetails = false;
+  bool? showFarmerCertificateDetails = false;
+  bool? showPlantingDetails = false;
+  bool? showRawMaterialShippingDetails = false;
+
+  bool? showManufacturerDetails = false;
+  bool? showManufacturerCertificateDetails = false;
+  bool? showManufacturingDetails = false;
+
+  bool? showProductDetails = false;
+
+  FarmerController farmerController = FarmerController();
+  FarmerCertificateController farmerCertificateController = FarmerCertificateController();
+  PlantingController plantingController = PlantingController();
+  RawMaterialShippingController rawMaterialShippingController = RawMaterialShippingController();
+  ManufacturerController manufacturerController = ManufacturerController();
+  ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
+  ManufacturingController manufacturingController = ManufacturingController();
+  ProductController productController = ProductController();
+
+  void checkHashToDetermineDataVisibility (QRCode? qrcode) async {
+
+    var fmCurrBlockHashResponse = await farmerController.getNewFmCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerId ?? "");
+    if (fmCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.fmCurrBlockHash) {
+      //print("EVERYTHING GOES PERFECTLY!");
+      setState(() {
+        print("FM PASSED!");
+        showFarmerDetails = true;
+      });
+    }
+
+    var fmCertCurrBlockHashResponse = await farmerCertificateController.getNewFmCertCurrBlockHash(widget.farmerCertificate?.fmCertId ?? "");
+    if (fmCertCurrBlockHashResponse == widget.farmerCertificate?.fmCertCurrBlockHash) {
+      setState(() {
+        print("FM CERT PASSED!");
+        showFarmerCertificateDetails = true;
+      });
+    }
+
+    var ptCurrBlockHashResponse = await plantingController.getNewPtCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.planting?.plantingId ?? "");
+    if (ptCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.planting?.ptCurrBlockHash) {
+      setState(() {
+        print("PT PASSED!");
+        showPlantingDetails = true;
+      });
+    }
+
+    var rmsCurrBlockHashResponse = await rawMaterialShippingController.getNewRmsCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.rawMatShpId ?? "");
+    //print(rmsCurrBlockHashResponse);
+    if (rmsCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.rmsCurrBlockHash) {
+      setState(() {
+        print("RMS PASSED!");
+        showRawMaterialShippingDetails = true;
+      });
+    }
+
+    var mnCurrBlockHashResponse = await manufacturerController.getNewMnCurrBlockHash(qrcode?.manufacturing?.product?.manufacturer?.manuftId ?? "");
+    if (mnCurrBlockHashResponse == qrcode?.manufacturing?.product?.manufacturer?.mnCurrBlockHash) {
+      setState(() {
+        print("MN PASSED!");
+        showRawMaterialShippingDetails = true;
+      });
+    }
+
+    var mnCertCurrBlockHashResponse = await manufacturerCertificateController.getNewMnCertCurrBlockHash(widget.manufacturerCertificate?.mnCertId ?? "");
+    if (mnCertCurrBlockHashResponse == widget.manufacturerCertificate?.mnCertCurrBlockHash) {
+      setState(() {
+        print("MN CERT PASSED!");
+        showManufacturerCertificateDetails = true;
+      });
+    }
+
+    var manuftCurrBlockHashResponse = await manufacturingController.getNewManuftCurrBlockHash(qrcode?.manufacturing?.manufacturingId ?? "");
+    if (manuftCurrBlockHashResponse == qrcode?.manufacturing?.manuftCurrBlockHash) {
+      setState(() {
+        print("MANUFT PASSED!");
+        showManufacturingDetails = true;
+      });
+    }
+
+    var pdCurrBlockHashResponse = await productController.getNewPdCurrBlockHash(qrcode?.manufacturing?.product?.productId ?? "");
+    if (pdCurrBlockHashResponse == qrcode?.manufacturing?.product?.pdCurrBlockHash) {
+      setState(() {
+        print("PD PASSED!");
+        showProductDetails = true;
+      });
+    }
+
   }
 
   Future openProductDialog() => showDialog(
@@ -801,6 +902,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   void initState() {
     super.initState();
     findMidpoint();
+    checkHashToDetermineDataVisibility(widget.qrCode);
   }
 
   @override

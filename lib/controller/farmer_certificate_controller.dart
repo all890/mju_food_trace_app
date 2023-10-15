@@ -49,6 +49,18 @@ class FarmerCertificateController {
     return jsonResponse;
   }
 
+  Future getNewFmCertCurrBlockHash (String fmCertId) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/getnewfmcertcurrblockhash/' + fmCertId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future getFmRequestRenewById (String fmCertId) async {
 
     var url = Uri.parse(baseURL + '/farmercertificate/getfmcertbyid/' + fmCertId);

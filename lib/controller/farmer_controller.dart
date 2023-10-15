@@ -147,6 +147,19 @@ class FarmerController {
     return jsonResponse;
    }
 
+
+  Future getNewFmCurrBlockHash (String farmerId) async {
+
+    var url = Uri.parse(baseURL + '/farmer/getnewfmcurrblockhash/' + farmerId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.body;
+
+  }
+
   Future updateFmRegistStatus (String farmerId) async {
 
     var url = Uri.parse(baseURL + '/farmer/updatefmregiststat/' + farmerId);
