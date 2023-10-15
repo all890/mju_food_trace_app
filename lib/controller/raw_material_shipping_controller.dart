@@ -94,6 +94,26 @@ class RawMaterialShippingController{
 
   }
 
+  Future getListAllSentAgriByFarmerUsername(String farmerUsername)async {
+    Map data = {};
+
+    var body = json.encode(data);
+
+    var url = Uri.parse(baseURL + '/rms/listallsentagribyfmusername/' + farmerUsername);
+    http.Response response = await http.post(
+      url,
+      headers: headers,
+      body: body
+    );
+    print(url);
+    print(response.body);
+    final utf8Body = utf8.decode(response.bodyBytes);
+    List<dynamic> jsonResponse = json.decode(utf8Body);
+    List<RawMaterialShipping> list = jsonResponse.map((e) =>RawMaterialShipping.fromJsonToRawMaterialShipping(e)).toList();
+
+       return list;
+  }
+
   Future addRawMaterialShipping (String manuftId, String rawMatShpDate,
             double rawMatShpQty, String rawMatShpQtyUnit, String plantingId) async {
     

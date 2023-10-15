@@ -139,7 +139,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     if (mnCurrBlockHashResponse == qrcode?.manufacturing?.product?.manufacturer?.mnCurrBlockHash) {
       setState(() {
         print("MN PASSED!");
-        showRawMaterialShippingDetails = true;
+        showManufacturerDetails = true;
       });
     }
 
@@ -174,7 +174,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     builder: (context) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
         title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
-        content: Container(
+        content: showProductDetails == true?
+        Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -281,6 +282,49 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) : Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ข้อมูลทางโภชนาการของสินค้า",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลทางโภชนาการของสินค้าไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
@@ -323,7 +367,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   ),
                 ),
               ) : Container(),
-              mnPage != 1 ?Padding(
+              mnPage != 2 ?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
                   onPressed: () {
@@ -353,7 +397,9 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
         ],
         title: Center(child: Text("ผู้ผลิต",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
-        content: mnPage == 0? Container(
+        content:
+        mnPage == 0 && showManufacturerDetails == true? 
+        Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -362,7 +408,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ข้อมูลผู้ผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -401,15 +447,63 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   ),
                 ),
                 const SizedBox(height: 10),
-                Divider(
-                  thickness: 2,
-                  color: Colors.black,
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) : mnPage == 0 && showManufacturerDetails == false? 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ข้อมูลผู้ผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลผู้ผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) : mnPage == 1 && showManufacturerCertificateDetails == true? 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ใบรับรอง GMP",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -421,7 +515,6 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  
                   child: Image.network(baseURL + '/manuftcertificate/' + imgMnCertFileName!),
                 ),
                 const SizedBox(height: 20),
@@ -453,10 +546,54 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ]
+            ),
+          ),
+        ) : mnPage == 1 && showManufacturerDetails == false? 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ใบรับรอง GMP",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลใบรับรองผู้ผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
-        ) : Container(
+        ) : mnPage == 2 && showManufacturingDetails == true? Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -465,7 +602,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "รายละเอียดการผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -496,7 +633,50 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
               ]
+            ),
+          ),
+        ) : Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "รายละเอียดการผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลการผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ),
@@ -538,12 +718,12 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   ),
                 ),
               ) : Container(),
-              page != 2 ?Padding(
+              page != 3 ?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      if (!(page! > 1)) {
+                      if (!(page! > 2)) {
                         page = page! + 1;
                       }
                       print("PAGE : ${page}");
@@ -567,7 +747,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
           ),
         ],
         title: Center(child: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim'),)),
-        content: page == 0? Container(
+        content: page == 0 && showFarmerDetails == true? 
+        Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -576,7 +757,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ข้อมูลเกษตรกร",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -615,15 +796,63 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   ),
                 ),
                 const SizedBox(height: 10),
-                Divider(
-                  thickness: 2,
-                  color: Colors.black,
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) : page == 0 && showFarmerDetails == false? 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ข้อมูลเกษตรกร",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลเกษตรกรไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) : page == 1 && showFarmerCertificateDetails == true?
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ใบรับรอง IFOAM",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -635,7 +864,6 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  
                   child: Image.network(baseURL + '/farmercertificate/' + imgFmCertFileName!),
                 ),
                 const SizedBox(height: 20),
@@ -646,7 +874,6 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -654,7 +881,6 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -662,7 +888,6 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-                
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -670,10 +895,23 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-              ],
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ]
             ),
           ),
-        ) : page == 1?
+        ) : page == 1 && showFarmerCertificateDetails == false? 
         Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -682,8 +920,39 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "รายละเอียดการปลูก",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    "ใบรับรอง IFOAM",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลใบรับรองเกษตรกรไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) : page == 2 && showPlantingDetails == true?
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "รายละเอียดการปลูกผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -757,10 +1026,23 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
               ]
             ),
           ),
-        ) : 
+        ) : page == 2 && showPlantingDetails == false? 
         Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -769,8 +1051,38 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
+                    "รายละเอียดการปลูกผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลการปลูกผลผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) : page == 3 && showRawMaterialShippingDetails == true? Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
                     "การส่งผลผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 18),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
                   ),
                 ),
                 Align(
@@ -802,10 +1114,54 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
               ],
             ),
           )
-        ),
+        ) : 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "การส่งผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลการส่งผลผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) ,
       ),
     )
   );

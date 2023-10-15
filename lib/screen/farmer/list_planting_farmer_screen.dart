@@ -5,7 +5,9 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/controller/farmer_certificate_controller.dart';
 import 'package:mju_food_trace_app/controller/planting_controller.dart';
+import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/planting.dart';
+import 'package:mju_food_trace_app/model/raw_material_shipping.dart';
 import 'package:mju_food_trace_app/screen/farmer/navbar_farmer.dart';
 import 'package:mju_food_trace_app/screen/farmer/send_agricultural_products.dart';
 import 'package:mju_food_trace_app/screen/farmer/update_planting_screen.dart';
@@ -27,12 +29,14 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
   PlantingController plantingController = PlantingController();
   FarmerCertificateController farmerCertificateController =
       FarmerCertificateController();
+  RawMaterialShippingController rawMaterialShippingController = RawMaterialShippingController();
 
   bool? isLoaded;
 
   FarmerCertificate? farmerCertificate;
 
   List<Planting>? plantings;
+  List<RawMaterialShipping>? rawMaterialShippings;
   Map<String, dynamic> remQtyOfPts = {};
 
   var dateFormat = DateFormat('dd-MMM-yyyy');
@@ -141,7 +145,12 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
     setState(() {
       isLoaded = false;
     });
-    plantings = await plantingController.getListPlantingById(username);
+    List<Planting>? tempPlantings;
+    tempPlantings = await plantingController.getListPlantingById(username);
+    plantings = tempPlantings?.reversed.toList();
+    List<RawMaterialShipping>? tempRawMaterialShippings;
+    tempRawMaterialShippings = await rawMaterialShippingController.getListAllSentAgriByFarmerUsername(username);
+    rawMaterialShippings = tempRawMaterialShippings?.reversed.toList();
     var fmCertResponse = await farmerCertificateController
         .getLastestFarmerCertificateByFarmerUsername(username);
     farmerCertificate =
@@ -257,10 +266,13 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "${plantings?[index1].plantName}",
-                                          style: const TextStyle(
-                                              fontFamily: 'Itim', fontSize: 22),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child: Text(
+                                            "${plantings?[index1].plantName}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 22),
+                                          ),
                                         ),
                                         Text(
                                             "วันที่ปลูก : " +
@@ -280,53 +292,48 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
-                                        Text(
-                                            "ปริมาณผลผลิตสุทธิ : ${plantings?[index1].netQuantity} ${plantings?[index1].netQuantityUnit}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                              "ปริมาณคาดว่าสุทธิ : ${plantings?[index1].netQuantity} ${plantings?[index1].netQuantityUnit}",
+                                              style: const TextStyle(
+                                                  fontFamily: 'Itim',
+                                                  fontSize: 18)),
+                                        ),
                                       ],
                                     ),
                                     trailing: SizedBox(
                                       width: 100,
                                       child: Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            // TODO: Check fm cert before delete
-                                            
-                                            GestureDetector(
-                                                onTap: () {
-                                                  print("Send Pressed!");
-                                                  if (farmerCertificate
-                                                              ?.fmCertExpireDate
-                                                              ?.isBefore(
-                                                                  DateTime
-                                                                      .now()) ==
-                                                          true ||
-                                                      farmerCertificate
-                                                              ?.fmCertStatus ==
-                                                          "ไม่อนุมัติ") {
-                                                    showErrorToSendBecauseFmCertIsExpire();
-                                                  } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
-                                                    showErrorToSendBecauseFmCertIsWaitToAccept();
-                                                  } else {
-                                                    Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SendAgriculturalProducts(
-                                                                  plantingId:
-                                                                      plantings?[index1]
-                                                                              .plantingId ??
-                                                                          "")),
-                                                    );
-                                                  }
-                                                },
-                                                child: Icon(Icons.send))
-                                          ],
-                                        ),
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              print("Send Pressed!");
+                                              if (farmerCertificate
+                                                          ?.fmCertExpireDate
+                                                          ?.isBefore(
+                                                              DateTime
+                                                                  .now()) ==
+                                                      true ||
+                                                  farmerCertificate
+                                                          ?.fmCertStatus ==
+                                                      "ไม่อนุมัติ") {
+                                                showErrorToSendBecauseFmCertIsExpire();
+                                              } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
+                                                showErrorToSendBecauseFmCertIsWaitToAccept();
+                                              } else {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SendAgriculturalProducts(
+                                                              plantingId:
+                                                                  plantings?[index1]
+                                                                          .plantingId ??
+                                                                      "")),
+                                                );
+                                              }
+                                            },
+                                            child: Icon(Icons.send)),
                                       ),
                                     )),
                               );
@@ -343,14 +350,87 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                 image: AssetImage("images/rice_action3.png"),
                               ),
                               Text(
-                                "ไม่มีผลผลิตที่ต้องรอเก็บเกี่ยว",
+                                "ไม่มีรายการปลูกผลผลิต",
                                 style:
                                     TextStyle(fontFamily: "Itim", fontSize: 20),
                               ),
                             ],
                           ),
                         ),
-                    Container(child: Text("page2"),)
+                        rawMaterialShippings?.isNotEmpty == true ? Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: ListView.builder(
+                            itemCount: rawMaterialShippings?.length,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index1) {
+                              return Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                    title: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child: Text(
+                                            "รหัสการส่งผลผลิต : ${rawMaterialShippings?[index1].rawMatShpId}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 22),
+                                          ),
+                                        ),
+                                        Text(
+                                            "วันที่ส่งผลผลิต : " +
+                                                dateFormat.format(
+                                                    rawMaterialShippings?[index1]
+                                                            .rawMatShpDate ??
+                                                        DateTime.now()),
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "ปริมาณผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].rawMatShpQty} ${rawMaterialShippings?[index1].rawMatShpQtyUnit}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Text(
+                                            "ส่งให้กับ : ${rawMaterialShippings?[index1].manufacturer?.manuftName}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                              "ผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].planting?.plantName}",
+                                              style: const TextStyle(
+                                                  fontFamily: 'Itim',
+                                                  fontSize: 18)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              );
+                            },
+                          ),
+                        ) : Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                height: 350,
+                                width: 350,
+                                image: AssetImage("images/rice_action4.png"),
+                              ),
+                              Text(
+                                "ไม่มีประวัติรายการส่งผลผลิต",
+                                style:
+                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        )
                 ]),
         ),
       ));
