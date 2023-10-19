@@ -65,7 +65,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
       qrCode = QRCode.fromJsonToQRCode(json.decode(utf8.decode(qrResponse.bodyBytes)));
 
       var fmCertResponse = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(
-        qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.user?.username ?? ""
+        qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.user?.username ?? ""
       );
       farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(fmCertResponse);
 

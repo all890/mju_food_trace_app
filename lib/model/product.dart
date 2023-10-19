@@ -21,8 +21,6 @@ class Product {
   int? vitB2;
   int? iron;
   int? calcium;
-  String? pdPrevBlockHash;
-  String? pdCurrBlockHash;
 
   Manufacturer? manufacturer;
 
@@ -42,8 +40,6 @@ class Product {
     this.vitB2,
     this.iron,
     this.calcium,
-    this.pdPrevBlockHash,
-    this.pdCurrBlockHash,
     this.manufacturer,
   });
 
@@ -64,8 +60,6 @@ class Product {
       vitB2: json["vitB2"],
       iron: json["iron"],
       calcium: json["calcium"],
-      pdPrevBlockHash: json["pdPrevBlockHash"],
-      pdCurrBlockHash: json["pdCurrBlockHash"],
       manufacturer: Manufacturer.fromJsonToManufacturer(json["manufacturer"])
     );
   }
@@ -87,8 +81,6 @@ class Product {
       'vitB2': vitB2,
       'iron': iron,
       'calcium': calcium,
-      'pdPrevBlockHash': pdPrevBlockHash,
-      'pdCurrBlockHash': pdCurrBlockHash,
       'manufacturer': manufacturer?.fromManufacturerToJson(),
     };
   }

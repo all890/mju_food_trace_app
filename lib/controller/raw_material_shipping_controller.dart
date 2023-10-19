@@ -114,6 +114,8 @@ class RawMaterialShippingController{
        return list;
   }
 
+
+
   Future addRawMaterialShipping (String manuftId, String rawMatShpDate,
             double rawMatShpQty, String rawMatShpQtyUnit, String plantingId) async {
     
@@ -138,5 +140,32 @@ class RawMaterialShippingController{
 
   }
 
+  Future acceptRms(String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/acceptrms/' + rawMatShpId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response.statusCode;
+
+  }
+
+  Future declineRms(String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/declinerms/' + rawMatShpId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response.statusCode;
+
+  }
 
 }

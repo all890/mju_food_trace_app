@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:mju_food_trace_app/model/manufacturer_certificate.dart';
 import 'package:mju_food_trace_app/model/product.dart';
 import 'package:mju_food_trace_app/model/raw_material_shipping.dart';
 
@@ -17,8 +18,10 @@ class Manufacturing {
   String? usedRawMatQtyUnit;
   String? manuftPrevBlockHash;
   String? manuftCurrBlockHash;
+
   RawMaterialShipping? rawMaterialShipping;
   Product? product;
+  ManufacturerCertificate? manufacturerCertificate;
   
   Manufacturing({
     this.manufacturingId,
@@ -32,6 +35,7 @@ class Manufacturing {
     this.manuftCurrBlockHash,
     this.rawMaterialShipping,
     this.product,
+    this.manufacturerCertificate
   });
   
 
@@ -48,6 +52,7 @@ class Manufacturing {
       'manuftCurrBlockHash': manuftCurrBlockHash,
       'rawMaterialShipping': rawMaterialShipping?.fromRawMaterialShippingToJson(),
       'product': product?.fromProductToJson(),
+      'manufacturerCertificate': manufacturerCertificate?.fromManufacturerCertificateToJson()
     };
   }
 
@@ -64,6 +69,7 @@ class Manufacturing {
       manuftCurrBlockHash: json["manuftCurrBlockHash"],
       rawMaterialShipping: RawMaterialShipping.fromJsonToRawMaterialShipping(json["rawMaterialShipping"]),
       product: Product.fromJsonToProduct(json["product"]),
+      manufacturerCertificate: ManufacturerCertificate.fromJsonToManufacturerCertificate(json["manufacturerCertificate"])
     );
   }
 

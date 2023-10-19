@@ -39,6 +39,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
   Map<String, dynamic> remQtyOfRms = {};
   Map<String, dynamic> rmsExists = {};
 
+  List<RawMaterialShipping>? newRms = [];
   List<RawMaterialShipping>? notUsedRms = [];
   List<RawMaterialShipping>? usedRms = [];
   List<RawMaterialShipping>? emptyRms = [];
@@ -144,10 +145,97 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
           usedRms?.add(rms);
         }
       } else {
-        notUsedRms?.add(rms);
+        if (rms.rmsCurrBlockHash == null) {
+          newRms?.add(rms);
+        } else if (rms.status != "ถูกปฏิเสธ") {
+          notUsedRms?.add(rms);
+        }
       }
       
     });
+  }
+
+  void showError (String prompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: prompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  void showSuccess (String prompt) {
+    QuickAlert.show(
+      context: context,
+      title: "สำเร็จ",
+      text: prompt,
+      type: QuickAlertType.success,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ListAllSentAgriculturalProductsScreen()),
+        );
+      },
+    );
+  }
+
+  void showSureToAcceptRmsAlert (String? rawMatShpId) {
+    QuickAlert.show(
+      context: context,
+      title: "แน่ใจหรือไม่",
+      text: "คุณต้องการที่จะรับผลผลิตนี้หรือไม่?",
+      type: QuickAlertType.confirm,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      onConfirmBtnTap: () async {
+        
+        var response = await rawMaterialShippingController.acceptRms(rawMatShpId ?? "");
+        if (response == 200) {
+          Navigator.pop(context);
+          showSuccess("ยืนยันการรับผลผลิตสำเร็จ");
+        } else {
+          Navigator.pop(context);
+          showError("ไม่สามารถยืนยันการรับผลผลิตได้ กรุณาลองใหม่อีกครั้ง");
+        }
+
+      },
+      onCancelBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
+  void showSureToNotAcceptRmsAlert (String? rawMatShpId) {
+    QuickAlert.show(
+      context: context,
+      title: "แน่ใจหรือไม่",
+      text: "คุณต้องการที่จะปฎิเสธการรับผลผลิตนี้หรือไม่?",
+      type: QuickAlertType.confirm,
+      confirmBtnText: "ตกลง",
+      cancelBtnText: "ยกเลิก",
+      onConfirmBtnTap: () async {
+        
+        var response = await rawMaterialShippingController.declineRms(rawMatShpId ?? "");
+        if (response == 200) {
+          Navigator.pop(context);
+          showSuccess("ปฎิเสธการรับผลผลิตสำเร็จ");
+        } else {
+          Navigator.pop(context);
+          showError("ไม่สามารถปฎิเสธการรับผลผลิตได้ กรุณาลองใหม่อีกครั้ง");
+        }
+
+      },
+      onCancelBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
   }
 
   @override
@@ -163,7 +251,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: SafeArea(
           child: Scaffold(
               drawer: ManufacturerNavbar(),
@@ -181,7 +269,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                   tabs: [
                     Tab(
                       child: Text(
-                        "ผลผลิตที่ไม่เคยใช้",
+                        "ส่งมาใหม่",
                         style: TextStyle(
                           fontFamily: 'Itim',
                           fontSize: 16,
@@ -198,7 +286,24 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                     ),
                     Tab(
                       child: Text(
-                        "ผลผลิตคงเหลือ",
+                        "ไม่เคยใช้",
+                        style: TextStyle(
+                          fontFamily: 'Itim',
+                          fontSize: 16,
+                        shadows: [
+                        Shadow(
+                          color: Color.fromARGB(255, 0, 0, 0)
+                              .withOpacity(0.5), // สีของเงา
+                          offset: Offset(2, 2), // ตำแหน่งเงา (X, Y)
+                          blurRadius: 3, // ความคมของเงา
+                        ),
+                      ],
+                        ),
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        "คงเหลือ",
                         style: TextStyle(
                           fontFamily: 'Itim',
                           fontSize: 16,
@@ -251,6 +356,156 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
               :
               TabBarView(
                 children: [
+                  newRms?.isNotEmpty == true? Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: ListView.builder(
+                      itemCount: newRms?.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                           
+                            Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(10)),
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: SizedBox(
+                                        child: Image.network(baseURL + '/planting/${newRms?[index].planting?.plantingImg ?? ""}'),
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 35,
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                         
+                                        Text(
+                                          "${newRms?[index].planting?.plantName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      
+                                        Text(
+                                          "จาก : " +
+                                              "${newRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${newRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          "ชื่อฟาร์ม : " +
+                                              "${newRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          "วันที่ส่ง : " +
+                                              "${dateFormat.format(newRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18),
+                                        ),
+                                         Text(
+                                          "จำนวน : " +
+                                              "${newRms?[index].rawMatShpQty}" +
+                                              " " +
+                                              "${newRms?[index].rawMatShpQtyUnit}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4, right: 4),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      child: SizedBox(
+                                        width: 45,
+                                        height: 60,
+                                        child: Container(
+                                          child: Icon(Icons.done_outline),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.only(topRight: Radius.circular(10))
+                                          ),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        print("Hi! ${newRms?[index].rawMatShpId}");
+                                        showSureToAcceptRmsAlert(newRms?[index].rawMatShpId);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 4),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      child: SizedBox(
+                                        width: 45,
+                                        height: 60,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))
+                                          ),
+                                          child: Icon(Icons.disabled_by_default),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        print("Hi! 2 ${newRms?[index].rawMatShpId}");
+                                        showSureToNotAcceptRmsAlert(newRms?[index].rawMatShpId);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ) : Center(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            height: 350,
+                            width: 350,
+                            image: AssetImage("images/bean_action3.png"),
+                          ),
+                          Text(
+                            "ไม่มีผลผลิตที่ส่งมาใหม่",
+                            style:
+                                TextStyle(fontFamily: "Itim", fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   notUsedRms?.isNotEmpty == true? Container(
                     padding: EdgeInsets.all(10.0),
                     child: ListView.builder(
@@ -292,14 +547,14 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                   
                                     Text(
                                       "จาก : " +
-                                          "${notUsedRms?[index].planting?.farmer?.farmerName}"+" "+"${notUsedRms?[index].planting?.farmer?.farmerLastname}",
+                                          "${notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 18),
                                     ),
                                     Text(
                                       "ชื่อฟาร์ม : " +
-                                          "${notUsedRms?[index].planting?.farmer?.farmName}",
+                                          "${notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 18),
@@ -413,14 +668,14 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                     ),
                                     Text(
                                       "จาก : " +
-                                          "${usedRms?[index].planting?.farmer?.farmerName}"+" "+"${usedRms?[index].planting?.farmer?.farmerLastname}",
+                                          "${usedRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${usedRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 20),
                                     ),
                                     Text(
                                       "ชื่อฟาร์ม : " +
-                                          "${usedRms?[index].planting?.farmer?.farmName}",
+                                          "${usedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 20),
@@ -533,14 +788,14 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                     ),
                                     Text(
                                       "จาก : " +
-                                          "${emptyRms?[index].planting?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmer?.farmerLastname}",
+                                          "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 20),
                                     ),
                                     Text(
                                       "ชื่อฟาร์ม : " +
-                                          "${emptyRms?[index].planting?.farmer?.farmName}",
+                                          "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 20),

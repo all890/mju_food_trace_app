@@ -22,4 +22,12 @@ class QRCodeController {
     return response;
   }
 
+  Future isChainValid (String qrcodeId) async {
+    var url = Uri.parse(baseURL + '/qrcode/ischainvalid/' + qrcodeId);
+
+    http.Response response = await http.get(url);
+
+    return response.body;
+  }
+
 }

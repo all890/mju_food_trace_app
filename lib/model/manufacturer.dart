@@ -15,8 +15,6 @@ class Manufacturer {
   String? factoryTelNo;
   String? factorySupName;
   String? factorySupLastname;
-  String? mnPrevBlockHash;
-  String? mnCurrBlockHash;
 
   User? user;
 
@@ -32,8 +30,6 @@ class Manufacturer {
     this.factoryTelNo,
     this.factorySupName,
     this.factorySupLastname,
-    this.mnPrevBlockHash,
-    this.mnCurrBlockHash,
     this.user,
   });
 
@@ -51,8 +47,6 @@ class Manufacturer {
       factoryTelNo: json["factoryTelNo"],
       factorySupName: json["factorySupName"],
       factorySupLastname: json["factorySupLastname"],
-      mnPrevBlockHash: json["mnPrevBlockHash"],
-      mnCurrBlockHash: json["mnCurrBlockHash"],
       user: json["user"] == null ? null : User.fromJsonToUser(json["user"]),
     );
 
@@ -70,8 +64,6 @@ class Manufacturer {
       'factoryTelNo': factoryTelNo,
       'factorySupName': factorySupName,
       'factorySupLastname': factorySupLastname,
-      'mnPrevBlockHash': mnPrevBlockHash,
-      'mnCurrBlockHash': mnCurrBlockHash,
       'user': user?.fromUserToJson()
     };
   }

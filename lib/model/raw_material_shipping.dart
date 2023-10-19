@@ -10,6 +10,8 @@ class RawMaterialShipping {
   DateTime? rawMatShpDate;
   double? rawMatShpQty;
   String? rawMatShpQtyUnit;
+  DateTime? receiveDate;
+  String? status;
   String? rmsPrevBlockHash;
   String? rmsCurrBlockHash;
   Planting? planting;
@@ -20,6 +22,8 @@ class RawMaterialShipping {
     this.rawMatShpDate,
     this.rawMatShpQty,
     this.rawMatShpQtyUnit,
+    this.receiveDate,
+    this.status,
     this.rmsPrevBlockHash,
     this.rmsCurrBlockHash,
     this.planting,
@@ -32,10 +36,12 @@ class RawMaterialShipping {
       'rawMatShpDate': rawMatShpDate?.toIso8601String(),
       'rawMatShpQty': rawMatShpQty,
       'rawMatShpQtyUnit': rawMatShpQtyUnit,
+      'receiveDate': receiveDate,
+      'status': status,
       'rmsPrevBlockHash': rmsPrevBlockHash,
       'rmsCurrBlockHash': rmsCurrBlockHash,
       'planting': planting?.fromPlantingToJson(),
-       'manufacturer': manufacturer?.fromManufacturerToJson(),
+      'manufacturer': manufacturer?.fromManufacturerToJson(),
     };
   }
 
@@ -45,6 +51,8 @@ class RawMaterialShipping {
       rawMatShpDate: DateTime.parse(json["rawMatShpDate"]).toLocal(),
       rawMatShpQty: json["rawMatShpQty"],
       rawMatShpQtyUnit: json["rawMatShpQtyUnit"],
+      receiveDate: json["receiveDate"] == null? null : DateTime.parse(json["receiveDate"]).toLocal(),
+      status: json["status"],
       rmsPrevBlockHash: json["rmsPrevBlockHash"],
       rmsCurrBlockHash: json["rmsCurrBlockHash"],
       planting: Planting.fromJsonToPlanting(json["planting"]),

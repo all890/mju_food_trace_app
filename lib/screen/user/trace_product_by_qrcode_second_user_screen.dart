@@ -27,6 +27,7 @@ import '../../controller/manufacturer_controller.dart';
 import '../../controller/manufacturing_controller.dart';
 import '../../controller/planting_controller.dart';
 import '../../controller/product_controller.dart';
+import '../../controller/qrcode_controller.dart';
 import '../../model/manufacturer_certificate.dart';
 
 class TraceProductByQRCodeSecondScreen extends StatefulWidget {
@@ -79,16 +80,18 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 
-  bool? showFarmerDetails = false;
-  bool? showFarmerCertificateDetails = false;
-  bool? showPlantingDetails = false;
-  bool? showRawMaterialShippingDetails = false;
+  bool? showFarmerDetails = true;
+  bool? showFarmerCertificateDetails = true;
+  bool? showPlantingDetails = true;
+  bool? showRawMaterialShippingDetails = true;
 
-  bool? showManufacturerDetails = false;
-  bool? showManufacturerCertificateDetails = false;
-  bool? showManufacturingDetails = false;
+  bool? showManufacturerDetails = true;
+  bool? showManufacturerCertificateDetails = true;
+  bool? showManufacturingDetails = true;
 
-  bool? showProductDetails = false;
+  bool? showProductDetails = true;
+
+  Map<String, dynamic>? incorrectPoint;
 
   FarmerController farmerController = FarmerController();
   FarmerCertificateController farmerCertificateController = FarmerCertificateController();
@@ -98,76 +101,133 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
   ManufacturingController manufacturingController = ManufacturingController();
   ProductController productController = ProductController();
+  QRCodeController qrCodeController = QRCodeController();
 
-  void checkHashToDetermineDataVisibility (QRCode? qrcode) async {
+  bool? farmerIncorrect = false;
+  bool? rmsIncorrect = false;
+  bool? manuftIncorrect = false;
 
-    var fmCurrBlockHashResponse = await farmerController.getNewFmCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerId ?? "");
-    if (fmCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.fmCurrBlockHash) {
-      //print("EVERYTHING GOES PERFECTLY!");
-      setState(() {
-        print("FM PASSED!");
-        showFarmerDetails = true;
-      });
+  void checkHashToDetermineDataVisibility () async {
+    var incorrectPointJson = await qrCodeController.isChainValid(widget.qrCode?.qrcodeId ?? "");
+    incorrectPoint = json.decode(incorrectPointJson);
+
+    if (incorrectPoint?.isNotEmpty == true) {
+      if (incorrectPoint?.containsKey("1") == true) {
+        setState(() {
+          farmerIncorrect = true;
+          print("FARMER IS INCORRECT");
+        });
+      } else if (incorrectPoint?.containsKey("2") == true || incorrectPoint?.containsKey("3") == true) {
+        setState(() {
+          rmsIncorrect = true;
+          print("RMS IS INCORRECT");
+        });
+      } else if (incorrectPoint?.containsKey("4") == true || incorrectPoint?.containsKey("5") == true) {
+        setState(() {
+          manuftIncorrect = true;
+          print("MANUFT IS INCORRECT");
+        });
+      }
     }
-
-    var fmCertCurrBlockHashResponse = await farmerCertificateController.getNewFmCertCurrBlockHash(widget.farmerCertificate?.fmCertId ?? "");
-    if (fmCertCurrBlockHashResponse == widget.farmerCertificate?.fmCertCurrBlockHash) {
-      setState(() {
-        print("FM CERT PASSED!");
-        showFarmerCertificateDetails = true;
-      });
-    }
-
-    var ptCurrBlockHashResponse = await plantingController.getNewPtCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.planting?.plantingId ?? "");
-    if (ptCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.planting?.ptCurrBlockHash) {
-      setState(() {
-        print("PT PASSED!");
-        showPlantingDetails = true;
-      });
-    }
-
-    var rmsCurrBlockHashResponse = await rawMaterialShippingController.getNewRmsCurrBlockHash(qrcode?.manufacturing?.rawMaterialShipping?.rawMatShpId ?? "");
-    //print(rmsCurrBlockHashResponse);
-    if (rmsCurrBlockHashResponse == qrcode?.manufacturing?.rawMaterialShipping?.rmsCurrBlockHash) {
-      setState(() {
-        print("RMS PASSED!");
-        showRawMaterialShippingDetails = true;
-      });
-    }
-
-    var mnCurrBlockHashResponse = await manufacturerController.getNewMnCurrBlockHash(qrcode?.manufacturing?.product?.manufacturer?.manuftId ?? "");
-    if (mnCurrBlockHashResponse == qrcode?.manufacturing?.product?.manufacturer?.mnCurrBlockHash) {
-      setState(() {
-        print("MN PASSED!");
-        showManufacturerDetails = true;
-      });
-    }
-
-    var mnCertCurrBlockHashResponse = await manufacturerCertificateController.getNewMnCertCurrBlockHash(widget.manufacturerCertificate?.mnCertId ?? "");
-    if (mnCertCurrBlockHashResponse == widget.manufacturerCertificate?.mnCertCurrBlockHash) {
-      setState(() {
-        print("MN CERT PASSED!");
-        showManufacturerCertificateDetails = true;
-      });
-    }
-
-    var manuftCurrBlockHashResponse = await manufacturingController.getNewManuftCurrBlockHash(qrcode?.manufacturing?.manufacturingId ?? "");
-    if (manuftCurrBlockHashResponse == qrcode?.manufacturing?.manuftCurrBlockHash) {
-      setState(() {
-        print("MANUFT PASSED!");
-        showManufacturingDetails = true;
-      });
-    }
-
-    var pdCurrBlockHashResponse = await productController.getNewPdCurrBlockHash(qrcode?.manufacturing?.product?.productId ?? "");
-    if (pdCurrBlockHashResponse == qrcode?.manufacturing?.product?.pdCurrBlockHash) {
-      setState(() {
-        print("PD PASSED!");
-        showProductDetails = true;
-      });
-    }
-
   }
+
+  Future openRmsDialog() => showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        title: Center(child: Text("การส่งผลผลิต",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
+        content: showProductDetails == true?
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "รายละเอียดการส่งผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "รหัสการส่งผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpId}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+              
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "จำนวนผลผลิตที่ส่ง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQty} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQtyUnit}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "ผู้รับผลผลิตปลายทาง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.manufacturer?.manuftName}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Verified by blockchain",
+                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.check_circle, color: Colors.green,),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ) : Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "การส่งผลผลิต",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('images/error_icon.png'),
+                  ),
+                ),
+                Text(
+                  "ข้อมูลการส่งผลผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
+                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ) ,
+      ),
+    )
+  );
 
   Future openProductDialog() => showDialog(
     context: context,
@@ -718,12 +778,12 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   ),
                 ),
               ) : Container(),
-              page != 3 ?Padding(
+              page != 2 ?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      if (!(page! > 2)) {
+                      if (!(page! > 1)) {
                         page = page! + 1;
                       }
                       print("PAGE : ${page}");
@@ -763,28 +823,28 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อฟาร์ม : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmName}",
+                    "ชื่อฟาร์ม : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmName}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "ชื่อเกษตรกร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerName}",
+                    "ชื่อเกษตรกร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmerName}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "เบอร์โทร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerMobileNo}",
+                    "เบอร์โทร : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmerMobileNo}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "อีเมล : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmerEmail}",
+                    "อีเมล : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmerEmail}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -1042,7 +1102,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
               ]
             ),
           ),
-        ) : page == 2 && showPlantingDetails == false? 
+        ) :
         Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
@@ -1073,95 +1133,43 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
               ],
             ),
           ),
-        ) : page == 3 && showRawMaterialShippingDetails == true? Container(
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "การส่งผลผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "รหัสการส่งผลผลิต : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpId}",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
-                  ),
-                ),
-              
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "จำนวนผลผลิตที่ส่ง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQty} ${widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpQtyUnit}",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "ผู้รับผลผลิตปลายทาง : ${widget.qrCode?.manufacturing?.rawMaterialShipping?.manufacturer?.manuftName}",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text(
-                      "Verified by blockchain",
-                      style: TextStyle(fontFamily: 'Itim',fontSize: 16)
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.check_circle, color: Colors.green,),
-                  ],
-                )
-              ],
-            ),
-          )
-        ) : 
+        )
+      ),
+    )
+  );
+
+  Future openDataWasTamperedDialog(String? header,String? prompt) => showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        title: Center(child: Text("${header}",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
+        content:
         Container(
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "การส่งผลผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
-                  ),
-                ),
                 SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: 200,
                   height: 200,
                   child: Image(
                     image: AssetImage('images/error_icon.png'),
                   ),
                 ),
-                Text(
-                  "ข้อมูลการส่งผลผลิตไม่ตรงกับการเข้ารหัส\nจึงไม่สามารถแสดงข้อมูลได้ ณ ขณะนี้",
-                  style: TextStyle(fontFamily: 'Itim',fontSize: 16),
-                  textAlign: TextAlign.center,
+                SizedBox(
+                  height: 20,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${prompt}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
           ),
-        ) ,
+        )
       ),
     )
   );
@@ -1169,25 +1177,53 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   void addMarker (String markerId, String type, LatLng location) async {
     final Uint8List farmerMarkerIcon = await getBytesFromAsset('images/farmer_icon.png', 100);
     final Uint8List factoryMarkerIcon = await getBytesFromAsset('images/factory_icon.png', 100);
+    final Uint8List rmsMarkerIcon = await getBytesFromAsset('images/rms_icon.png', 100);
 
     var marker = Marker(
       markerId: MarkerId(markerId),
       position: location,
-      icon: BitmapDescriptor.fromBytes(type == "FM" ? farmerMarkerIcon : factoryMarkerIcon),
+      icon: BitmapDescriptor.fromBytes(type == "FM" ? farmerMarkerIcon : type == "SENDING"? rmsMarkerIcon : factoryMarkerIcon),
       onTap: () async {
 
         if (type == "FM") {
           setState(() {
             strokeStatus = "FM";
           });
-          page = 0;
-          await openFmDialog();
+          if (farmerIncorrect == false) {
+            page = 0;
+            await openFmDialog();
+          } else {
+            await openDataWasTamperedDialog("เกษตรกร", "ไม่สามารถแสดงข้อมูลเกษตรกรได้\nเนื่องจากข้อมูลถูกแก้ไข");
+          }
+        } else if (type == "SENDING") {
+          setState(() {
+            strokeStatus = "RMS";
+          });
+          if (farmerIncorrect == false && rmsIncorrect == false) {
+            await openRmsDialog();
+          } else {
+            if (farmerIncorrect == true) {
+              await openDataWasTamperedDialog("การส่งผลผลิต", "ไม่สามารถแสดงข้อมูลการส่งผลผลิตได้เนื่องจากข้อมูลเกษตรกรถูกแก้ไข");
+            } else {
+              await openDataWasTamperedDialog("การส่งผลผลิต", "ไม่สามารถแสดงข้อมูลการส่งผลผลิตได้เนื่องจากข้อมูลถูกแก้ไข");
+            }
+          }
         } else {
           setState(() {
             strokeStatus = "MN";
           });
-          mnPage = 0;
-          await openMnDialog();
+          if (farmerIncorrect == false && (rmsIncorrect == false && manuftIncorrect == false)) {
+            mnPage = 0;
+            await openMnDialog();
+          } else {
+            if (farmerIncorrect == true) {
+              await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลเกษตรกรถูกแก้ไข");
+            } else if (rmsIncorrect == true) {
+              await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลการส่งผลผลิตถูกแก้ไข");
+            } else {
+              await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลถูกแก้ไข");
+            }
+          }
         }
 
       }
@@ -1201,8 +1237,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     setState(() {
       isLoaded = false;
     });
-    midX = (double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? "") + double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLatitude ?? "")) / 2;
-    midY = (double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "") + double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLongitude ?? "")) / 2;
+    midX = (double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? "") + double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLatitude ?? "")) / 2;
+    midY = (double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "") + double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLongitude ?? "")) / 2;
     setPicture();
     setState(() {
       isLoaded = true;
@@ -1225,7 +1261,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         "AIzaSyBaFEmOMkYo_MvZVEb3CJO8ALE7M6hFYys",
         PointLatLng(double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "")),
-        PointLatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLongitude ?? "")));
+        PointLatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLongitude ?? "")));
 
     if (result.status == 'OK') {
       result.points.forEach((PointLatLng point) {
@@ -1244,7 +1280,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
 
   void setStraightPolyline () {
     points.add(LatLng(double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "")));
-    points.add(LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLongitude ?? "")));
+    points.add(LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLongitude ?? "")));
     polylines.add(Polyline(
       color: Colors.black,
       width: 4,
@@ -1258,7 +1294,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   void initState() {
     super.initState();
     findMidpoint();
-    checkHashToDetermineDataVisibility(widget.qrCode);
+    checkHashToDetermineDataVisibility();
   }
 
   @override
@@ -1298,13 +1334,14 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 polylines: polylines,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(midX ?? 0.0, midY ?? 0.0),
-                  zoom: 14
+                  zoom: 16
                 ),
                 onMapCreated: (controller) {
                   mapController = controller;
                   _cameraController.complete(controller);
                   addMarker("1", "MN", LatLng(double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "")));
-                  addMarker("2", "FM", LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLongitude ?? "")));
+                  addMarker("2", "FM", LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLongitude ?? "")));
+                  addMarker("3", "SENDING", LatLng(midX ?? 0, midY ?? 0));
                   setStraightPolyline();
                 },
                 markers: markers.values.toSet(),
@@ -1328,7 +1365,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1350,15 +1387,19 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                                 GoogleMapController googleMapController = await _cameraController.future;
                                 googleMapController.animateCamera(CameraUpdate.newCameraPosition(
                                   CameraPosition(
-                                    target: LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmer?.farmLongitude ?? "")),
-                                    zoom: 15
+                                    target: LatLng(double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmLongitude ?? "")),
+                                    zoom: 16
                                   )
                                 ));
                                 setState(() {
                                   strokeStatus = "FM";
                                   page = 0;
                                 });
-                                await openFmDialog();
+                                if (farmerIncorrect == false) {
+                                  await openFmDialog();
+                                } else {
+                                  await openDataWasTamperedDialog("เกษตรกร", "ไม่สามารถแสดงข้อมูลเกษตรกรได้เนื่องจากข้อมูลถูกแก้ไข");
+                                }
                               },
                               child: Container(
                                 decoration: strokeStatus == "FM" ? BoxDecoration(
@@ -1387,7 +1428,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1405,19 +1446,95 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                             ),
                             GestureDetector(
                               onTap: () async {
+                                print('Rms pressed!');
+                                GoogleMapController googleMapController = await _cameraController.future;
+                                googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(midX ?? 0, midY ?? 0),
+                                    zoom: 16
+                                  )
+                                ));
+                                setState(() {
+                                  strokeStatus = "RMS";
+                                });
+                                if (farmerIncorrect == false && rmsIncorrect == false) {
+                                  await openRmsDialog();
+                                } else {
+                                  if (farmerIncorrect == true) {
+                                    await openDataWasTamperedDialog("การส่งผลผลิต", "ไม่สามารถแสดงข้อมูลการส่งผลผลิตได้เนื่องจากข้อมูลเกษตรกรถูกแก้ไข");
+                                  } else {
+                                    await openDataWasTamperedDialog("การส่งผลผลิต", "ไม่สามารถแสดงข้อมูลการส่งผลผลิตได้เนื่องจากข้อมูลถูกแก้ไข");
+                                  }
+                                }
+                              },
+                              child: Container(
+                                width: iconSize,
+                                height: iconSize,
+                                decoration: strokeStatus == "RMS" ? BoxDecoration(
+                                  border: Border.all(width: 5, color: Colors.yellow),
+                                  borderRadius: BorderRadius.circular(100), //<-- SEE HERE
+                                ) : null,
+                                child: Image(
+                                  image: AssetImage('images/rms_icon.png'),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                "การส่งผลผลิต",
+                                style: TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 16,
+                                  color: Colors.white
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                "จุดที่ 3",
+                                style: TextStyle(
+                                  fontFamily: 'Itim',
+                                  fontSize: 16,
+                                  color: Colors.white
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
                                 print('Factory pressed!');
                                 GoogleMapController googleMapController = await _cameraController.future;
                                 googleMapController.animateCamera(CameraUpdate.newCameraPosition(
                                   CameraPosition(
                                     target: LatLng(double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLatitude ?? ""), double.parse(widget.qrCode?.manufacturing?.product?.manufacturer?.factoryLongitude ?? "")),
-                                    zoom: 15
+                                    zoom: 16
                                   )
                                 ));
                                 setState(() {
                                   strokeStatus = "MN";
                                   mnPage = 0;
                                 });
-                                await openMnDialog();
+                                if (farmerIncorrect == false && (rmsIncorrect == false && manuftIncorrect == false)) {
+                                  await openMnDialog();
+                                } else {
+                                  if (farmerIncorrect == true) {
+                                    await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลเกษตรกรถูกแก้ไข");
+                                  } else if (rmsIncorrect == true) {
+                                    await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลการส่งผลผลิตถูกแก้ไข");
+                                  } else {
+                                    await openDataWasTamperedDialog("ผู้ผลิต", "ไม่สามารถแสดงข้อมูลผู้ผลิตได้เนื่องจากข้อมูลถูกแก้ไข");
+                                  }
+                                }
                               },
                               child: Container(
                                 width: iconSize,
@@ -1446,7 +1563,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 3,
+                        width: MediaQuery.of(context).size.width / 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1464,7 +1581,17 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                             ),
                             GestureDetector(
                               onTap: () async {
-                                await openProductDialog();
+                                if (farmerIncorrect == false && (rmsIncorrect == false && manuftIncorrect == false)) {
+                                  await openProductDialog();
+                                } else {
+                                  if (farmerIncorrect == true) {
+                                    await openDataWasTamperedDialog("ข้อมูลสินค้า", "ไม่สามารถแสดงข้อมูลสินค้าได้เนื่องจากข้อมูลเกษตรกรถูกแก้ไข");
+                                  } else if (rmsIncorrect == true) {
+                                    await openDataWasTamperedDialog("ข้อมูลสินค้า", "ไม่สามารถแสดงข้อมูลสินค้าได้เนื่องจากข้อมูลการส่งผลผลิตถูกแก้ไข");
+                                  } else {
+                                    await openDataWasTamperedDialog("ข้อมูลสินค้า", "ไม่สามารถแสดงข้อมูลสินค้าได้เนื่องจากข้อมูลผู้ผลิตถูกแก้ไข");
+                                  }
+                                }
                               },
                               child: SizedBox(
                                 width: iconSize,

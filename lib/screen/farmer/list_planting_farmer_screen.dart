@@ -400,10 +400,15 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
+                                        Text(
+                                            "ผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].planting?.plantName}",
+                                            style: const TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 18)),
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 10),
                                           child: Text(
-                                              "ผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].planting?.plantName}",
+                                              "สถานะการส่ง : ${rawMaterialShippings?[index1].status}",
                                               style: const TextStyle(
                                                   fontFamily: 'Itim',
                                                   fontSize: 18)),

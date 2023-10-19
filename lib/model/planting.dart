@@ -1,5 +1,6 @@
 
 import 'farmer.dart';
+import 'farmer_certificate.dart';
 
 class Planting {
 
@@ -18,7 +19,7 @@ class Planting {
   String? ptPrevBlockHash;
   String? ptCurrBlockHash;
 
-  Farmer? farmer;
+  FarmerCertificate? farmerCertificate;
 
   Planting({
     this.plantingId,
@@ -35,7 +36,7 @@ class Planting {
     this.rai,
     this.ptPrevBlockHash,
     this.ptCurrBlockHash,
-    this.farmer,
+    this.farmerCertificate,
   });
 
   Map<String, dynamic> fromPlantingToJson() {
@@ -54,7 +55,7 @@ class Planting {
       'rai': rai,
       'ptPrevBlockHash': ptPrevBlockHash,
       'ptCurrBlockHash': ptCurrBlockHash,
-      'farmer': farmer?.fromFarmerToJson(),
+      'farmerCertificate': farmerCertificate?.fromFarmerCertificateToJson(),
     };
   }
 
@@ -76,7 +77,7 @@ class Planting {
       rai: json["rai"],
       ptPrevBlockHash: json["ptPrevBlockHash"],
       ptCurrBlockHash: json["ptCurrBlockHash"],
-      farmer: Farmer.fromJsonToFarmer(json["farmer"])
+      farmerCertificate: FarmerCertificate.fromJsonToFarmerCertificate(json["farmerCertificate"])
     );
   }
 

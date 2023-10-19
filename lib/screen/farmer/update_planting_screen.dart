@@ -177,7 +177,7 @@ class _UpdatePlantingScreenState extends State<UpdatePlantingScreen> {
               rai: double.parse(raiTextController.text),
               ptPrevBlockHash: "0",
               ptCurrBlockHash: null,
-              farmer: planting?.farmer
+              farmerCertificate: planting?.farmerCertificate
             );
 
             http.Response response = await plantingController.updatePlanting(fileToDisplay, plantingUpdate);

@@ -11,8 +11,6 @@ class ManufacturerCertificate {
   DateTime? mnCertRegDate;
   DateTime? mnCertExpireDate;
   String? mnCertStatus;
-  String? mnCertPrevBlockHash;
-  String? mnCertCurrBlockHash;
 
   Manufacturer? manufacturer;
 
@@ -24,8 +22,6 @@ class ManufacturerCertificate {
     this.mnCertRegDate,
     this.mnCertExpireDate,
     this.mnCertStatus,
-    this.mnCertPrevBlockHash,
-    this.mnCertCurrBlockHash,
     this.manufacturer
   });
 
@@ -37,8 +33,6 @@ class ManufacturerCertificate {
     mnCertRegDate: DateTime.parse(json["mnCertRegDate"]).toLocal(),
     mnCertExpireDate: DateTime.parse(json["mnCertExpireDate"]).toLocal(),
     mnCertStatus: json["mnCertStatus"],
-    mnCertPrevBlockHash: json["mnCertPrevBlockHash"],
-    mnCertCurrBlockHash: json["mnCertCurrBlockHash"],
     manufacturer: json["manufacturer"] == null ? null : Manufacturer.fromJsonToManufacturer(json["manufacturer"])
   );
 
@@ -51,8 +45,6 @@ class ManufacturerCertificate {
       'mnCertRegDate': mnCertRegDate,
       'mnCertExpireDate': mnCertExpireDate,
       'mnCertStatus': mnCertStatus,
-      'mnCertPrevBlockHash': mnCertPrevBlockHash,
-      'mnCertCurrBlockHash': mnCertCurrBlockHash,
       'manufacturer': manufacturer?.user?.username
     };
   }
