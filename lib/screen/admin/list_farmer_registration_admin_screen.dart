@@ -59,7 +59,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                     blurRadius: 3, // ความคมของเงา
                   ),
                 ],),),
-            backgroundColor: Colors.green,
+            backgroundColor: kClipPathColorAM,
           ),
           backgroundColor: kBackgroundColor,
           body: isLoaded == false?
@@ -89,7 +89,13 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.account_circle)
+                        SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image(
+                    image: AssetImage('images/farmer_icon.png'),
+                  ),
+                ),
                       ],
                     ),
                     title: Column(
@@ -100,7 +106,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                           "${farmers?[index].farmerName} ${farmers?[index].farmerLastname}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 22
+                            fontSize: 22,color: Color.fromARGB(255, 40, 27, 3)
                           ),
                         ),
                         Text(
@@ -111,7 +117,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                           ),
                         ),
                         Text(
-                          "${dateFormat.format(farmers?[index].farmerRegDate ?? DateTime.now())}",
+                          "วันที่สมัคร : "+"${dateFormat.format(farmers?[index].farmerRegDate ?? DateTime.now())}",
                        
                           style: const TextStyle(
                             fontFamily: 'Itim',
@@ -120,7 +126,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                         )
                       ],
                     ),
-                    trailing: const Icon(Icons.zoom_in),
+                    trailing: const Icon(Icons.zoom_in,color: Color.fromARGB(255, 71, 46, 2),),
                     onTap: () {
                       print("Go to farmer ${farmers?[index].farmerId} details page!");
                       WidgetsBinding.instance!.addPostFrameCallback((_) {

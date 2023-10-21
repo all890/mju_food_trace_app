@@ -199,7 +199,7 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                                     RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(50.0))),
-                                backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorAM)
                               ),
                               onPressed: () async {
                                 

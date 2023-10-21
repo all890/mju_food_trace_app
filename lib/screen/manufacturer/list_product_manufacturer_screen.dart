@@ -345,7 +345,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                       );
                                     }
                                   },
-                                  child: Icon(Icons.edit)
+                                  child: Icon(Icons.edit,color: Color.fromARGB(255, 4, 92, 89),)
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -358,7 +358,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                       showConfirmToDeleteAlert(notManufacturedProducts?[index].productId ?? "");
                                     }
                                   },
-                                  child: Icon(Icons.delete)
+                                  child: Icon(Icons.delete,color: Color.fromARGB(255, 151, 7, 7),)
                                 )
                               ],
                             ),

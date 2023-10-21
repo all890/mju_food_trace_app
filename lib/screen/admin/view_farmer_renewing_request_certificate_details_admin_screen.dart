@@ -245,8 +245,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.key),
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -265,7 +265,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -284,7 +284,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -303,8 +303,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.description),
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -322,8 +322,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -341,8 +341,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',

@@ -60,7 +60,7 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                     blurRadius: 3, // ความคมของเงา
                   ),
                 ],),),
-            backgroundColor: Colors.green,
+            backgroundColor: kClipPathColorAM,
           ),
           backgroundColor: kBackgroundColor,
           body: isLoaded == false?
@@ -90,7 +90,13 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.account_circle)
+                          SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: Image(
+                              image: AssetImage('images/certificate-icon.png'),
+                            ),
+                          ),
                       ],
                     ),
                     title: Column(
@@ -101,7 +107,8 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                           "${manufacturerCertificates?[index].manufacturer?.manuftName}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 22
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 5, 40, 61)
                           ),
                         ),
                         Text(
@@ -120,7 +127,7 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                         ),
                       ],
                     ),
-                    trailing: const Icon(Icons.zoom_in),
+                    trailing: const Icon(Icons.zoom_in,color: Color.fromARGB(255, 5, 40, 61),),
                     onTap: () {
                       print("Go to manufacturer ${manufacturerCertificates?[index].mnCertId} details page!");
                       

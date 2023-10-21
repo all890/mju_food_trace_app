@@ -54,6 +54,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
   String? imgCertFileName;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
+  var newDateFormat = DateFormat('dd-MMM-yyyy');
 
   FarmerCertificate? farmerCertificate;
 
@@ -259,7 +260,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "${farmerCertificate?.farmer?.farmerRegDate}",
+                        "วันที่ทำการสมัคร "+"${newDateFormat.format(farmerCertificate?.farmer?.farmerRegDate ?? DateTime.now())}",
                         style: TextStyle(
                           fontFamily: 'Itim',
                           fontSize: 16
@@ -278,7 +279,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -297,7 +298,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -315,8 +316,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.email),
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -334,8 +335,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.call),
+                        prefixIconColor:  Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -389,8 +390,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.gite),
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -427,8 +428,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.description),
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -446,8 +447,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -465,8 +466,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -503,7 +504,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor: Color.fromARGB(255, 71, 46, 2)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',

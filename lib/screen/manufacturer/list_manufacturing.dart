@@ -300,7 +300,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                         Center(
                           child: CircularProgressIndicator(
                             valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.green),
+                                AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 3, 76, 141)),
                           ),
                         ),
                       ],
@@ -333,17 +333,17 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                     Text(
                                       "${notRecordedManufacturings?[index].product?.productName}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                          fontFamily: 'Itim', fontSize: 18),
                                     ),
                                     Text(
                                       "วันที่ทำการผลิต "+"${dateFormat.format(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                          fontFamily: 'Itim', fontSize: 18),
                                     ),
                                      Text(
                                       "ปริมาณสินค้า "+"${notRecordedManufacturings?[index].productQty}"+" ${notRecordedManufacturings?[index].productUnit}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                          fontFamily: 'Itim', fontSize: 18),
                                     ),
                                   ],
                                 ),
@@ -353,6 +353,31 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            print("Delete Pressed!");
+                                            if (manufacturerCertificate
+                                                        ?.mnCertExpireDate
+                                                        ?.isBefore(
+                                                            DateTime.now()) ==
+                                                    true ||
+                                                manufacturerCertificate
+                                                        ?.mnCertStatus ==
+                                                    "ไม่อนุมัติ") {
+                                              showErrorToDeleteBecauseMnCertIsExpire();
+                                            } else if (manufacturerCertificate
+                                                        ?.mnCertStatus ==
+                                                    "รอการอนุมัติ") {
+                                              showErrorToDeleteBecauseMnCertIsWaitToAccept();
+                                            } else {
+                                              showConfirmToDeleteAlert(
+                                                  notRecordedManufacturings?[
+                                                              index]
+                                                          .manufacturingId ??
+                                                      "");
+                                            }
+                                          },
+                                          child: Icon(Icons.delete,color:  Color.fromARGB(255, 146, 4, 4),)),
                                       GestureDetector(
                                           onTap: () {
                                             print("Edit Pressed!");
@@ -383,32 +408,8 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                               );
                                             }
                                           },
-                                          child: Icon(Icons.edit)),
-                                      GestureDetector(
-                                          onTap: () {
-                                            print("Delete Pressed!");
-                                            if (manufacturerCertificate
-                                                        ?.mnCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
-                                                manufacturerCertificate
-                                                        ?.mnCertStatus ==
-                                                    "ไม่อนุมัติ") {
-                                              showErrorToDeleteBecauseMnCertIsExpire();
-                                            } else if (manufacturerCertificate
-                                                        ?.mnCertStatus ==
-                                                    "รอการอนุมัติ") {
-                                              showErrorToDeleteBecauseMnCertIsWaitToAccept();
-                                            } else {
-                                              showConfirmToDeleteAlert(
-                                                  notRecordedManufacturings?[
-                                                              index]
-                                                          .manufacturingId ??
-                                                      "");
-                                            }
-                                          },
-                                          child: Icon(Icons.delete)),
+                                          child: Icon(Icons.edit,color:  Color.fromARGB(255, 134, 117, 7),)),
+                                    
                                       GestureDetector(
                                           onTap: () {
                                             print("Record Pressed!");
@@ -439,7 +440,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                               );
                                             }
                                           },
-                                          child: Icon(Icons.save))
+                                          child: Icon(Icons.save,color:  Color.fromARGB(255, 78, 2, 97),))
                                     ],
                                   ),
                                 ),

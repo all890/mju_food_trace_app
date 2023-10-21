@@ -243,8 +243,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.key),
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -262,8 +262,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.home_filled),
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -282,7 +282,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -301,7 +301,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -320,8 +320,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.description),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -339,8 +339,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -358,8 +358,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',

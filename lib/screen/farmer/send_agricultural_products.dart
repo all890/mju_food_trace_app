@@ -249,7 +249,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  padding: EdgeInsets.only(top: 5,left: 7,right: 5,bottom: 5),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -261,7 +261,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                 ),
                                fileToDisplay == null
                                     ? Padding(
-                                      padding: const EdgeInsets.only(top: 25, bottom: 25),
+                                      padding: const EdgeInsets.only(top: 0, bottom: 0),
                                       child: SizedBox(
                                             width: 300,
                                             height: 300,
@@ -270,14 +270,14 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                               imgPlantingFileName)),
                                     )
                                     : Padding(
-                                      padding: const EdgeInsets.only(top: 25, bottom: 25),
+                                      padding: const EdgeInsets.only(top: 0, bottom: 0),
                                       child: SizedBox(
                                           width: 300,
                                           height: 300,
                                           child: Image.file(fileToDisplay!)),
                                     ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -289,7 +289,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -301,7 +301,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -313,7 +313,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -325,7 +325,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -337,7 +337,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -351,7 +351,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -364,7 +364,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -377,7 +377,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -390,7 +390,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   ),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.only(top: 15,left: 7,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -438,7 +438,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         prefixIcon:
-                                            const Icon(Icons.calendar_month),
+                                            const Icon(Icons.calendar_month,color:Color.fromARGB(255, 87, 68, 9),),
                                         prefixIconColor: Colors.black),
                                     style: const TextStyle(
                                         fontFamily: 'Itim', fontSize: 18),
@@ -514,7 +514,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                       */
 
                                     },
-                                    icon: const Icon(Icons.bubble_chart)),
+                                    icon: const Icon(Icons.bubble_chart,color:Color.fromARGB(255, 87, 68, 9),)),
 
                                       Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -535,7 +535,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: DropdownButtonFormField<String>(
                                              value: selected_rawMatShpQtyUnit_items,
-                                    icon: const Icon(Icons.expand_more),
+                                    icon: const Icon(Icons.expand_more,color:Color.fromARGB(255, 87, 68, 9),),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -556,7 +556,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                         selected_rawMatShpQtyUnit_items = item),
                                             
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIcon: Icon(Icons.bubble_chart,color:  Color.fromARGB(255, 87, 68, 9),),
                                               prefixIconColor: Colors.black,
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)

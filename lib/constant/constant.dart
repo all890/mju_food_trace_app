@@ -6,6 +6,7 @@ var kBackgroundColor = Color.fromARGB(255, 255, 255, 255);
 //Login Screen
 var kFontLoginScreenColor = Colors.black;
 var kClipPathColor = Colors.green;
+var kClipPathColorAM = Color.fromARGB(255, 46, 153, 50);
 var kClipPathColorFM = Colors.orange;
 var kClipPathColorMN = Color.fromARGB(255, 15, 150, 145);
 var kClipPathColorTextFM = Color.fromARGB(255, 255, 255, 255);

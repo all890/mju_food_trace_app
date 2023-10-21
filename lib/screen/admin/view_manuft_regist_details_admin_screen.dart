@@ -47,7 +47,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
   String? imgCertFileName;
 
   var dateFormat = DateFormat('dd-MM-yyyy');
-
+  var newDateFormat = DateFormat('dd-MMM-yyyy');
   late GoogleMapController mapController;
   Map<String, Marker> markers = {};
 
@@ -249,6 +249,19 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                       ),
                     ),
                   ),
+                    Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "วันที่ทำการสมัคร "+"${newDateFormat.format(manufacturerCertificate?.manufacturer?.manuftRegDate ?? DateTime.now())}",
+                        style: TextStyle(
+                          fontFamily: 'Itim',
+                          fontSize: 16
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
@@ -259,8 +272,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.home_filled),
+                        prefixIconColor: Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -278,8 +291,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.email),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -315,8 +328,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.call),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -335,7 +348,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -354,7 +367,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -409,8 +422,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.description),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -428,8 +441,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -447,8 +460,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         counterText: "",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                        prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',
@@ -485,7 +498,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                         prefixIcon: const Icon(Icons.account_circle),
-                        prefixIconColor: Colors.black
+                        prefixIconColor:  Color.fromARGB(255, 5, 40, 61)
                       ),
                       style: const TextStyle(
                         fontFamily: 'Itim',

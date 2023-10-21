@@ -61,7 +61,7 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                     blurRadius: 3, // ความคมของเงา
                   ),
                 ],),),
-            backgroundColor: Colors.green,
+            backgroundColor: kClipPathColorAM,
           ),
           backgroundColor: kBackgroundColor,
           body: isLoaded == false?
@@ -91,7 +91,13 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.account_circle)
+                          SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image(
+                    image: AssetImage('images/certificate-icon.png'),
+                  ),
+                ),
                       ],
                     ),
                     title: Column(
@@ -102,11 +108,12 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                           "${farmerCertificates?[index].farmer?.farmerName} ${farmerCertificates?[index].farmer?.farmerLastname}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 22
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 50, 33, 3)
                           ),
                         ),
                         Text(
-                          "${farmerCertificates?[index].farmer?.farmName}",
+                          "ชื่อฟาร์ม : "+"${farmerCertificates?[index].farmer?.farmName}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
@@ -128,7 +135,7 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                         ),
                       ],
                     ),
-                    trailing: const Icon(Icons.zoom_in),
+                    trailing: const Icon(Icons.zoom_in,color: Color.fromARGB(255, 71, 46, 2),),
                     onTap: () {
                       print("Go to farmer ${farmerCertificates?[index].fmCertId} details page!");
                       

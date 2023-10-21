@@ -347,7 +347,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       return "กรุณากรอกชื่อผลผลิตให้มีความยาวตั้งแต่ 4 - 35 ตัวอักษร";
                                     }
                                   },
-                                  icon: const Icon(Icons.grass)
+                                  icon: const Icon(Icons.grass,color:Color.fromARGB(255, 78, 59, 3),)
                                 ),
                                 Row(
                                   children: [
@@ -363,7 +363,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                             counterText: "",
                                             border: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(10)),
-                                            prefixIcon: const Icon(Icons.image),
+                                            prefixIcon: const Icon(Icons.image,color:Color.fromARGB(255, 78, 59, 3)),
                                             prefixIconColor: Colors.black
                                           ),
                                           style: const TextStyle(
@@ -383,7 +383,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                           },
                                           child: const Text("เลือกรูปภาพ"),
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 78, 59, 3))
                                           ),
                                         ),
                                       )
@@ -420,7 +420,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       counterText: "",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10)),
-                                      prefixIcon: const Icon(Icons.calendar_month),
+                                      prefixIcon: const Icon(Icons.calendar_month,color: Color.fromARGB(255, 78, 59, 3),),
                                       prefixIconColor: Colors.black
                                     ),
                                     style: const TextStyle(
@@ -461,7 +461,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       counterText: "",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10)),
-                                      prefixIcon: const Icon(Icons.calendar_month),
+                                      prefixIcon: const Icon(Icons.calendar_month,color:Color.fromARGB(255, 78, 59, 3),),
                                       prefixIconColor: Colors.black
                                     ),
                                     style: const TextStyle(
@@ -505,7 +505,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                             ).toList(),
                                             onChanged: (item) => setState(() =>  selected_bioextract_items = item),
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIcon: Icon(Icons.bubble_chart,color:Color.fromARGB(255, 78, 59, 3),),
                                               prefixIconColor: Colors.black,
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
@@ -542,7 +542,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                             style: const TextStyle(color: Colors.black,fontSize: 18,fontFamily: 'Itim',),
                                             isExpanded: true,
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
+                                              prefixIcon: Icon(Icons.bubble_chart,color: Color.fromARGB(255, 78, 59, 3),),
                                               prefixIconColor: Colors.black,
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
@@ -574,7 +574,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                       return "กรุณากรอกปริมาณผลผลิตสุทธิให้มีค่าตั้งแต่ 1 - 100,000";
                                     }
                                   },
-                                  icon: const Icon(Icons.bubble_chart)
+                                  icon: const Icon(Icons.bubble_chart,color:Color.fromARGB(255, 78, 59, 3),)
                                 ),
                                 
                                 Padding(
@@ -597,7 +597,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                           child: DropdownButtonFormField<String>(
                                             value: selected_netQuantityUnit_items,
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.scale),
+                                              prefixIcon: Icon(Icons.scale,color:Color.fromARGB(255, 78, 59, 3),),
                                               prefixIconColor: Colors.black,
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
@@ -636,7 +636,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                   onChanged: (value) {
                                     calculateAreaFromSquareMetres(value ?? "");
                                   },
-                                  icon: const Icon(Icons.filter_hdr)
+                                  icon: const Icon(Icons.filter_hdr,color: Color.fromARGB(255, 78, 59, 3),)
                                 ),
 
                                 CustomTextFormField(
@@ -655,7 +655,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                   onChanged: (value) {
                                     calculateAreaFromSquareYards(value ?? "");
                                   },
-                                  icon: const Icon(Icons.filter_hdr)
+                                  icon: const Icon(Icons.filter_hdr,color: Color.fromARGB(255, 78, 59, 3),)
                                 ),
 
                                  CustomTextFormField(
@@ -674,7 +674,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                   onChanged: (value) {
                                     calculateAreaFromRai(value ?? "");
                                   },
-                                  icon: const Icon(Icons.filter_hdr)
+                                  icon: const Icon(Icons.filter_hdr,color: Color.fromARGB(255, 78, 59, 3),)
                                 ),
                                 
                                 Padding(

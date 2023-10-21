@@ -318,7 +318,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                   child: Text(
                                     "เพิ่มการผลิตสินค้า",
                                     style: TextStyle(
-                                        fontSize: 22, fontFamily: 'Itim',color: Color.fromARGB(255, 33, 82, 35)),
+                                        fontSize: 22, fontFamily: 'Itim',color:Color.fromARGB(255, 4, 92, 89)),
                                   ),
                                 ),
                                 const Padding(
@@ -352,7 +352,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: DropdownButtonFormField<String>(
                                             value: selected_productName,
-                                    icon: const Icon(Icons.expand_more),
+                                    icon: const Icon(Icons.expand_more,color: Color.fromARGB(255, 4, 92, 89),),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -380,7 +380,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     },
                                             
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.compost),
+                                              prefixIcon: Icon(Icons.compost,color:  Color.fromARGB(255, 1, 73, 71),),
                                               prefixIconColor: Colors.black,
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
@@ -431,7 +431,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         prefixIcon:
-                                            const Icon(Icons.calendar_month),
+                                            const Icon(Icons.calendar_month,color: Color.fromARGB(255, 1, 73, 71)),
                                         prefixIconColor: Colors.black),
                                     style: const TextStyle(
                                         fontFamily: 'Itim', fontSize: 18),
@@ -473,8 +473,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         prefixIcon:
-                                            const Icon(Icons.calendar_month),
-                                        prefixIconColor: Colors.black),
+                                            const Icon(Icons.calendar_month,color:  Color.fromARGB(255, 1, 73, 71),)),
                                     style: const TextStyle(
                                         fontFamily: 'Itim', fontSize: 18),
                                     validator: (value) {
@@ -497,7 +496,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       return "กรุณากรอกผลผลิตที่นำมาใช้";
                                     }
                                   },
-                                  icon: const Icon(Icons.grass)
+                                  icon: const Icon(Icons.grass,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: usedRawMatQtyTextController,
@@ -556,7 +555,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     
                                     
                                   },
-                                  icon: const Icon(Icons.bubble_chart)
+                                  icon: const Icon(Icons.bubble_chart,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                  Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -577,7 +576,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: DropdownButtonFormField<String>(
                                            value: selected_usedRawMatQtyUnit_items,
-                                    icon: const Icon(Icons.expand_more),
+                                    icon: const Icon(Icons.expand_more,color:  Color.fromARGB(255, 1, 73, 71),),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -602,8 +601,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                     },
                                             
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
-                                              prefixIconColor: Colors.black,
+                                              prefixIcon: Icon(Icons.bubble_chart,color:  Color.fromARGB(255, 1, 73, 71),),
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
                                               )
@@ -638,7 +636,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                         return "ปริมาณสินค้าที่ผลิตได้ต้องมีค่าไม่เกิน ${maxProductQty} หน่วย";
                                       }
                                     },
-                                    icon: const Icon(Icons.equalizer)),
+                                    icon: const Icon(Icons.equalizer,color:  Color.fromARGB(255, 1, 73, 71),)),
 
                                    Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -659,7 +657,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: DropdownButtonFormField<String>(
                                             value: selected_productUnit_items,
-                                    icon: const Icon(Icons.expand_more),
+                                    icon: const Icon(Icons.expand_more,color:  Color.fromARGB(255, 1, 73, 71),),
                                     elevation: 5,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -680,8 +678,7 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                         selected_productUnit_items = item),
                                             
                                             decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.bubble_chart),
-                                              prefixIconColor: Colors.black,
+                                              prefixIcon: Icon(Icons.bubble_chart,color:  Color.fromARGB(255, 1, 73, 71),),
                                               enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Colors.white)
                                               )

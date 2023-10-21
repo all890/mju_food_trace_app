@@ -37,7 +37,7 @@ class _AutoCompleteStatefulState extends State<AutoCompleteStateful> {
           counterText: "",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10)),
-            prefixIcon: Icon(Icons.person),
+            prefixIcon: Icon(Icons.home_filled,color: Color.fromARGB(255, 87, 68, 9),),
           prefixIconColor: Colors.black,
         ),
         onChanged: (value) {

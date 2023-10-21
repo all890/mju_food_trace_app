@@ -62,6 +62,7 @@ flutter:
     - images/corn_action2.png
     - images/error_icon.png
     - images/rms_icon.png
+    - images/certificate-icon.png
 
   fonts:
     - family: Itim

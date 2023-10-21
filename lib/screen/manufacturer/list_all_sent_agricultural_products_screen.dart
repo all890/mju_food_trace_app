@@ -382,7 +382,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 35,
+                                      width: 25,
                                     ),
                                     Column(
                                       mainAxisSize: MainAxisSize.max,
@@ -529,7 +529,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 50,
+                                  width: 25,
                                 ),
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -652,7 +652,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 50,
+                                  width: 25,
                                 ),
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -772,7 +772,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 50,
+                                  width: 25,
                                 ),
                                 Column(
                                   mainAxisSize: MainAxisSize.max,

@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return "กรุณากรอกชื่อผู้ใช้งาน";
                                 }
                               },
-                              icon: const Icon(Icons.account_circle),
+                              icon: const Icon(Icons.account_circle,color: Color.fromARGB(255, 13, 69, 6),),
                             ),
                           ),
                           SizedBox(
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return "กรุณากรอกรหัสผ่าน";
                                 }
                               },
-                              icon: const Icon(Icons.lock),
+                              icon: const Icon(Icons.lock,color: Color.fromARGB(255, 13, 69, 6)),
                               obscureText: true,
                               maxLines: 1,
                             ),
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       RoundedRectangleBorder(
                                         borderRadius:
                                           BorderRadius.circular(50.0))),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green)
+                                        backgroundColor: MaterialStateProperty.all<Color>(kClipPathColorAM)
                                 ),
                                 onPressed: () async {
             

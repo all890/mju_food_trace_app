@@ -249,7 +249,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontFamily: 'Itim',
-                                      color: Color.fromARGB(255, 33, 82, 35)
+                                      color: Color.fromARGB(255, 4, 92, 89)
                                     ),
                                   ),
                                 ),
@@ -282,7 +282,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกชื่อสินค้าให้เป็นภาษาไทยหรือภาษาอังกฤษ \nหรือสามารถประกอบไปด้วยช่องว่าง - และ ()";
                                     }
                                   },
-                                  icon: const Icon(Icons.compost)
+                                  icon: const Icon(Icons.compost,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: netVolumeTextController,
@@ -304,7 +304,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณสุทธิให้มีค่าตั้งแต่ 100 - 10,000 กรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.equalizer)
+                                  icon: const Icon(Icons.equalizer,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: netEnergyTextController,
@@ -326,7 +326,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกพลังงานที่ได้รับสุทธิให้มีค่าตั้งแต่ 0 - 1000 กิโลแคลอรี่";
                                     }
                                   },
-                                  icon: const Icon(Icons.bolt)
+                                  icon: const Icon(Icons.bolt,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: saturatedFatTextController,
@@ -348,7 +348,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณไขมันอิ่มตัวให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.opacity)
+                                  icon: const Icon(Icons.opacity,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: cholesteralTextController,
@@ -370,7 +370,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณคอเลสเตอรอลให้มีค่าตั้งแต่ 0 - 1000 มิลลิกรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.water_drop)
+                                  icon: const Icon(Icons.water_drop,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: proteinTextController,
@@ -392,7 +392,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณโปรตีนให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.water_drop)
+                                  icon: const Icon(Icons.water_drop,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: sodiumTextController,
@@ -414,7 +414,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณากรอกปริมาณโซเดียมให้มีค่าตั้งแต่ 0 - 1000 มิลลิกรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.water_drop)
+                                  icon: const Icon(Icons.water_drop,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: fiberTextController,
@@ -436,7 +436,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณใยอาหารให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.water_drop)
+                                  icon: const Icon(Icons.water_drop,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: sugarTextController,
@@ -458,7 +458,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณน้ำตาลให้มีค่าตั้งแต่ 0 - 100 กรัม";
                                     }
                                   },
-                                  icon: const Icon(Icons.water_drop)
+                                  icon: const Icon(Icons.water_drop,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -500,7 +500,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณธาตุเหล็กให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.hdr_strong)
+                                  icon: const Icon(Icons.hdr_strong,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: vitATextController,
@@ -522,7 +522,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณวิตามินเอให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.hub)
+                                  icon: const Icon(Icons.hub,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB1TextController,
@@ -544,7 +544,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณวิตามินบี 1 ให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.hub)
+                                  icon: const Icon(Icons.hub,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: vitB2TextController,
@@ -566,7 +566,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณวิตามินบี 2 ให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.hub)
+                                  icon: const Icon(Icons.hub,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 CustomTextFormField(
                                   controller: calciumTextController,
@@ -588,7 +588,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                       return "กรุณาปริมาณแคลเซียมให้มีค่าตั้งแต่ 0 - 100 เปอร์เซ็น";
                                     }
                                   },
-                                  icon: const Icon(Icons.hdr_strong)
+                                  icon: const Icon(Icons.hdr_strong,color:  Color.fromARGB(255, 1, 73, 71),)
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 10),

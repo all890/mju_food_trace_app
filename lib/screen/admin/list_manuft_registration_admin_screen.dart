@@ -7,6 +7,7 @@ import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
 import 'package:mju_food_trace_app/screen/admin/view_manuft_regist_details_admin_screen.dart';
 
 import '../../constant/constant.dart';
+
 import 'navbar_admin.dart';
 
 class ListManuftRegistrationScreen extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                     blurRadius: 3, // ความคมของเงา
                   ),
                 ],),),
-            backgroundColor: Colors.green,
+            backgroundColor: kClipPathColorAM,
           ),
           backgroundColor: kBackgroundColor,
           body: isLoaded == false?
@@ -89,7 +90,13 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                     leading: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.account_circle)
+                        SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image(
+                    image: AssetImage('images/factory_icon.png'),
+                  ),
+                ),
                       ],
                     ),
                     title: Column(
@@ -100,7 +107,8 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                           "${manufacturers?[index].manuftName}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 22
+                            fontSize: 22,
+                            color:  Color.fromARGB(255, 3, 26, 40),
                           ),
                         ),
                         Text(
@@ -111,7 +119,7 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                           ),
                         ),
                         Text(
-                          "${dateFormat.format(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
+                          "วันที่สมัคร : "+"${dateFormat.format(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
@@ -119,7 +127,7 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                         )
                       ],
                     ),
-                    trailing: const Icon(Icons.zoom_in),
+                    trailing: const Icon(Icons.zoom_in,color: Color.fromARGB(255, 5, 40, 61),),
                     onTap: () {
                       print("Go to farmer ${manufacturers?[index].manuftId} details page!");
                       WidgetsBinding.instance!.addPostFrameCallback((_) {

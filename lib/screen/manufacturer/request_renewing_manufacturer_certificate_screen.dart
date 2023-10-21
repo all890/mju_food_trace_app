@@ -337,10 +337,13 @@ setState(() {
                                   "ใบรับรองผู้ผลิตที่ใช้ปัจจุบัน"
                                 ,style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 22),),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text("ข้อมูลใบรับรอง",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 18),)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10,left: 16,right: 2,bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text("ข้อมูลใบรับรอง",style: const TextStyle(
+                                                  fontFamily: 'Itim', fontSize: 18),)
+                                  ),
                                 ),
                                 Stack(
                                   children: [

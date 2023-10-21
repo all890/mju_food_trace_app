@@ -7,6 +7,7 @@ import 'package:mju_food_trace_app/screen/admin/list_manuft_request_renewing_cer
 import 'package:mju_food_trace_app/screen/login_screen.dart';
 import 'package:mju_food_trace_app/screen/admin/main_admin_screen.dart';
 
+import '../../constant/constant.dart';
 import 'list_farmer_registration_admin_screen.dart';
 import 'list_manuft_registration_admin_screen.dart';
 
@@ -77,13 +78,13 @@ class _AdminNavbarState extends State<AdminNavbar> {
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.green,
+              color:kClipPathColorAM,
               // image: DecorationImage(
               //     image: AssetImage('images/ftmju_header_logo.png'))
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle,color: Colors.green),
+            leading: const Icon(Icons.account_circle,color: Color.fromARGB(255, 46, 153, 50)),
             title: const Text("การลงทะเบียนเกษตรกร",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to farmer registration page");
@@ -97,7 +98,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle,color: Colors.green),
+            leading: const Icon(Icons.account_circle,color: Color.fromARGB(255, 46, 153, 50)),
             title: const Text("การลงทะเบียนผู้ผลิต",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
@@ -111,7 +112,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.document_scanner,color: Colors.green),
+            leading: const Icon(Icons.document_scanner,color: Color.fromARGB(255, 46, 153, 50)),
             title: const Text("การร้องขอต่ออายุใบรับรองเกษตรกร",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
@@ -126,7 +127,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.document_scanner,color: Colors.green),
+            leading: const Icon(Icons.document_scanner,color: Color.fromARGB(255, 46, 153, 50)),
             title: const Text("การร้องขอต่ออายุใบรับรองผู้ผลิต",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () {
               print("Go to manuft registration page");
@@ -141,7 +142,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.logout,color: Colors.green),
+            leading: const Icon(Icons.logout,color:  Color.fromARGB(255, 46, 153, 50)),
             title: const Text("ออกจากระบบ",style: TextStyle(fontFamily: 'Itim',color:Colors.black,fontSize: 16 ),),
             onTap: () async {
               print("Go to login page");
