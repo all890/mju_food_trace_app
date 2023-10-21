@@ -46,7 +46,7 @@ class FarmerCertificate {
       'fmCertRegDate': fmCertRegDate,
       'fmCertExpireDate': fmCertExpireDate,
       'fmCertStatus': fmCertStatus,
-      'farmer': farmer?.user?.username
+      'farmer': farmer?.fromFarmerToJson()
     };
   }
 

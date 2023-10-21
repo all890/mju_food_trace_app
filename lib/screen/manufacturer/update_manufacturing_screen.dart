@@ -117,6 +117,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       manufactureDate = manufacturing?.manufactureDate;
       expireDate = manufacturing?.expireDate;
     });
+    calculateMaxProductQty();
   }
 
 
@@ -199,6 +200,8 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
 
             DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
+            print("PRODUCT QTY IS : ${productQtyTextController.text}");
+
             Manufacturing manufacturings = Manufacturing(
               manufacturingId: widget.manufacturingId,
               manufactureDate: dateFormat.parse(manufactureDateTextController.text),
@@ -209,19 +212,23 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
               usedRawMatQtyUnit: selected_usedRawMatQtyUnit_items??"",
               manuftPrevBlockHash: manufacturing?.manuftPrevBlockHash,
               manuftCurrBlockHash: null,
+              manufacturerCertificate: manufacturing?.manufacturerCertificate,
               rawMaterialShipping: manufacturing?.rawMaterialShipping,
               product:product
             );
 
+            print("PRODUCT QTY REALLY IS ${manufacturings.rawMaterialShipping?.planting?.farmerCertificate?.farmer?.farmerId}");
+
             http.Response response = await manufacturingController.updateManufacturing(manufacturings);
 
-            if (response.statusCode == 500) {
-              //showFailToSaveProductAlert();
-              print("Failed to update!");
-            } else {
+            if (response.statusCode == 200) {
               Navigator.pop(context);
               showUpdateManufacturingSuccessAlert();
               print("Update successfully!");
+              
+            } else {
+              //showFailToSaveProductAlert();
+              print("Failed to update!");
             }
 
         } else {
@@ -241,11 +248,11 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
       maxGrams = double.parse(usedRawMatQtyTextController.text);
     }
     products?.forEach((product) {
-       print("Product :${product}");
+      print("Product :${product}");
       if (product.productName == selected_productName){
-         print("maxP :${product.netVolume}");
+        print("maxP :${product.netVolume}");
         maxProductQty = maxGrams ~/ (product.netVolume ?? 0);
-          print("maxP :${maxProductQty}");
+        print("maxP :${maxProductQty}");
       }
     
     });
@@ -254,11 +261,13 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
 
   void checkUsedRawMatShpQtyNullState () {
     if (usedRawMatQtyTextController.text.isEmpty || selected_usedRawMatQtyUnit_items == "หน่วยของจำนวนผลผลิตที่ใช้ผลิตสินค้า") {
+      print("TRUE");
       setState(() {
         productQtyTextController.text = "";
         ableToFillRawMatShpQty = false;
       });
     } else {
+      print("FALSE");
       setState(() {
         ableToFillRawMatShpQty = true;
         calculateMaxProductQty();
@@ -669,6 +678,7 @@ class _UpdateManufacturingScreenState extends State<UpdateManufacturingScreen> {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
                                       }
                                       if (int.parse(value) > maxProductQty) {
+                                        print("MAX PRODUCT QTY : ${maxProductQty}");
                                         return "ปริมาณสินค้าที่ผลิตได้ต้องมีค่าไม่เกิน ${maxProductQty} หน่วย";
                                       }
                                     },

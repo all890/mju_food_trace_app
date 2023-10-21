@@ -45,7 +45,7 @@ class ManufacturerCertificate {
       'mnCertRegDate': mnCertRegDate,
       'mnCertExpireDate': mnCertExpireDate,
       'mnCertStatus': mnCertStatus,
-      'manufacturer': manufacturer?.user?.username
+      'manufacturer': manufacturer?.fromManufacturerToJson()
     };
   }
 
