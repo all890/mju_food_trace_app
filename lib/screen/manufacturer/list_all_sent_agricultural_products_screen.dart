@@ -444,7 +444,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                         width: 45,
                                         height: 60,
                                         child: Container(
-                                          child: Icon(Icons.done_outline),
+                                          child: Icon(Icons.done),
                                           decoration: BoxDecoration(
                                             color: Colors.green,
                                             borderRadius: BorderRadius.only(topRight: Radius.circular(10))
@@ -471,7 +471,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                             color: Colors.red,
                                             borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))
                                           ),
-                                          child: Icon(Icons.disabled_by_default),
+                                          child: Icon(Icons.close),
                                         ),
                                       ),
                                       onTap: () {
