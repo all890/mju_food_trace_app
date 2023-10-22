@@ -295,7 +295,13 @@ class _ListProductScreenState extends State<ListProductScreen> {
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.compost)
+                               SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image(
+                    image: AssetImage('images/pack-products.png'),
+                  ),
+                ),
                             ],
                           ),
                           title: Column(
@@ -402,7 +408,13 @@ class _ListProductScreenState extends State<ListProductScreen> {
                           leading: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.compost)
+                                  SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image(
+                    image: AssetImage('images/pack-products.png'),
+                  ),
+                ),
                             ],
                           ),
                           title: Column(
