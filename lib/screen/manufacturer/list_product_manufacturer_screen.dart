@@ -353,6 +353,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                   },
                                   child: Icon(Icons.edit,color: Color.fromARGB(255, 4, 92, 89),)
                                 ),
+                                
                                 GestureDetector(
                                   onTap: () {
                                     print("Delete Pressed!");
