@@ -8,6 +8,7 @@ import 'package:mju_food_trace_app/screen/admin/view_manuft_regist_details_admin
 
 import '../../constant/constant.dart';
 
+import '../../widgets/buddhist_year_converter.dart';
 import 'navbar_admin.dart';
 
 class ListManuftRegistrationScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class ListManuftRegistrationScreen extends StatefulWidget {
 
 class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScreen> {
   ManufacturerController manufacturerController = ManufacturerController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -119,7 +121,7 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                           ),
                         ),
                         Text(
-                          "วันที่สมัคร : "+"${dateFormat.format(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
+                          "วันที่สมัคร : "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18

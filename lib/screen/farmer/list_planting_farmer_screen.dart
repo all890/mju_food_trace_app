@@ -18,6 +18,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
 import '../../model/farmer_certificate.dart';
+import '../../widgets/buddhist_year_converter.dart';
 
 class ListPlantingScreen extends StatefulWidget {
   const ListPlantingScreen({super.key});
@@ -27,6 +28,7 @@ class ListPlantingScreen extends StatefulWidget {
 }
 
 class _ListPlantingScreenState extends State<ListPlantingScreen> {
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
   PlantingController plantingController = PlantingController();
   FarmerCertificateController farmerCertificateController =
       FarmerCertificateController();
@@ -277,7 +279,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                         ),
                                         Text(
                                             "วันที่ปลูก : " +
-                                                dateFormat.format(
+                                                buddhistYearConverter.convertDateTimeToBuddhistDate(
                                                     plantings?[index1]
                                                             .plantDate ??
                                                         DateTime.now()),
@@ -285,8 +287,8 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
                                         Text(
-                                            "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                                dateFormat.format(
+                                            "คาดว่าจะเก็บเกี่ยว : " +
+                                                buddhistYearConverter.convertDateTimeToBuddhistDate(
                                                     plantings?[index1]
                                                             .approxHarvDate ??
                                                         DateTime.now()),
@@ -384,7 +386,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                         ),
                                         Text(
                                             "วันที่ส่งผลผลิต : " +
-                                                dateFormat.format(
+                                                buddhistYearConverter.convertDateTimeToBuddhistDate(
                                                     rawMaterialShippings?[index1]
                                                             .rawMatShpDate ??
                                                         DateTime.now()),

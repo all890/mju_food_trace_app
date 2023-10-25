@@ -20,6 +20,7 @@ import '../../controller/planting_controller.dart';
 import '../../model/planting.dart';
 import '../../service/config_service.dart';
 import '../../widgets/autocomplete_widget.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 import 'list_planting_farmer_screen.dart';
 
@@ -75,7 +76,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
   File? fileToDisplay;
   bool isLoadingPicture = true;
 
-
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
   
   TextEditingController plantingImgTextController = TextEditingController();
   
@@ -294,7 +295,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "วันที่ปลูกผลผลิต : " +
-                                          "${newDateFormat.format(planting?.plantDate ?? DateTime.now())}",
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(planting?.plantDate ?? DateTime.now())}",
                                       style: TextStyle(
                                           fontSize: 18, fontFamily: 'Itim'),
                                     ),
@@ -330,7 +331,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "วันที่คาดว่าจะเก็บเกี่ยว : " +
-                                          "${newDateFormat.format(planting?.approxHarvDate ?? DateTime.now())}",
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(planting?.approxHarvDate ?? DateTime.now())}",
                                       style: TextStyle(
                                           fontSize: 18, fontFamily: 'Itim'),
                                     ),

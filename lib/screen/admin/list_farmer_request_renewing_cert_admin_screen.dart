@@ -8,6 +8,7 @@ import 'package:mju_food_trace_app/screen/admin/view_farmer_renewing_request_cer
 import '../../constant/constant.dart';
 import '../../controller/farmer_certificate_controller.dart';
 import '../../controller/farmer_controller.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'navbar_admin.dart';
 
 class ListFarmerRequestRenewingCertificateScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class ListFarmerRequestRenewingCertificateScreen extends StatefulWidget {
 class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerRequestRenewingCertificateScreen> {
 
   FarmerCertificateController farmerCertificateController = FarmerCertificateController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -120,14 +122,14 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                           ),
                         ),
                         Text(
-                          "วันที่ลงทะเบียน : ${dateFormat.format(farmerCertificates?[index].fmCertRegDate ?? DateTime.now())}",
+                          "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
                           )
                         ),
                         Text(
-                          "วันที่หมดอายุ : ${dateFormat.format(farmerCertificates?[index].fmCertExpireDate ?? DateTime.now())}",
+                          "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertExpireDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18

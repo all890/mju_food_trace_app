@@ -29,6 +29,7 @@ import '../../controller/planting_controller.dart';
 import '../../controller/product_controller.dart';
 import '../../controller/qrcode_controller.dart';
 import '../../model/manufacturer_certificate.dart';
+import '../../widgets/buddhist_year_converter.dart';
 
 class TraceProductByQRCodeSecondScreen extends StatefulWidget {
 
@@ -46,6 +47,8 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
   late GoogleMapController mapController;
   Map<String, Marker> markers = {};
   
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
+
   Completer<GoogleMapController> _cameraController = Completer();
 
   Set<Polyline> polylines = Set<Polyline>();
@@ -159,11 +162,17 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ส่งผลผลิต :    ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}",
+                    "วันที่ส่งผลผลิต : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.rawMaterialShipping?.rawMatShpDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
-              
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "วันที่รับผลผลิต : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.rawMaterialShipping?.receiveDate ?? DateTime.now())}",
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 16),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -581,21 +590,21 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ทำการอัปโหลด : ${dateFormat.format(widget.manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",
+                    "วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ออกใบรับรอง : ${dateFormat.format(widget.manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",
+                    "วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ใบรับรองหมดอายุ :  ${dateFormat.format(widget.manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",
+                    "วันที่ใบรับรองหมดอายุ :  ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -668,14 +677,14 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ผลิตสินค้า :   ${dateFormat.format(widget.qrCode?.manufacturing?.manufactureDate ?? DateTime.now())}",
+                    "วันที่ผลิตสินค้า :   ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.manufactureDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่หมดอายุของสินค้า :   ${dateFormat.format(widget.qrCode?.manufacturing?.expireDate ?? DateTime.now())}",
+                    "วันที่หมดอายุของสินค้า :   ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.expireDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -930,21 +939,21 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ทำการอัปโหลด : ${dateFormat.format(widget.farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",
+                    "วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ออกใบรับรอง : ${dateFormat.format(widget.farmerCertificate?.fmCertRegDate ?? DateTime.now())}",
+                    "วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.farmerCertificate?.fmCertRegDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ใบรับรองหมดอายุ : ${dateFormat.format(widget.farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",
+                    "วันที่ใบรับรองหมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -1031,7 +1040,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่ปลูกผลผลิต : ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantDate ?? DateTime.now())}",
+                    "วันที่ปลูกผลผลิต : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.plantDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),
@@ -1053,7 +1062,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "วันที่คาดว่าจะเก็บเกี่ยวผลผลิต :  ${dateFormat.format(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.approxHarvDate ?? DateTime.now())}",
+                    "วันที่คาดว่าจะเก็บเกี่ยวผลผลิต :  ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.qrCode?.manufacturing?.rawMaterialShipping?.planting?.approxHarvDate ?? DateTime.now())}",
                     style: TextStyle(fontFamily: 'Itim',fontSize: 16),
                   ),
                 ),

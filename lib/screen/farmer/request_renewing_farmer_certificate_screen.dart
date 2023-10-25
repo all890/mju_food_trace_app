@@ -21,6 +21,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../controller/farmer_certificate_controller.dart';
 import '../../controller/planting_controller.dart';
 import '../../model/farmer.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 
 class RequestRenewingFarmerCertificate extends StatefulWidget {
@@ -64,6 +65,8 @@ class _RequestRenewingFarmerCertificateState
   TextEditingController fmCertRegDateTextController = TextEditingController();
   TextEditingController fmCertExpireDateTextController = TextEditingController();
   TextEditingController fmCertImgTextController = TextEditingController();
+
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   FilePickerResult? filePickerResult;
   String? fileName;
@@ -320,7 +323,7 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ออกใบรับรอง : ${newDateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertRegDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -328,7 +331,7 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่หมดอายุ : ${newDateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -336,7 +339,7 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ทำการอัปโหลด : ${newDateFormat.format(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -421,17 +424,17 @@ class _RequestRenewingFarmerCertificateState
                                           ),
                                         ),
                                         Text(
-                                            "วันที่ลงทะเบียน : ${newDateFormat.format(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
+                                            "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
                                         Text(
-                                            "วันที่หมดอายุ : ${newDateFormat.format(farmerCertificates?[index1].fmCertExpireDate ?? DateTime.now())}",
+                                            "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertExpireDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
                                         Text(
-                                            "วันที่ทำการร้องขอ : ${newDateFormat.format(farmerCertificates?[index1].fmCertUploadDate ?? DateTime.now())}",
+                                            "วันที่ทำการร้องขอ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertUploadDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),

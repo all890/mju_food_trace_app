@@ -13,6 +13,8 @@ import 'package:mju_food_trace_app/screen/manufacturer/list_manufacturing.dart';
 import 'package:mju_food_trace_app/service/config_service.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../widgets/buddhist_year_converter.dart';
+
 class GenerateQRCodeScreen extends StatefulWidget {
 
   final String manufacturingId;
@@ -26,6 +28,7 @@ class GenerateQRCodeScreen extends StatefulWidget {
 class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
 
   QRCodeController qrCodeController = QRCodeController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   QRCode? qrCode;
 
@@ -196,7 +199,7 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                           Padding(
                             padding: EdgeInsets.only(top: 8),
                             child: Text(
-                              "วันที่สร้างคิวอาร์โค้ด : ${dateFormat.format(qrCode?.generateDate ?? DateTime.now())}",
+                              "วันที่สร้างคิวอาร์โค้ด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(qrCode?.generateDate ?? DateTime.now())}",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Itim',

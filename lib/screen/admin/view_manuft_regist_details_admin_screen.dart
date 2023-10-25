@@ -10,6 +10,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
 import '../../model/manufacturer.dart';
 import '../../service/config_service.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'list_manuft_registration_admin_screen.dart';
 
 class ViewManuftRegistDetailsScreen extends StatefulWidget {
@@ -41,6 +42,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
   TextEditingController manuftCertExpireDateTextController = TextEditingController();
 
   TextEditingController manuftUsernameTextController = TextEditingController();
+
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -164,8 +167,8 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
 
     manuftCertImgTextController.text = manufacturerCertificate?.mnCertImg ?? "";
     manuftCertNoTextController.text = manufacturerCertificate?.mnCertNo ?? "";
-    manuftCertRegDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
-    manuftCertExpireDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
+    manuftCertRegDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
+    manuftCertExpireDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
 
     manuftUsernameTextController.text = manufacturerCertificate?.manufacturer?.user!.username ?? "";
   }
@@ -254,7 +257,7 @@ class _ViewManuftRegistDetailsScreenState extends State<ViewManuftRegistDetailsS
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "วันที่ทำการสมัคร "+"${newDateFormat.format(manufacturerCertificate?.manufacturer?.manuftRegDate ?? DateTime.now())}",
+                        "วันที่ทำการสมัคร "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.manufacturer?.manuftRegDate ?? DateTime.now())}",
                         style: TextStyle(
                           fontFamily: 'Itim',
                           fontSize: 16

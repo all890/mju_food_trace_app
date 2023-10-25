@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:mju_food_trace_app/screen/admin/view_farmer_regist_details_admin_screen.dart';
 
 import '../../constant/constant.dart';
 import '../../controller/farmer_controller.dart';
 import '../../model/farmer.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'navbar_admin.dart';
 
 class ListFarmerRegistrationScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class ListFarmerRegistrationScreen extends StatefulWidget {
 class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScreen> {
 
   FarmerController farmerController = FarmerController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -117,7 +120,7 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                           ),
                         ),
                         Text(
-                          "วันที่สมัคร : "+"${dateFormat.format(farmers?[index].farmerRegDate ?? DateTime.now())}",
+                          "วันที่สมัคร : "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(farmers?[index].farmerRegDate ?? DateTime.now())}",
                        
                           style: const TextStyle(
                             fontFamily: 'Itim',

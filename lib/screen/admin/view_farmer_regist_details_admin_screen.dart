@@ -16,6 +16,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'list_farmer_registration_admin_screen.dart';
 
 
@@ -48,6 +49,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
   TextEditingController farmerCertExpireDateTextController = TextEditingController();
 
   TextEditingController farmerUsernameTextController = TextEditingController();
+
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -171,8 +174,8 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
     farmNameTextController.text = farmerCertificate?.farmer?.farmName ?? "";
 
     farmerCertNoTextController.text = farmerCertificate?.fmCertNo ?? "";
-    farmerCertRegDateTextController.text = dateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now());
-    farmerCertExpireDateTextController.text = dateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
+    farmerCertRegDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertRegDate ?? DateTime.now());
+    farmerCertExpireDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
 
     farmerUsernameTextController.text = farmerCertificate?.farmer?.user!.username ?? "";
   }
@@ -260,7 +263,7 @@ class _ViewFarmerRegistDetailsScreenState extends State<ViewFarmerRegistDetailsS
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "วันที่ทำการสมัคร "+"${newDateFormat.format(farmerCertificate?.farmer?.farmerRegDate ?? DateTime.now())}",
+                        "วันที่ทำการสมัคร "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.farmer?.farmerRegDate ?? DateTime.now())}",
                         style: TextStyle(
                           fontFamily: 'Itim',
                           fontSize: 16

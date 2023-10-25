@@ -18,6 +18,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
 import '../../model/manufacturer_certificate.dart';
 import '../../service/config_service.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import '../../widgets/custom_text_form_field_widget.dart';
 import 'list_manufacturing.dart';
 
@@ -61,6 +62,8 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
   TextEditingController mnCertRegDateTextController = TextEditingController();
   TextEditingController mnCertExpireDateTextController = TextEditingController();
   TextEditingController mnCertImgTextController = TextEditingController();
+
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   FilePickerResult? filePickerResult;
   String? fileName;
@@ -354,12 +357,12 @@ setState(() {
                                         elevation: 10,
                                         child: Column(
                                           children: [
-                                            SizedBox(height: 90),
+                                            SizedBox(height: 120),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ออกใบรับรอง : ${newDateFormat.format(manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -367,7 +370,7 @@ setState(() {
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่หมดอายุ : ${newDateFormat.format(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -375,7 +378,7 @@ setState(() {
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ทำการอัปโหลด : ${newDateFormat.format(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",style: const TextStyle(
+                                                child: Text("วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 16),)
                                               ),
                                             ),
@@ -415,7 +418,9 @@ setState(() {
                                           padding: const EdgeInsets.symmetric(vertical: 15),
                                           child: Column(
                                             children: [
-                                              Center(child: Text("หมายเลขใบรับรอง : ${manufacturerCertificate?.mnCertNo}",style: const TextStyle(
+                                              Center(child: Text("หมายเลขใบรับรอง",style: const TextStyle(
+                                                fontFamily: 'Itim', fontSize: 18),)),
+                                              Center(child: Text("${manufacturerCertificate?.mnCertNo}",style: const TextStyle(
                                                 fontFamily: 'Itim', fontSize: 18),)),
                                               Center(
                                                 child: Text(
@@ -460,17 +465,17 @@ setState(() {
                                           ),
                                         ),
                                         Text(
-                                            "วันที่ลงทะเบียน : ${newDateFormat.format(manufacturerCertificates?[index1].mnCertRegDate ?? DateTime.now())}",
+                                            "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertRegDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
                                         Text(
-                                            "วันที่หมดอายุ : ${newDateFormat.format(manufacturerCertificates?[index1].mnCertExpireDate ?? DateTime.now())}",
+                                            "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertExpireDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),
                                         Text(
-                                            "วันที่ทำการร้องขอ : ${newDateFormat.format(manufacturerCertificates?[index1].mnCertUploadDate ?? DateTime.now())}",
+                                            "วันที่ทำการร้องขอ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertUploadDate ?? DateTime.now())}",
                                             style: const TextStyle(
                                                 fontFamily: 'Itim',
                                                 fontSize: 18)),

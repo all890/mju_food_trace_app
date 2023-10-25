@@ -14,6 +14,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
 import '../../model/manufacturer_certificate.dart';
 import '../../service/config_service.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'list_manufacturing.dart';
 import 'navbar_manufacturer.dart';
 
@@ -29,6 +30,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
   RawMaterialShippingController rawMaterialShippingController =
       RawMaterialShippingController();
   
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
   ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
 
   bool? isLoaded;
@@ -413,7 +415,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                         ),
                                         Text(
                                           "วันที่ส่ง : " +
-                                              "${dateFormat.format(newRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(newRms?[index].rawMatShpDate ?? DateTime.now())}",
                                           style: const TextStyle(
                                               fontFamily: 'Itim',
                                               fontSize: 18),
@@ -561,7 +563,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                     ),
                                     Text(
                                       "วันที่ส่ง : " +
-                                          "${dateFormat.format(notUsedRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(notUsedRms?[index].rawMatShpDate ?? DateTime.now())}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 18),
@@ -682,7 +684,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                     ),
                                     Text(
                                       "วันที่ส่ง : " +
-                                          "${dateFormat.format(usedRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(usedRms?[index].rawMatShpDate ?? DateTime.now())}",
                                     
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
@@ -802,7 +804,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                     ),
                                     Text(
                                       "วันที่ส่ง : " +
-                                          "${dateFormat.format(emptyRms?[index].rawMatShpDate ?? DateTime.now())}",
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(emptyRms?[index].rawMatShpDate ?? DateTime.now())}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim',
                                           fontSize: 20),

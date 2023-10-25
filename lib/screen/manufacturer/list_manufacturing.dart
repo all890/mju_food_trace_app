@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
 import '../../controller/manufacturing_controller.dart';
 import '../../model/manufacturer_certificate.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'navbar_manufacturer.dart';
 
 class ListManufacturingScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class ListManufacturingScreen extends StatefulWidget {
 
 class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
   ManufacturingController manufacturingController = ManufacturingController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
   ManufacturerCertificateController manufacturerCertificateController =
       ManufacturerCertificateController();
 
@@ -336,7 +338,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                           fontFamily: 'Itim', fontSize: 18),
                                     ),
                                     Text(
-                                      "วันที่ทำการผลิต "+"${dateFormat.format(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                      "วันที่ทำการผลิต "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 18),
                                     ),
@@ -498,7 +500,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                           fontFamily: 'Itim', fontSize: 20),
                                     ),
                                     Text(
-                                      "วันที่ทำการผลิต ${dateFormat.format(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                      "วันที่ทำการผลิต ${buddhistYearConverter.convertDateTimeToBuddhistDate(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
                                       style: const TextStyle(
                                           fontFamily: 'Itim', fontSize: 20),
                                     ),

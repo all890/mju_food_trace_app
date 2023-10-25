@@ -7,6 +7,7 @@ import 'package:mju_food_trace_app/screen/admin/view_manuft_renewing_request_cer
 
 import '../../constant/constant.dart';
 import '../../controller/farmer_certificate_controller.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'navbar_admin.dart';
 
 class ListManuftRequestRenewingCertificateScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class ListManuftRequestRenewingCertificateScreen extends StatefulWidget {
 class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftRequestRenewingCertificateScreen> {
   
   ManufacturerCertificateController manufacturerCertificateController = ManufacturerCertificateController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -112,14 +114,14 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                           ),
                         ),
                         Text(
-                          "วันที่ลงทะเบียน : ${dateFormat.format(manufacturerCertificates?[index].mnCertRegDate ?? DateTime.now())}",
+                          "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertRegDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18
                           )
                         ),
                         Text(
-                          "วันที่หมดอายุ : ${dateFormat.format(manufacturerCertificates?[index].mnCertExpireDate ?? DateTime.now())}",
+                          "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertExpireDate ?? DateTime.now())}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 18

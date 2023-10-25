@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import '../../constant/constant.dart';
 import '../../model/manufacturer_certificate.dart';
 import '../../service/config_service.dart';
+import '../../widgets/buddhist_year_converter.dart';
 
 class ViewManuftRenewingRequestCertDetailsAdminScreen extends StatefulWidget {
     final String mnCertId;
@@ -32,6 +33,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
   TextEditingController manuftCertRegDateTextController = TextEditingController();
   TextEditingController manuftCertExpireDateTextController = TextEditingController();
   TextEditingController manuftCertNoTextController = TextEditingController();
+  
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   bool? isLoaded;
 
@@ -130,8 +133,8 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
     factorySupLastnameTextController.text = manufacturerCertificate?.manufacturer?.factorySupLastname ?? "";
     factorySupnameTextController.text = manufacturerCertificate?.manufacturer?.factorySupName ?? "";
     manuftCertNoTextController.text = manufacturerCertificate?.mnCertNo ?? "";
-    manuftCertRegDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
-    manuftCertExpireDateTextController.text = dateFormat.format(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
+    manuftCertRegDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertRegDate ?? DateTime.now());
+    manuftCertExpireDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now());
 
   }
 
@@ -228,7 +231,7 @@ class _ViewManuftRenewingRequestCertDetailsAdminScreenState extends State<ViewMa
                       alignment: Alignment.center,
                       child: Text(
                         "วันที่ทำการร้องขอต่ออายุ : " +
-                            "${dateFormat.format(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",
+                            "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",
                         style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
                       ),
                     ),

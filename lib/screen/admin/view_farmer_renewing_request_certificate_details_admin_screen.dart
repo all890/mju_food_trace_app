@@ -10,6 +10,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
 import '../../model/farmer_certificate.dart';
 import '../../service/config_service.dart';
+import '../../widgets/buddhist_year_converter.dart';
 
 class ViewFarmerRenewingRequestCertDetailsAdminScreen
  extends StatefulWidget {
@@ -34,6 +35,9 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
   TextEditingController farmerCertRegDateTextController = TextEditingController();
   TextEditingController farmerCertExpireDateTextController= TextEditingController();
   TextEditingController farmerCertNoTextController = TextEditingController();
+
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
+
   bool? isLoaded;
 
   String? imgCertFileName;
@@ -133,8 +137,8 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
     farmerLastnameTextController.text = farmerCertificate?.farmer?.farmerLastname ?? "";
   
     farmerCertNoTextController.text = farmerCertificate?.fmCertNo ?? "";
-    farmerCertRegDateTextController.text = dateFormat.format(farmerCertificate?.fmCertRegDate ?? DateTime.now());
-    farmerCertExpireDateTextController.text = dateFormat.format(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
+    farmerCertRegDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertRegDate ?? DateTime.now());
+    farmerCertExpireDateTextController.text = buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertExpireDate ?? DateTime.now());
 
   }
 
@@ -230,7 +234,7 @@ class _ViewFarmerRenewingRequestCertDetailsAdminScreenState extends State<ViewFa
                       alignment: Alignment.center,
                       child: Text(
                         "วันที่ทำการร้องขอต่ออายุ : " +
-                            "${dateFormat.format(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",
+                            "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",
                         style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
                       ),
                     ),

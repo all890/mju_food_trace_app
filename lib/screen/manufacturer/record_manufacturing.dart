@@ -13,6 +13,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../constant/constant.dart';
 import '../../model/manufacturing.dart';
+import '../../widgets/buddhist_year_converter.dart';
 import 'list_manufacturing.dart';
 
 class RecordManufacturingScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class RecordManufacturingScreen extends StatefulWidget {
 
 class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
   ManufacturingController manufacturingController = ManufacturingController();
+  BuddhistYearConverter buddhistYearConverter = BuddhistYearConverter();
 
   Manufacturing? manufacturings;
 
@@ -329,7 +331,7 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "วันที่ผลิตสินค้า : " +
-                                    "${dateFormat.format(manufacturings?.manufactureDate ?? DateTime.now())}",
+                                    "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.manufactureDate ?? DateTime.now())}",
                                 style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
                               ),
                             ),
@@ -340,7 +342,7 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "วันหมดอายุของสินค้า : " +
-                                    "${dateFormat.format(manufacturings?.expireDate ?? DateTime.now())}",
+                                    "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.expireDate ?? DateTime.now())}",
                                 style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
                               ),
                             ),
