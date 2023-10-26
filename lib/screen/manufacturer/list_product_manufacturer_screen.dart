@@ -340,7 +340,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Edit Pressed!");
-                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
+                                    if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
                                       showErrorToUpdateBecauseMnCertIsExpire();
                                     } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
                                       showErrorToUpdateBecauseMnCertIsWaitToAccept();
@@ -357,7 +357,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     print("Delete Pressed!");
-                                    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
+                                    if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
                                       showErrorToDeleteBecauseMnCertIsExpire();
                                     } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
                                       showErrorToDeleteBecauseMnCertIsWaitToAccept();

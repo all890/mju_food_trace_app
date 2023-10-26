@@ -141,7 +141,7 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
     String farmerUsername = await SessionManager().get("username");
     var response = await farmerCertificateController.getLastestFarmerCertificateByFarmerUsername(farmerUsername);
     farmerCertificate = FarmerCertificate.fromJsonToFarmerCertificate(response);
-    if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true) {
+    if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true && !(farmerCertificate?.fmCertExpireDate?.difference(DateTime.now()).inDays == 0)) {
       showFmCertExpireError();
     } else if (farmerCertificate?.fmCertStatus == "รอการอนุมัติ") {
       showFmCertIsWaitAcceptError();

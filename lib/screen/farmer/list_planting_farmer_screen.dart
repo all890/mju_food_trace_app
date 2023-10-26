@@ -311,12 +311,7 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                         child: GestureDetector(
                                             onTap: () {
                                               print("Send Pressed!");
-                                              if (farmerCertificate
-                                                          ?.fmCertExpireDate
-                                                          ?.isBefore(
-                                                              DateTime
-                                                                  .now()) ==
-                                                      true ||
+                                              if (farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true && !(farmerCertificate?.fmCertExpireDate?.difference(DateTime.now()).inDays == 0) ||
                                                   farmerCertificate
                                                           ?.fmCertStatus ==
                                                       "ไม่อนุมัติ") {

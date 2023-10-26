@@ -170,6 +170,7 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
 setState(() {
       differenceDuration = manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now());
       differenceDays = differenceDuration?.inDays;
+      differenceDays = differenceDays! + 1;
       print("DURATION IS : ${differenceDuration?.inDays}");
       if (differenceDays! > 90) {
         statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.green, shadows: [

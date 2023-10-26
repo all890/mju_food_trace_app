@@ -358,11 +358,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                         GestureDetector(
                                           onTap: () {
                                             print("Delete Pressed!");
-                                            if (manufacturerCertificate
-                                                        ?.mnCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
+                                            if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) ||
                                                 manufacturerCertificate
                                                         ?.mnCertStatus ==
                                                     "ไม่อนุมัติ") {
@@ -383,11 +379,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                       GestureDetector(
                                           onTap: () {
                                             print("Edit Pressed!");
-                                            if (manufacturerCertificate
-                                                        ?.mnCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
+                                            if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) ||
                                                 manufacturerCertificate
                                                         ?.mnCertStatus ==
                                                     "ไม่อนุมัติ") {
@@ -415,11 +407,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                       GestureDetector(
                                           onTap: () {
                                             print("Record Pressed!");
-                                            if (manufacturerCertificate
-                                                        ?.mnCertExpireDate
-                                                        ?.isBefore(
-                                                            DateTime.now()) ==
-                                                    true ||
+                                            if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) ||
                                                 manufacturerCertificate
                                                         ?.mnCertStatus ==
                                                     "ไม่อนุมัติ") {

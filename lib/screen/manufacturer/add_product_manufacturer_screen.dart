@@ -132,7 +132,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
     String username = await SessionManager().get("username");
     var response = await manufacturerCertificateController.getLastestManufacturerCertificateByManufacturerUsername(username);
     manufacturerCertificate = ManufacturerCertificate.fromJsonToManufacturerCertificate(response);
-    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true) {
+    print("EXPIRE DATE : ${manufacturerCertificate?.mnCertExpireDate}");
+    print("DATE NOW : ${DateTime.now()}");
+    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) {
       showMnCertExpireError();
     } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
       showMnCertIsWaitAcceptError();

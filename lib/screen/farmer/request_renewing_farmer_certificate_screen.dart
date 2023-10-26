@@ -136,6 +136,7 @@ class _RequestRenewingFarmerCertificateState
     setState(() {
       differenceDuration = farmerCertificate?.fmCertExpireDate?.difference(DateTime.now());
       differenceDays = differenceDuration?.inDays;
+      differenceDays = differenceDays! + 1;
       print("DURATION IS : ${differenceDuration?.inDays}");
       if (differenceDays! > 30) {
         statusColorCurrentCert = TextStyle(fontFamily: 'Itim', fontSize: 16,color: Colors.green, shadows: [

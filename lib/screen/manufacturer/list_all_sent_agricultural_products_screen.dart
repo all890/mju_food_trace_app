@@ -61,7 +61,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
     var rmsExistResponse = await rawMaterialShippingController.getRmsExistInManufacturingByManutftUsername(username);
     remQtyOfRms = json.decode(remQtyOfRmsResponse);
     rmsExists = json.decode(rmsExistResponse);
-    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true) {
+    if (manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) {
       showMnCertExpireError();
     } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
       showMnCertIsWaitAcceptError();
