@@ -333,7 +333,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                           ),
                           
                           trailing: SizedBox(
-                            width: 80,
+                            width: 70,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
