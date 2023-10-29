@@ -249,19 +249,21 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontFamily: 'Itim',
-                                      color: Color.fromARGB(255, 4, 92, 89)
+                                      color: Color.fromARGB(255, 4, 92, 89),
+                                      fontWeight: FontWeight.bold
                                     ),
                                   ),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.only(left: 22),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "ข้อมูลสินค้า",
                                       style: TextStyle(
-                                        fontSize: 22,
-                                        fontFamily: 'Itim'
+                                        fontSize: 20,
+                                        fontFamily: 'Itim',
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ),

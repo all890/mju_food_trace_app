@@ -312,19 +312,22 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                     "เพิ่มการปลูกผลผลิต",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 93, 43, 1)
                                     ),
                                   ),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.only(left: 22,top: 10),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       "ข้อมูลการปลูก",
                                       style: TextStyle(
-                                        fontSize: 22,
-                                        fontFamily: 'Itim'
+                                        fontSize: 20,
+                                        fontFamily: 'Itim',
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ),

@@ -111,29 +111,66 @@ class _ListFarmerRequestRenewingCertificateScreenState extends State<ListFarmerR
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 22,
-                            color: Color.fromARGB(255, 50, 33, 3)
+                            color: Color.fromARGB(255, 118, 77, 2),
+                            fontWeight: FontWeight.bold
                           ),
                         ),
-                        Text(
-                          "ชื่อฟาร์ม : "+"${farmerCertificates?[index].farmer?.farmName}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          ),
+                        Row(
+                          children: [
+                             Text(
+                              "ชื่อฟาร์ม : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text(
+                              "ชื่อฟาร์ม : "+"${farmerCertificates?[index].farmer?.farmName}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertRegDate ?? DateTime.now())}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                            Text(
+                              "วันที่ลงทะเบียน : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertRegDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         ),
-                        Text(
-                          "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertExpireDate ?? DateTime.now())}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                            Text(
+                              "วันที่หมดอายุ : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index].fmCertExpireDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         ),
                       ],
                     ),

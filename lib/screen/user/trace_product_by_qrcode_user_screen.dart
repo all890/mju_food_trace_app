@@ -133,14 +133,16 @@ class _TraceProductByQRCodeScreenState extends State<TraceProductByQRCodeScreen>
                           "ระบบการตรวจสอบกลับสินค้า",
                           style: TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 18
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                         Text(
                           "ทางการเกษตร มหาวิทยาลัยแม่โจ้",
                           style: TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 18
+                            fontSize: 18,
+                             fontWeight: FontWeight.bold
                           ),
                         ),
                         Padding(

@@ -60,7 +60,8 @@ class _RegisterSelectionScreenState extends State<RegisterSelectionScreen> {
                             "เลือกประเภทผู้ใช้งาน",
                             style: TextStyle(
                               fontFamily: 'Itim',
-                              fontSize: 24
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                         ),
@@ -162,7 +163,8 @@ class _RegisterSelectionScreenState extends State<RegisterSelectionScreen> {
                               style: TextStyle(
                                 fontFamily: 'Itim',
                                 fontSize: 18,
-                                decoration: TextDecoration.underline
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                             onTap: () {

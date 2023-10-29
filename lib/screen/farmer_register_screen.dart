@@ -249,8 +249,10 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                   child: Text(
                                     "ข้อมูลเกษตรกร",
                                     style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontSize: 24,
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 64, 51, 1)
                                     ),
                                   ),
                                 ),
@@ -351,7 +353,8 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                     "ข้อมูลฟาร์ม / สถานที่เพาะปลูกผลผลิต",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -431,7 +434,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                             textAlign: TextAlign.center,
                                           ),
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 128, 79, 20))
                                           ),
                                         ),
                                       ),
@@ -451,7 +454,8 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                     "ข้อมูลใบรับรองมาตรฐานเกษตรกร",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -501,7 +505,7 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                           },
                                           child: const Text("เลือกรูปภาพ"),
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 128, 79, 20))
                                           ),
                                         ),
                                       )
@@ -633,7 +637,8 @@ class _FarmerRegisterScreenState extends State<FarmerRegisterScreen> {
                                     "ข้อมูลชื่อผู้ใช้และรหัสผ่าน",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),

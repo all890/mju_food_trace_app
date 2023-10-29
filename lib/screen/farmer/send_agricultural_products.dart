@@ -246,7 +246,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   child: Text(
                                     "ส่งข้อมูลปลูกผลผลิต",
                                     style: TextStyle(
-                                        fontSize: 22, fontFamily: 'Itim'),
+                                        fontSize: 22, fontFamily: 'Itim',fontWeight: FontWeight.bold,color: Color.fromARGB(255, 93, 43, 1)),
                                   ),
                                 ),
                                 const Padding(
@@ -256,7 +256,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     child: Text(
                                       "รายละเอียดการปลูก",
                                       style: TextStyle(
-                                          fontSize: 22, fontFamily: 'Itim'),
+                                          fontSize: 20, fontFamily: 'Itim',fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -281,11 +281,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "ชื่อของผลผลิตที่ปลูก : " +
-                                          "${planting?.plantName}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "ชื่อของผลผลิตที่ปลูก : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                          Text(
+                                              "${planting?.plantName}",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -293,11 +301,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "วันที่ปลูกผลผลิต : " +
-                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(planting?.plantDate ?? DateTime.now())}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                         Text(
+                                          "วันที่ปลูกผลผลิต : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(planting?.plantDate ?? DateTime.now())}",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -305,11 +321,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "ประเภทของน้ำหมัก : " +
-                                          "${planting?.bioextract}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                         Text(
+                                          "ประเภทของน้ำหมัก : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${planting?.bioextract}",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -317,11 +341,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "วิธีการปลูก : " +
-                                          "${planting?.plantingMethod}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                         Text(
+                                          "วิธีการปลูก : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${planting?.plantingMethod}",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -329,11 +361,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "วันที่คาดว่าจะเก็บเกี่ยว : " +
+                                    child: Row(
+                                      children: [
+                                          Text(
+                                          "วันที่คาดว่าจะเก็บเกี่ยว : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
                                           "${buddhistYearConverter.convertDateTimeToBuddhistDate(planting?.approxHarvDate ?? DateTime.now())}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -341,13 +381,21 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "ปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ : " +
-                                          "${planting?.netQuantity}" +
-                                          " " +
-                                          "${planting?.netQuantityUnit}",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "ปริมาณผลผลิตที่คาดว่าจะได้รับสุทธิ : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${planting?.netQuantity}" +
+                                              " " +
+                                              "${planting?.netQuantityUnit}",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -355,12 +403,20 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "จำนวนตารางเมตร : " +
-                                          "${planting?.squareMeters}" +
-                                          " ตารางเมตร",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "จำนวนตารางเมตร : ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${planting?.squareMeters}" +
+                                              " ตารางเมตร",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -368,12 +424,20 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding: EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "จำนวนตารางวา: " +
-                                          "${planting?.squareYards}" +
-                                          " ตารางวา",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                         Text(
+                                          "จำนวนตารางวา: ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${planting?.squareYards}" +
+                                              " ตารางวา",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -381,12 +445,20 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                   padding:EdgeInsets.only(top: 2,left: 13,right: 2,bottom: 2),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "จำนวนไร่: " +
-                                          "${planting?.rai}" +
-                                          " ไร่",
-                                      style: TextStyle(
-                                          fontSize: 18, fontFamily: 'Itim'),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "จำนวนไร่: ",
+                                          style: TextStyle(
+                                              fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                        ),
+                                         Text(
+                                              "${planting?.rai}" +
+                                              " ไร่",
+                                          style: TextStyle(
+                                              fontSize: 18, fontFamily: 'Itim'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -397,7 +469,7 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                     child: Text(
                                       "ข้อมูลการส่งผลผลิต",
                                       style: TextStyle(
-                                          fontSize: 22, fontFamily: 'Itim'),
+                                          fontSize: 20, fontFamily: 'Itim',fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),

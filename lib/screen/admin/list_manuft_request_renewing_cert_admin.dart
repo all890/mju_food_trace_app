@@ -110,22 +110,47 @@ class _ListManuftRequestRenewingCertificateScreenState extends State<ListManuftR
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 22,
-                            color: Color.fromARGB(255, 5, 40, 61)
+                            color: Color.fromARGB(255, 5, 40, 61),
+                            fontWeight: FontWeight.bold
                           ),
                         ),
-                        Text(
-                          "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertRegDate ?? DateTime.now())}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                             Text(
+                              "วันที่ลงทะเบียน : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertRegDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         ),
-                        Text(
-                          "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertExpireDate ?? DateTime.now())}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                            Text(
+                              "วันที่หมดอายุ : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index].mnCertExpireDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         ),
                       ],
                     ),

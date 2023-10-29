@@ -301,13 +301,13 @@ class _RequestRenewingFarmerCertificateState
                                 Text(
                                   "ใบรับรองเกษตรกรที่ใช้ปัจจุบัน"
                                 ,style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),),
+                                                fontFamily: 'Itim', fontSize: 22,fontWeight: FontWeight.bold),),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10,left: 16,right: 2,bottom: 5),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Text("ข้อมูลใบรับรอง",style: const TextStyle(
-                                                  fontFamily: 'Itim', fontSize: 18),)
+                                                  fontFamily: 'Itim', fontSize: 18,fontWeight: FontWeight.bold),)
                                   ),
                                 ),
                                 Stack(
@@ -324,32 +324,56 @@ class _RequestRenewingFarmerCertificateState
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertRegDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่ออกใบรับรอง : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertRegDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่หมดอายุ : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertExpireDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่ทำการอัปโหลด : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificate?.fmCertUploadDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("สถานะใบรับรอง : ${farmerCertificate?.fmCertStatus}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("สถานะใบรับรอง : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${farmerCertificate?.fmCertStatus}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             
@@ -358,7 +382,7 @@ class _RequestRenewingFarmerCertificateState
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
                                                 child: Text("รูปใบรับรอง",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),)
                                               ),
                                             ),
                                             SizedBox(
@@ -381,7 +405,7 @@ class _RequestRenewingFarmerCertificateState
                                           child: Column(
                                             children: [
                                               Center(child: Text("หมายเลขใบรับรอง : ${farmerCertificate?.fmCertNo}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 18),)),
+                                                fontFamily: 'Itim', fontSize: 18,fontWeight: FontWeight.bold),)),
                                               Center(
                                                 child: Text(
                                                   differenceDays! > 30 ? "ใบรับรองนี้จะมีอายุอีก : ${differenceDays} วัน" : differenceDays! <= 0 ? "ใบรับรองนี้หมดอายุแล้ว กรุณาต่ออายุใบรับรอง" : "เหลืออายุเพียง ${differenceDays} วัน ควรต่ออายุใบรับรอง",
@@ -418,27 +442,66 @@ class _RequestRenewingFarmerCertificateState
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            "เลขที่การร้องขอ : ${farmerCertificates?[index1].fmCertId}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),
+                                          child: Row(
+                                            children: [
+                                               Text(
+                                                "เลขที่การร้องขอ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 93, 43, 1)),
+                                              ),
+                                              Text(
+                                                "${farmerCertificates?[index1].fmCertId}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,color: Color.fromARGB(255, 93, 43, 1),fontWeight: FontWeight.bold),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                            "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertExpireDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "วันที่ทำการร้องขอ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertUploadDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
+                                        Row(
+                                          children: [
+                                             Text(
+                                                "วันที่ลงทะเบียน : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                                    
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่หมดอายุ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertExpireDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                             Text(
+                                                "วันที่ทำการร้องขอ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertUploadDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 10),
                                           child: Row(
@@ -447,7 +510,7 @@ class _RequestRenewingFarmerCertificateState
                                                 "สถานะใบรับรอง : ",
                                                 style: const TextStyle(
                                                     fontFamily: 'Itim',
-                                                    fontSize: 18)),
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
                                               Text(
                                                 "${farmerCertificates?[index1].fmCertStatus}",
                                                 
@@ -478,7 +541,9 @@ class _RequestRenewingFarmerCertificateState
                                     "การยื่นคำร้องขอต่ออายุใบรับรองเกษตรกร",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 93, 43, 1)
                                     ),
                                   ),
                                 ),
@@ -489,8 +554,9 @@ class _RequestRenewingFarmerCertificateState
                                     child: Text(
                                       "ข้อมูลใบรับรอง IFOAM ฉบับใหม่",
                                       style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Itim'
+                                        fontSize: 18,
+                                        fontFamily: 'Itim',
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ),
@@ -611,7 +677,7 @@ class _RequestRenewingFarmerCertificateState
                                           child: const Text("เลือกรูปภาพ"),
                                           style: ButtonStyle(
                                               backgroundColor: MaterialStateProperty.all<Color>(
-                                                  Colors.grey)),
+                                                  Color.fromARGB(255, 112, 93, 52))),
                                         ),
                                       )
                                     ),
@@ -709,7 +775,7 @@ class _RequestRenewingFarmerCertificateState
                               Text(
                                 "ใบรับรองที่คุณร้องขอต่ออายุ\nกำลังรอการตรวจสอบจากผู้ดูแลระบบ",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -726,7 +792,7 @@ class _RequestRenewingFarmerCertificateState
                               Text(
                                 "ขณะนี้ยังไม่ถึงเวลาสำหรับการร้องขอต่ออายุ",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

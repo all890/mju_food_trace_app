@@ -109,7 +109,8 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                           "${farmers?[index].farmerName} ${farmers?[index].farmerLastname}",
                           style: const TextStyle(
                             fontFamily: 'Itim',
-                            fontSize: 22,color: Color.fromARGB(255, 40, 27, 3)
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,color: Color.fromARGB(255, 118, 77, 2)
                           ),
                         ),
                         Text(
@@ -119,13 +120,24 @@ class _ListFarmerRegistrationScreenState extends State<ListFarmerRegistrationScr
                             fontSize: 18
                           ),
                         ),
-                        Text(
-                          "วันที่สมัคร : "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(farmers?[index].farmerRegDate ?? DateTime.now())}",
-                       
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                            Text(
+                              "วันที่ลงทะเบียน : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmers?[index].farmerRegDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         )
                       ],
                     ),

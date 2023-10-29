@@ -217,17 +217,18 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontFamily: 'Itim',
-                                      color: Color.fromARGB(255, 33, 82, 35)
+                                      color: Color.fromARGB(255, 5, 112, 41),
+                                      fontWeight: FontWeight.bold
                                     ),
                                   ),
                                 ),
                                 const Padding(
-                    padding: EdgeInsets.only(left: 15, bottom: 8, top: 10),
+                    padding: EdgeInsets.only(left: 25, bottom: 8, top: 10),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "รายละเอียดการผลิต",
-                        style: TextStyle(fontSize: 22, fontFamily: 'Itim'),
+                        style: TextStyle(fontSize: 20, fontFamily: 'Itim',fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -241,10 +242,17 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(top: 15, left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "รหัสผลผลิตที่นำมาใช้ : " +
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "รหัสผลผลิตที่นำมาใช้ : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
                                     "${manufacturings?.rawMaterialShipping?.rawMatShpId}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -252,10 +260,17 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "ชื่อของผลผลิต : " +
-                                    "${manufacturings?.rawMaterialShipping?.planting?.plantName}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "ชื่อของผลผลิต : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${manufacturings?.rawMaterialShipping?.planting?.plantName}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -263,12 +278,19 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(bottom: 15, left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "จำนวนของผลผลิตที่ใช้ : " +
-                                    "${manufacturings?.usedRawMatQty}" +
-                                    " " +
-                                    "${manufacturings?.usedRawMatQtyUnit}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                   Text(
+                                    "จำนวนของผลผลิตที่ใช้ : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${manufacturings?.usedRawMatQty}" +
+                                        " " +
+                                        "${manufacturings?.usedRawMatQtyUnit}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -305,10 +327,17 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(top: 15, left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "ผลิตเป็นสินค้า : " +
-                                    "${manufacturings?.product?.productName}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "ผลิตเป็นสินค้า : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${manufacturings?.product?.productName}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -316,12 +345,19 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "จำนวนสินค้าที่ได้ : " +
-                                    "${manufacturings?.productQty}" +
-                                    " " +
-                                    "${manufacturings?.productUnit}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "จำนวนสินค้าที่ได้ : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${manufacturings?.productQty}" +
+                                        " " +
+                                        "${manufacturings?.productUnit}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -329,10 +365,17 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "วันที่ผลิตสินค้า : " +
-                                    "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.manufactureDate ?? DateTime.now())}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "วันที่ผลิตสินค้า : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.manufactureDate ?? DateTime.now())}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -340,10 +383,17 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                             padding: EdgeInsets.only(bottom: 15, left: 15),
                             child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                "วันหมดอายุของสินค้า : " +
-                                    "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.expireDate ?? DateTime.now())}",
-                                style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "วันหมดอายุของสินค้า : ",
+                                    style: TextStyle(fontSize: 16, fontFamily: 'Itim',fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                        "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturings?.expireDate ?? DateTime.now())}",
+                                    style: TextStyle(fontSize: 18, fontFamily: 'Itim'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -376,7 +426,7 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
                               RoundedRectangleBorder(
                                 borderRadius:
                                 BorderRadius.circular(50.0))),
-                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 105, 13, 175))
+                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 5, 112, 41))
                         ),
                         onPressed: () {
                           showConfirmToRecordManufacturingAlert(widget.manufacturingId);

@@ -274,34 +274,60 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                           child: Text(
                                             "${plantings?[index1].plantName}",
                                             style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),
+                                                fontFamily: 'Itim', fontSize: 22,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 93, 43, 1)),
                                           ),
                                         ),
-                                        Text(
-                                            "วันที่ปลูก : " +
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่ปลูก : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
                                                 buddhistYearConverter.convertDateTimeToBuddhistDate(
-                                                    plantings?[index1]
-                                                            .plantDate ??
-                                                        DateTime.now()),
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "คาดว่าจะเก็บเกี่ยว : " +
+                                                        plantings?[index1]
+                                                                .plantDate ??
+                                                            DateTime.now()),
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "คาดว่าจะเก็บเกี่ยว : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
                                                 buddhistYearConverter.convertDateTimeToBuddhistDate(
-                                                    plantings?[index1]
-                                                            .approxHarvDate ??
-                                                        DateTime.now()),
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
+                                                        plantings?[index1]
+                                                                .approxHarvDate ??
+                                                            DateTime.now()),
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 10),
-                                          child: Text(
-                                              "ปริมาณคาดว่าสุทธิ : ${plantings?[index1].netQuantity} ${plantings?[index1].netQuantityUnit}",
-                                              style: const TextStyle(
-                                                  fontFamily: 'Itim',
-                                                  fontSize: 18)),
+                                          child: Row(
+                                            children: [
+                                               Text(
+                                                  "ปริมาณคาดว่าสุทธิ : ",
+                                                  style: const TextStyle(
+                                                      fontFamily: 'Itim',
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold)),
+                                              Text(
+                                                  "${plantings?[index1].netQuantity} ${plantings?[index1].netQuantityUnit}",
+                                                  style: const TextStyle(
+                                                      fontFamily: 'Itim',
+                                                      fontSize: 18)),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -373,43 +399,88 @@ class _ListPlantingScreenState extends State<ListPlantingScreen> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            "รหัสการส่งผลผลิต : ${rawMaterialShippings?[index1].rawMatShpId}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "รหัสการส่งผลผลิต : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 93, 43, 1)),
+                                              ),
+                                              Text(
+                                                "${rawMaterialShippings?[index1].rawMatShpId}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 93, 43, 1)),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                            "วันที่ส่งผลผลิต : " +
-                                                buddhistYearConverter.convertDateTimeToBuddhistDate(
-                                                    rawMaterialShippings?[index1]
-                                                            .rawMatShpDate ??
-                                                        DateTime.now()),
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "ปริมาณผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].rawMatShpQty} ${rawMaterialShippings?[index1].rawMatShpQtyUnit}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "ส่งให้กับ : ${rawMaterialShippings?[index1].manufacturer?.manuftName}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "ผลผลิตที่ส่ง : ${rawMaterialShippings?[index1].planting?.plantName}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่ส่งผลผลิต : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                                    buddhistYearConverter.convertDateTimeToBuddhistDate(
+                                                        rawMaterialShippings?[index1]
+                                                                .rawMatShpDate ??
+                                                            DateTime.now()),
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "ปริมาณผลผลิตที่ส่ง : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                              "${rawMaterialShippings?[index1].rawMatShpQty} ${rawMaterialShippings?[index1].rawMatShpQtyUnit}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                                    
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "ส่งให้กับ :",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${rawMaterialShippings?[index1].manufacturer?.manuftName}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "ผลผลิตที่ส่ง : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${rawMaterialShippings?[index1].planting?.plantName}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 10),
                                           child: Text(
                                               "สถานะการส่ง : ${rawMaterialShippings?[index1].status}",
                                               style: const TextStyle(
                                                   fontFamily: 'Itim',
-                                                  fontSize: 18)),
+                                                  fontSize: 18,fontWeight: FontWeight.bold)),
                                         ),
                                       ],
                                     ),

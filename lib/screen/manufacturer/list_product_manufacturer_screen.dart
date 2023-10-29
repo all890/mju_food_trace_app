@@ -312,22 +312,48 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 "${notManufacturedProducts?[index].productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
-                                  fontSize: 20
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color:  Color.fromARGB(255, 1, 82, 74)
                                 ),
                               ),
-                              Text(
-                                "ปริมาตรสุทธิ : "+"${notManufacturedProducts?[index].netVolume} กรัม",
-                                style: const TextStyle(
-                                  fontFamily: 'Itim',
-                                  fontSize: 20
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "ปริมาตรสุทธิ : ",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                    "${notManufacturedProducts?[index].netVolume} กรัม",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 18
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "พลังงานสุทธิ : "+"${notManufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
-                                style: const TextStyle(
-                                  fontFamily: 'Itim',
-                                  fontSize: 20
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "พลังงานสุทธิ : ",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                    "${notManufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 18
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -388,7 +414,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                         Text(
                           "ไม่มีสินค้าที่ยังไม่ถูกผลิต",
                           style:
-                              TextStyle(fontFamily: "Itim", fontSize: 20),
+                              TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -426,22 +452,48 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                 "${manufacturedProducts?[index].productName}",
                                 style: const TextStyle(
                                   fontFamily: 'Itim',
-                                  fontSize: 20
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color:  Color.fromARGB(255, 1, 82, 74)
                                 ),
                               ),
-                                Text(
-                                "ปริมาตรสุทธิ : "+"${manufacturedProducts?[index].netVolume} กรัม",
-                                style: const TextStyle(
-                                  fontFamily: 'Itim',
-                                  fontSize: 20
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "ปริมาตรสุทธิ : ",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                   "${manufacturedProducts?[index].netVolume} กรัม",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 18
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "พลังงานสุทธิ : "+"${manufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
-                                style: const TextStyle(
-                                  fontFamily: 'Itim',
-                                  fontSize: 20
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "พลังงานสุทธิ : ",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                    "${manufacturedProducts?[index].netEnergy} กิโลแคลอรี่",
+                                    style: const TextStyle(
+                                      fontFamily: 'Itim',
+                                      fontSize: 18
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -463,7 +515,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                         Text(
                           "ไม่มีสินค้าที่ถูกผลิต",
                           style:
-                              TextStyle(fontFamily: "Itim", fontSize: 20),
+                              TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

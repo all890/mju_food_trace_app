@@ -245,6 +245,7 @@ setState(() {
               style: TextStyle(
                 fontFamily: 'Itim',
                 color: Colors.white,
+               
                 shadows: [
                   Shadow(
                     color: Color.fromARGB(255, 0, 0, 0)
@@ -340,13 +341,13 @@ setState(() {
                                 Text(
                                   "ใบรับรองผู้ผลิตที่ใช้ปัจจุบัน"
                                 ,style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),),
+                                                fontFamily: 'Itim', fontSize: 22, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 3, 73, 70),),),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10,left: 16,right: 2,bottom: 5),
                                   child: Align(
                                     alignment: Alignment.topLeft,
                                     child: Text("ข้อมูลใบรับรอง",style: const TextStyle(
-                                                  fontFamily: 'Itim', fontSize: 18),)
+                                                  fontFamily: 'Itim', fontSize: 18, fontWeight: FontWeight.bold,),)
                                   ),
                                 ),
                                 Stack(
@@ -363,32 +364,56 @@ setState(() {
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ออกใบรับรอง : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่ออกใบรับรอง : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                       Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertRegDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่หมดอายุ : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertExpireDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("วันที่ทำการอัปโหลด : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("วันที่ทำการอัปโหลด : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificate?.mnCertUploadDate ?? DateTime.now())}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 25),
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
-                                                child: Text("สถานะใบรับรอง : ${manufacturerCertificate?.mnCertStatus}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                child: Row(
+                                                  children: [
+                                                    Text("สถานะใบรับรอง : ",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),),
+                                                    Text("${manufacturerCertificate?.mnCertStatus}",style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 16),),
+                                                  ],
+                                                )
                                               ),
                                             ),
                                             
@@ -397,7 +422,7 @@ setState(() {
                                               child: Align(
                                                 alignment: Alignment.topLeft, 
                                                 child: Text("รูปใบรับรอง",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 16),)
+                                                fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),)
                                               ),
                                             ),
                                             SizedBox(
@@ -420,9 +445,9 @@ setState(() {
                                           child: Column(
                                             children: [
                                               Center(child: Text("หมายเลขใบรับรอง",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 18),)),
+                                                fontFamily: 'Itim', fontSize: 18,fontWeight: FontWeight.bold),)),
                                               Center(child: Text("${manufacturerCertificate?.mnCertNo}",style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 18),)),
+                                                fontFamily: 'Itim', fontSize: 18,fontWeight:FontWeight.bold ),)),
                                               Center(
                                                 child: Text(
                                                   differenceDays! > 90 ? "ใบรับรองนี้จะมีอายุอีก : ${differenceDays} วัน" : differenceDays! <= 0 ? "ใบรับรองนี้หมดอายุแล้ว กรุณาต่ออายุใบรับรอง" : "เหลืออายุเพียง ${differenceDays} วัน ควรต่ออายุใบรับรอง",
@@ -459,27 +484,65 @@ setState(() {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            "เลขที่การร้องขอ : ${manufacturerCertificates?[index1].mnCertId}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim', fontSize: 22),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "เลขที่การร้องขอ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,color: Color.fromARGB(255, 1, 82, 74),fontWeight: FontWeight.bold,),
+                                              ),
+                                              Text(
+                                                "${manufacturerCertificates?[index1].mnCertId}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim', fontSize: 20,color: Color.fromARGB(255, 1, 82, 74),fontWeight: FontWeight.bold),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Text(
-                                            "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertRegDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "วันที่หมดอายุ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertExpireDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
-                                        Text(
-                                            "วันที่ทำการร้องขอ : ${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertUploadDate ?? DateTime.now())}",
-                                            style: const TextStyle(
-                                                fontFamily: 'Itim',
-                                                fontSize: 18)),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่ลงทะเบียน : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertRegDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่หมดอายุ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertExpireDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                "วันที่ทำการร้องขอ : ",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
+                                            Text(
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturerCertificates?[index1].mnCertUploadDate ?? DateTime.now())}",
+                                                style: const TextStyle(
+                                                    fontFamily: 'Itim',
+                                                    fontSize: 18)),
+                                          ],
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 10),
                                           child: Row(
@@ -488,7 +551,7 @@ setState(() {
                                                 "สถานะใบรับรอง : ",
                                                 style: const TextStyle(
                                                     fontFamily: 'Itim',
-                                                    fontSize: 18)),
+                                                    fontSize: 16,fontWeight: FontWeight.bold)),
                                               Text(
                                                 "${manufacturerCertificates?[index1].mnCertStatus}",
                                                 
@@ -519,7 +582,9 @@ setState(() {
                                     "การยื่นคำร้องขอต่ออายุใบรับรองผู้ผลิต",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 3, 73, 70),
                                     ),
                                   ),
                                 ),
@@ -531,7 +596,8 @@ setState(() {
                                       "ข้อมูลใบรับรอง GMP ฉบับใหม่",
                                       style: TextStyle(
                                         fontSize: 20,
-                                        fontFamily: 'Itim'
+                                        fontFamily: 'Itim',
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ),
@@ -648,7 +714,7 @@ setState(() {
                                           child: const Text("เลือกรูปภาพ"),
                                           style: ButtonStyle(
                                               backgroundColor: MaterialStateProperty.all<Color>(
-                                                  Colors.grey)),
+                                                  Color.fromARGB(255, 12, 129, 127))),
                                         ),
                                       )
                                     ),
@@ -746,7 +812,7 @@ setState(() {
                               Text(
                                 "ใบรับรองที่คุณร้องขอต่ออายุ\nกำลังรอการตรวจสอบจากผู้ดูแลระบบ",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -763,7 +829,7 @@ setState(() {
                               Text(
                                 "ขณะนี้ยังไม่ถึงเวลาสำหรับการร้องขอต่ออายุ",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

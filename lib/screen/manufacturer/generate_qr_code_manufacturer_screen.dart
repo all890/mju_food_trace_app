@@ -153,7 +153,8 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                               style: TextStyle(
                                 fontSize: 22,
                                 fontFamily: 'Itim',
-                                color: Color.fromARGB(255, 33, 82, 35)
+                                color: Color.fromARGB(255, 33, 82, 35),
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                           ),
@@ -181,7 +182,8 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Itim',
-                                color: Colors.black
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
                               )
                             ),
                           ),
@@ -192,7 +194,8 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Itim',
-                                color: Colors.black
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
                               )
                             ),
                           ),
@@ -203,7 +206,8 @@ class _GenerateQRCodeScreenState extends State<GenerateQRCodeScreen> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Itim',
-                                color: Colors.black
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
                               )
                             ),
                           )

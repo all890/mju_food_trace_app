@@ -327,26 +327,61 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "รหัสการผลิต "+"${notRecordedManufacturings?[index].manufacturingId}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "รหัสการผลิต ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 1, 82, 74)),
+                                        ),
+                                        Text(
+                                          "${notRecordedManufacturings?[index].manufacturingId}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 1, 82, 74)),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${notRecordedManufacturings?[index].product?.productName}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "สินค้าที่ผลิต : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${notRecordedManufacturings?[index].product?.productName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "วันที่ทำการผลิต "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "วันที่ทำการผลิต : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text("${buddhistYearConverter.convertDateTimeToBuddhistDate(notRecordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                        ),
+                                      ],
                                     ),
-                                     Text(
-                                      "ปริมาณสินค้า "+"${notRecordedManufacturings?[index].productQty}"+" ${notRecordedManufacturings?[index].productUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 18),
+                                     Row(
+                                       children: [
+                                        Text(
+                                          "ปริมาณสินค้า : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
                                     ),
+                                         Text(
+                                          "${notRecordedManufacturings?[index].productQty}"+" ${notRecordedManufacturings?[index].productUnit}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                    ),
+                                       ],
+                                     ),
                                   ],
                                 ),
                                 trailing: SizedBox(
@@ -452,7 +487,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               Text(
                                 "ไม่มีการผลิตสินค้าที่ไม่ถูกบันทึก",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -480,22 +515,49 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                                     Text(
                                         "รหัสการผลิต "+"${recordedManufacturings?[index].manufacturingId}",
                                       style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                          fontFamily: 'Itim', fontSize: 20,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 1, 82, 74)),
                                     ),
-                                    Text(
-                                      "${recordedManufacturings?[index].product?.productName}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "สินค้าที่ผลิต : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${recordedManufacturings?[index].product?.productName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "วันที่ทำการผลิต ${buddhistYearConverter.convertDateTimeToBuddhistDate(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "วันที่ทำการผลิต : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${buddhistYearConverter.convertDateTimeToBuddhistDate(recordedManufacturings?[index].manufactureDate ?? DateTime.now())}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "ปริมาณสินค้า ${recordedManufacturings?[index].productQty} ${recordedManufacturings?[index].productUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim', fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ปริมาณสินค้า : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 16,fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${recordedManufacturings?[index].productQty} ${recordedManufacturings?[index].productUnit}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim', fontSize: 18),
+                                        ),
+                                      ],
                                     ),
                                  
                                     
@@ -519,7 +581,7 @@ class _ListManufacturingScreenState extends State<ListManufacturingScreen> {
                               Text(
                                 "ไม่มีการผลิตสินค้าที่ถูกบันทึก",
                                 style:
-                                    TextStyle(fontFamily: "Itim", fontSize: 20),
+                                    TextStyle(fontFamily: "Itim", fontSize: 20,fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

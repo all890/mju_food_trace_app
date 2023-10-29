@@ -110,7 +110,8 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                           style: const TextStyle(
                             fontFamily: 'Itim',
                             fontSize: 22,
-                            color:  Color.fromARGB(255, 3, 26, 40),
+                            fontWeight: FontWeight.bold,
+                            color:  Color.fromARGB(255, 5, 68, 95),
                           ),
                         ),
                         Text(
@@ -120,12 +121,24 @@ class _ListManuftRegistrationScreenState extends State<ListManuftRegistrationScr
                             fontSize: 18
                           ),
                         ),
-                        Text(
-                          "วันที่สมัคร : "+"${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
-                          style: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18
-                          )
+                        Row(
+                          children: [
+                              Text(
+                              "วันที่ลงทะเบียน : ",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              )
+                            ),
+                            Text(
+                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(manufacturers?[index].manuftRegDate ?? DateTime.now())}",
+                              style: const TextStyle(
+                                fontFamily: 'Itim',
+                                fontSize: 18
+                              )
+                            ),
+                          ],
                         )
                       ],
                     ),

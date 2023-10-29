@@ -245,8 +245,10 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                   child: Text(
                                     "ข้อมูลผู้ผลิต",
                                     style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontSize: 24,
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 1, 71, 83)
                                     ),
                                   ),
                                 ),
@@ -302,7 +304,8 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                     "ข้อมูลโรงงานผู้ผลิต",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -365,7 +368,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                             textAlign: TextAlign.center,
                                           ),
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 14, 94, 114))
                                           ),
                                         ),
                                       ),
@@ -449,7 +452,8 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                     "ข้อมูลใบรับรองมาตรฐานผู้ผลิต",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -499,7 +503,7 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                           },
                                           child: const Text("เลือกรูปภาพ"),
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.grey)
+                                            backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 14, 94, 114))
                                           ),
                                         ),
                                       )
@@ -617,7 +621,8 @@ class _ManufacturerRegisterScreenState extends State<ManufacturerRegisterScreen>
                                     "ข้อมูลชื่อผู้ใช้และรหัสผ่าน",
                                     style: TextStyle(
                                       fontSize: 22,
-                                      fontFamily: 'Itim'
+                                      fontFamily: 'Itim',
+                                      fontWeight: FontWeight.bold
                                     ),
                                     textAlign: TextAlign.left,
                                   ),

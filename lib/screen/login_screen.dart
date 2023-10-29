@@ -133,7 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               "ลงชื่อเข้าใช้บัญชีของคุณ",
                               style: TextStyle(
                                 fontFamily: 'Itim',
-                                fontSize: 24
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold
                               ),
                             ),
                           ),
@@ -270,7 +271,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(
                                   fontFamily: 'Itim',
                                   fontSize: 18,
-                                  decoration: TextDecoration.underline
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold
+                                  
                                 ),
                               ),
                               onTap: () {
