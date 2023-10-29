@@ -774,46 +774,97 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 25,
+                                  width: 15,
                                 ),
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "ผลผลิตที่ส่งมา : " +
-                                          "${emptyRms?[index].planting?.plantName}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim',
-                                          fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ผลผลิตที่ส่งมา : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                            "${emptyRms?[index].planting?.plantName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "จาก : " +
-                                          "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim',
-                                          fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "จาก : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerName}"+" "+"${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmerLastname}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "ชื่อฟาร์ม : " +
-                                          "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim',
-                                          fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ชื่อฟาร์ม : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                              "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "วันที่ส่ง : " +
+                                    Row(
+                                      children: [
+                                         Text(
+                                          "วันที่ส่ง : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
                                           "${buddhistYearConverter.convertDateTimeToBuddhistDate(emptyRms?[index].rawMatShpDate ?? DateTime.now())}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim',
-                                          fontSize: 20),
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "ผลผลิตที่ใช้ : "+"${emptyRms?[index].rawMatShpQty}"+" ${emptyRms?[index].rawMatShpQtyUnit}",
-                                      style: const TextStyle(
-                                          fontFamily: 'Itim',
-                                          fontSize: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ผลผลิตที่ใช้ : ",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${emptyRms?[index].rawMatShpQty}"+" ${emptyRms?[index].rawMatShpQtyUnit}",
+                                          style: const TextStyle(
+                                              fontFamily: 'Itim',
+                                              fontSize: 20),
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
