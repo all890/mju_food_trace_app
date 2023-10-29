@@ -64,6 +64,8 @@ flutter:
     - images/rms_icon.png
     - images/certificate-icon.png
     - images/pack-products.png
+    - images/manuft_drawer_bg2.png
+    - images/farmer_drawer_bg2.png
 
   fonts:
     - family: Itim

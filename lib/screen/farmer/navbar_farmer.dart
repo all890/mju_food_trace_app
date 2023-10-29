@@ -85,9 +85,9 @@ class _FarmerNavbarState extends State<FarmerNavbar> {
                 ],),),
             decoration: BoxDecoration(
               color:  kClipPathColorFM,
-              // image: DecorationImage(
-              //   image: AssetImage('images/ftmju_header_logo.png')
-              // )
+              image: DecorationImage(
+                image: AssetImage('images/farmer_drawer_bg2.png')
+              )
             ),
           ),
           //farmerCertificate?.fmCertExpireDate?.isBefore(DateTime.now()) == true || farmerCertificate?.fmCertStatus == "ไม่อนุมัติ" ?

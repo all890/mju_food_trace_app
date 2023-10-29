@@ -84,8 +84,8 @@ class _ManufacturerNavbarState extends State<ManufacturerNavbar> {
                 ],),),
             decoration: BoxDecoration(
                 color: kClipPathColorMN,
-                // image: DecorationImage(
-                //     image: AssetImage('images/ftmju_header_logo.png'))
+                image: DecorationImage(
+                    image: AssetImage('images/manuft_drawer_bg2.png'))
                 ),
           ),
           // manufacturerCertficate?.mnCertExpireDate?.isBefore(DateTime.now()) ==
