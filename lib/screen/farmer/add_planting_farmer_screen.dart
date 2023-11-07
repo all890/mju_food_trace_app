@@ -714,28 +714,36 @@ class _AddPlantingScreenState extends State<AddPlantingScreen> {
                                             //Farmer's data insertion using farmer controller
                                             var username = await SessionManager().get("username");
 
-                                            http.Response response = await plantingController.addPlanting(plantNameTextController.text,
-                                                                      plantDateTextController.text,
-                                                                      fileToDisplay!,
-                                                                      selected_bioextract_items!,
-                                                                      approxHarvDateTextController.text,
-                                                                      selected_plantingMethod_items!,
-                                                                      netQuantityTextController.text,
-                                                                      selected_netQuantityUnit_items!,
-                                                                      squareMetersTextController.text,
-                                                                      squareYardsTextController.text,
-                                                                      raiTextController.text,
-                                                                      username.toString());
-      
-                                            //print("Status code is " + code.toString());
-      
-                                            if (response.statusCode == 500) {
-                                              print("Error!");
-                                              //showUsernameDuplicationAlert();
-                                            } else {
-                                              print("Farmer registration successfully!");
-                                              showSavePlantingSuccessAlert();
+                                            var isChainBeforePtValidResponse = await plantingController.isChainBeforePlantingValid(username);
+
+                                            if (isChainBeforePtValidResponse == 200) {
+                                              http.Response response = await plantingController.addPlanting(plantNameTextController.text,
+                                                                        plantDateTextController.text,
+                                                                        fileToDisplay!,
+                                                                        selected_bioextract_items!,
+                                                                        approxHarvDateTextController.text,
+                                                                        selected_plantingMethod_items!,
+                                                                        netQuantityTextController.text,
+                                                                        selected_netQuantityUnit_items!,
+                                                                        squareMetersTextController.text,
+                                                                        squareYardsTextController.text,
+                                                                        raiTextController.text,
+                                                                        username.toString());
+        
+                                              //print("Status code is " + code.toString());
+        
+                                              if (response.statusCode == 500) {
+                                                print("Error!");
+                                                //showUsernameDuplicationAlert();
+                                              } else {
+                                                print("Farmer registration successfully!");
+                                                showSavePlantingSuccessAlert();
+                                              }
+                                            } else if (isChainBeforePtValidResponse == 409) {
+                                              showError("ไม่สามารถเพิ่มการปลูกได้ เนื่องจากการเข้ารหัสของข้อมูลก่อนหน้าไม่ตรงกัน");
                                             }
+
+                                            
                                           }
                                         }
                                       },

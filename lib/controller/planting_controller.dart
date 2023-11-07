@@ -181,4 +181,13 @@ class PlantingController {
     return response;
   }
 
+  Future isChainBeforePlantingValid (String username) async {
+    var url = Uri.parse(baseURL + '/planting/ischainbefptval/' + username);
+
+    http.Response response = await http.get(
+      url
+    );
+    return response.statusCode;
+  }
+
 }

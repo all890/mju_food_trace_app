@@ -96,6 +96,19 @@ class _RequestRenewingFarmerCertificateState
     }
   }
 
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void syncUser() async {
     setState(() {
       isLoaded = false;
@@ -466,7 +479,7 @@ class _RequestRenewingFarmerCertificateState
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold)),
                                             Text(
-                                                "วันที่ลงทะเบียน : ${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
+                                                "${buddhistYearConverter.convertDateTimeToBuddhistDate(farmerCertificates?[index1].fmCertRegDate ?? DateTime.now())}",
                                                 style: const TextStyle(
                                                     fontFamily: 'Itim',
                                                     fontSize: 18)),
@@ -718,8 +731,11 @@ class _RequestRenewingFarmerCertificateState
                                             } else {
                                               //Farmer's data insertion using farmer controller
                                             var username = await SessionManager().get("username");
-                                    
-                                            http.Response response = await farmerController.addfarmerCertificate(fileToDisplay!,
+
+                                            var isChainBeforeFmCertValidResp = await farmerCertificateController.isChainBeforeFmCertValid(username);
+
+                                            if (isChainBeforeFmCertValidResp == 200) {
+                                              http.Response response = await farmerController.addfarmerCertificate(fileToDisplay!,
                                                                       fmCertNoTextController.text,
                                                                       fmCertRegDateTextController.text,
                                                                       fmCertExpireDateTextController.text,
@@ -742,6 +758,11 @@ class _RequestRenewingFarmerCertificateState
                                             )
                                           );
                                             }
+                                            } else if (isChainBeforeFmCertValidResp == 409) {
+                                              showError("ไม่สามารถยื่นคำร้องขอต่ออายุใบรับรองเกษตรกรได้ เนื่องจากการเข้ารหัสข้อมูลก่อนหน้าไม่ตรงกัน");
+                                            }
+                                    
+                                            
                                             }
                                           }
                                         },

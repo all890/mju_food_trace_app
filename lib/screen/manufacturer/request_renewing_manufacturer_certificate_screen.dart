@@ -107,6 +107,19 @@ class _RequestRenewingManufacturerCertificateScreenState extends State<RequestRe
       }
     );
   }
+
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
   
 
  void syncUser() async {
@@ -756,29 +769,38 @@ setState(() {
                                               //Farmer's data insertion using farmer controller
                                             var username = await SessionManager().get("username");
                                     
-                                            http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
-                                                                      mnCertNoTextController.text,
-                                                                      mnCertRegDateTextController.text,
-                                                                      mnCertExpireDateTextController.text,
-                                                                      username.toString());
-                                      
-                                            //print("Status code is " + code.toString());
-                                      
-                                            if (response.statusCode == 500) {
-                                              print("Error!");
-                                              //showUsernameDuplicationAlert();
-                                              
-                                            } else {
-                                              print("Farmer renewing req cert successfully!");
-                                            //  showSavePlantingSuccessAlert();
-                                            Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (BuildContext context) {
-                                                return const ListManufacturingScreen();
+                                            var isChainBeforeMnCertValidResp = await manufacturerCertificateController
+                                            .isChainBeforeMnCertValid(username);
+
+                                            if (isChainBeforeMnCertValidResp == 200) {
+                                              http.Response response = await manufacturerController.addmanufacturerCertificate(fileToDisplay!,
+                                                                        mnCertNoTextController.text,
+                                                                        mnCertRegDateTextController.text,
+                                                                        mnCertExpireDateTextController.text,
+                                                                        username.toString());
+                                        
+                                              //print("Status code is " + code.toString());
+                                        
+                                              if (response.statusCode == 500) {
+                                                print("Error!");
+                                                //showUsernameDuplicationAlert();
+                                                
+                                              } else {
+                                                print("Farmer renewing req cert successfully!");
+                                              //  showSavePlantingSuccessAlert();
+                                              Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                builder: (BuildContext context) {
+                                                  return const ListManufacturingScreen();
+                                                }
+                                              )
+                                            );
                                               }
-                                            )
-                                          );
+                                            } else if (isChainBeforeMnCertValidResp == 409) {
+                                              showError("ไม่สามารถร้องขอต่ออายุใบรับรองผู้ผลิตได้ เนื่องจากการเข้ารหัสข้อมูลก่อนหน้าไม่ตรงกัน");
                                             }
+
+                                            
                                             }
                                           }
                                         },

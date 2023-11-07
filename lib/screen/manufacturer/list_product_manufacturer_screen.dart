@@ -363,22 +363,22 @@ class _ListProductScreenState extends State<ListProductScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    print("Edit Pressed!");
-                                    if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
-                                      showErrorToUpdateBecauseMnCertIsExpire();
-                                    } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
-                                      showErrorToUpdateBecauseMnCertIsWaitToAccept();
-                                    } else {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: notManufacturedProducts?[index].productId ?? "")),
-                                      );
-                                    }
-                                  },
-                                  child: Icon(Icons.edit,color: Color.fromARGB(255, 4, 92, 89),)
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     print("Edit Pressed!");
+                                //     if ((manufacturerCertificate?.mnCertExpireDate?.isBefore(DateTime.now()) == true && !(manufacturerCertificate?.mnCertExpireDate?.difference(DateTime.now()).inDays == 0)) || manufacturerCertificate?.mnCertStatus == "ไม่อนุมัติ") {
+                                //       showErrorToUpdateBecauseMnCertIsExpire();
+                                //     } else if (manufacturerCertificate?.mnCertStatus == "รอการอนุมัติ") {
+                                //       showErrorToUpdateBecauseMnCertIsWaitToAccept();
+                                //     } else {
+                                //       Navigator.pushReplacement(
+                                //         context,
+                                //         MaterialPageRoute(builder: (context) => UpdateProductScreen(productId: notManufacturedProducts?[index].productId ?? "")),
+                                //       );
+                                //     }
+                                //   },
+                                //   child: Icon(Icons.edit,color: Color.fromARGB(255, 4, 92, 89),)
+                                // ),
                                 
                                 GestureDetector(
                                   onTap: () {

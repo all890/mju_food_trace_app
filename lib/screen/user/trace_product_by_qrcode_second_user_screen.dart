@@ -114,23 +114,38 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     var incorrectPointJson = await qrCodeController.isChainValid(widget.qrCode?.qrcodeId ?? "");
     incorrectPoint = json.decode(incorrectPointJson);
 
+    List<String> farmerSession = ["1", "2", "3", "4", "5"];
+    List<String> rmsSession = ["6", "7"];
+    List<String> manufacturerSession = ["8", "9", "10", "11", "12", "13", "14", "15"];
+
     if (incorrectPoint?.isNotEmpty == true) {
-      if (incorrectPoint?.containsKey("1") == true) {
-        setState(() {
-          farmerIncorrect = true;
-          print("FARMER IS INCORRECT");
-        });
-      } else if (incorrectPoint?.containsKey("2") == true || incorrectPoint?.containsKey("3") == true) {
-        setState(() {
-          rmsIncorrect = true;
-          print("RMS IS INCORRECT");
-        });
-      } else if (incorrectPoint?.containsKey("4") == true || incorrectPoint?.containsKey("5") == true) {
-        setState(() {
-          manuftIncorrect = true;
-          print("MANUFT IS INCORRECT");
-        });
-      }
+      farmerSession.forEach((element) {
+        if (incorrectPoint?.containsKey(element) == true) {
+          setState(() {
+            farmerIncorrect = true;
+            print("FARMER IS INCORRECT");
+          });
+        }
+      });
+      
+      rmsSession.forEach((element) {
+        if (incorrectPoint?.containsKey(element) == true) {
+          setState(() {
+            rmsIncorrect = true;
+            print("RMS IS INCORRECT");
+          });
+        }
+      });
+      
+      manufacturerSession.forEach((element) {
+        if (incorrectPoint?.containsKey(element) == true) {
+          setState(() {
+            manuftIncorrect = true;
+            print("MANUFT IS INCORRECT");
+          });
+        }
+      });
+      
     }
   }
 

@@ -61,6 +61,18 @@ class FarmerCertificateController {
 
   }
 
+  Future isChainBeforeFmCertValid (String username) async {
+
+    var url = Uri.parse(baseURL + '/farmercertificate/ischainvalbeffmcert/' + username);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.statusCode;
+
+  }
+
   Future getFmRequestRenewById (String fmCertId) async {
 
     var url = Uri.parse(baseURL + '/farmercertificate/getfmcertbyid/' + fmCertId);

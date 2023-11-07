@@ -132,5 +132,33 @@ class ManufacturingController {
     );
     return response;
   }
+
+  Future isChainBeforeRecordManufacturingValid (String manufacturingId) async{
+  var url = Uri.parse(baseURL + '/manufacturing/ischainvalbefrecmanuft/' + manufacturingId);
+
+    http.Response response = await http.get(
+      url
+    );
+    return response.statusCode;
+  }
+
+  Future isChainBeforeManufacturingValid (String productId, String rawMatShpId) async {
+
+    Map data = {
+      "productId" : productId,
+        "rawMatShpId" : rawMatShpId,
+    };
+
+    var Body = json.encode(data);
+    var Url = Uri.parse(baseURL + '/manufacturing/ischainvalbefmanuft');
+
+    http.Response response = await http.post(
+      Url,
+      headers: headers,
+      body: Body
+    );
+    
+    return response.statusCode;
+  }
   
 }

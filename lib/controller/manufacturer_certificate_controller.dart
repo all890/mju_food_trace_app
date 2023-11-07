@@ -62,6 +62,18 @@ class ManufacturerCertificateController {
 
   }
 
+  Future isChainBeforeMnCertValid (String username) async {
+
+    var url = Uri.parse(baseURL + '/manuftcertificate/ischainvalbefmncert/' + username);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    return response.statusCode;
+
+  }
+
 
     Future getManuftCertDetails(String mnCertId) async {
     var url = Uri.parse(baseURL + '/manuftcertificate/getmncertdetails/' + mnCertId);

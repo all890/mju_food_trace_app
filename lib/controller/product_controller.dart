@@ -122,6 +122,14 @@ class ProductController {
     return response;
   }
 
+  Future isChainBeforeProductValid (String username) async {
+    var url = Uri.parse(baseURL + '/product/ischainbefpdval/' + username);
+    http.Response response = await http.get(
+      url
+    );
+    return response.statusCode;
+  }
+
   Future getListProduct (
     String username
   ) async {

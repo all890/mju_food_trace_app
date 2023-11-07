@@ -109,6 +109,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showMnCertExpireError () {
     QuickAlert.show(
       context: context,
@@ -613,28 +626,34 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                                           String username = await SessionManager().get("username");
 
-                                          http.Response response = await productController.addProduct(
-                                            productNameTextController.text,
-                                            int.parse(netVolumeTextController.text),
-                                            int.parse(netEnergyTextController.text),
-                                            int.parse(saturatedFatTextController.text),
-                                            int.parse(cholesteralTextController.text),
-                                            int.parse(proteinTextController.text),
-                                            int.parse(sodiumTextController.text),
-                                            int.parse(fiberTextController.text),
-                                            int.parse(sugarTextController.text),
-                                            int.parse(vitATextController.text),
-                                            int.parse(vitB1TextController.text),
-                                            int.parse(vitB2TextController.text),
-                                            int.parse(ironTextController.text),
-                                            int.parse(calciumTextController.text),
-                                            username
-                                          );
+                                          var isChainBeforeProductValidResponse = await productController.isChainBeforeProductValid(username);
 
-                                          if (response.statusCode == 500) {
-                                            showFailToSaveProductAlert();
-                                          } else {
-                                            showSaveProductSuccessAlert();
+                                          if (isChainBeforeProductValidResponse == 200) {
+                                            http.Response response = await productController.addProduct(
+                                              productNameTextController.text,
+                                              int.parse(netVolumeTextController.text),
+                                              int.parse(netEnergyTextController.text),
+                                              int.parse(saturatedFatTextController.text),
+                                              int.parse(cholesteralTextController.text),
+                                              int.parse(proteinTextController.text),
+                                              int.parse(sodiumTextController.text),
+                                              int.parse(fiberTextController.text),
+                                              int.parse(sugarTextController.text),
+                                              int.parse(vitATextController.text),
+                                              int.parse(vitB1TextController.text),
+                                              int.parse(vitB2TextController.text),
+                                              int.parse(ironTextController.text),
+                                              int.parse(calciumTextController.text),
+                                              username
+                                            );
+
+                                            if (response.statusCode == 500) {
+                                              showFailToSaveProductAlert();
+                                            } else {
+                                              showSaveProductSuccessAlert();
+                                            }
+                                          } else if (isChainBeforeProductValidResponse == 409) {
+                                            showError("ไม่สามารถเพิ่มสินค้าได้ เนื่องจากการเข้ารหัสก่อนหน้าไม่ตรงกัน");
                                           }
 
                                         }

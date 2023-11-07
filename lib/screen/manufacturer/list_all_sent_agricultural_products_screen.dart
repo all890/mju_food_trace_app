@@ -69,11 +69,9 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
       showMnCertWasRejectedError();
     }
     splitRmsByType();
+    
     setState(() {
       isLoaded = true;
-    });
-    raw_material_shippings?.forEach((element) {
-      print(element.rawMatShpDate);
     });
   }
 
@@ -147,14 +145,21 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
           usedRms?.add(rms);
         }
       } else {
-        if (rms.rmsCurrBlockHash == null) {
-          newRms?.add(rms);
-        } else if (rms.status != "ถูกปฏิเสธ") {
+        if (rms.receiveDate != null && rms.status != "ถูกปฏิเสธ") {
           notUsedRms?.add(rms);
+        } else if (rms.receiveDate == null) {   
+          newRms?.add(rms);
         }
       }
-      
     });
+    print("newRms : ${newRms?.length}");
+    print("newRms : ${newRms?.isNotEmpty}");
+    print("notUsedRms : ${notUsedRms?.length}");
+    print("notUsedRms : ${notUsedRms?.isNotEmpty}");
+    print("usedRms : ${usedRms?.length}");
+    print("usedRms : ${usedRms?.isNotEmpty}");
+    print("emptyRms : ${emptyRms?.length}");
+    print("emptyRms : ${emptyRms?.isNotEmpty}");
   }
 
   void showError (String prompt) {
@@ -198,13 +203,20 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
       cancelBtnText: "ยกเลิก",
       onConfirmBtnTap: () async {
         
-        var response = await rawMaterialShippingController.acceptRms(rawMatShpId ?? "");
-        if (response == 200) {
+        var isChainValidBeforeAcceptRmsResponse = await rawMaterialShippingController.isChainBeforeAcceptRmsValid(rawMatShpId ?? "");
+
+        if (isChainValidBeforeAcceptRmsResponse == 200) {
+          var response = await rawMaterialShippingController.acceptRms(rawMatShpId ?? "");
+          if (response == 200) {
+            Navigator.pop(context);
+            showSuccess("ยืนยันการรับผลผลิตสำเร็จ");
+          } else {
+            Navigator.pop(context);
+            showError("ไม่สามารถยืนยันการรับผลผลิตได้ กรุณาลองใหม่อีกครั้ง");
+          }
+        } else if (isChainValidBeforeAcceptRmsResponse == 409) {
           Navigator.pop(context);
-          showSuccess("ยืนยันการรับผลผลิตสำเร็จ");
-        } else {
-          Navigator.pop(context);
-          showError("ไม่สามารถยืนยันการรับผลผลิตได้ กรุณาลองใหม่อีกครั้ง");
+          showError("ไม่สามารถยืนยันการรับผลผลิตได้ เนื่องจากข้อมูลในการเข้ารหัสก่อนหน้าไม่ตรงกัน");
         }
 
       },
@@ -432,7 +444,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              "${newRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                              "${newRms?[index].planting?.farmerCertificate?.farmer?.farmName == ""? "-" : newRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                               style: const TextStyle(
                                                   fontFamily: 'Itim',
                                                   fontSize: 18),
@@ -554,7 +566,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                     ),
                   ),
                   notUsedRms?.isNotEmpty == true? Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: ListView.builder(
                       itemCount: notUsedRms?.length,
                       scrollDirection: Axis.vertical,
@@ -628,7 +640,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                              "${notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                              "${notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmName == ""? "-" : notUsedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                           style: const TextStyle(
                                               fontFamily: 'Itim',
                                               fontSize: 18),
@@ -797,7 +809,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                               fontSize: 16,fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          "${usedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                          "${usedRms?[index].planting?.farmerCertificate?.farmer?.farmName == ""? "-" : usedRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                           style: const TextStyle(
                                               fontFamily: 'Itim',
                                               fontSize: 18),
@@ -965,7 +977,7 @@ class _ListAllSentAgriculturalProductsScreenState extends State<ListAllSentAgric
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                              "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
+                                              "${emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName == ""? "-" : emptyRms?[index].planting?.farmerCertificate?.farmer?.farmName}",
                                           style: const TextStyle(
                                               fontFamily: 'Itim',
                                               fontSize: 18),

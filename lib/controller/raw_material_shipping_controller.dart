@@ -168,4 +168,38 @@ class RawMaterialShippingController{
 
   }
 
+  Future isChainBeforeRmsValid (String plantingId, String manuftId) async {
+    
+    var url = Uri.parse(baseURL + '/rms/ischainbefrmsval');
+    var data = {
+      "manuftId": manuftId,
+      "plantingId": plantingId
+    };
+
+    var body = json.encode(data);
+
+    http.Response response = await http.post(
+      url,
+      headers: headers,
+      body: body
+    );
+
+    return response.statusCode;
+
+  }
+
+  Future isChainBeforeAcceptRmsValid(String rawMatShpId) async {
+
+    var url = Uri.parse(baseURL + '/rms/ischainbefaccrmsval/' + rawMatShpId);
+
+    http.Response response = await http.get(
+      url
+    );
+
+    print(response.body);
+
+    return response.statusCode;
+
+  }
+
 }

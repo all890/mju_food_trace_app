@@ -96,6 +96,19 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
     );
   }
 
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showConfirmToRecordManufacturingAlert (String manufacturingId) {
     QuickAlert.show(
       context: context,
@@ -112,16 +125,23 @@ class _RecordManufacturingScreenState extends State<RecordManufacturingScreen> {
       onConfirmBtnTap: () async {
         print("PRESSED!");
 
-        var response = await manufacturingController.recordManufacturing(manufacturingId);
+        var isChainBeforeRecManufacturingValidResp = await manufacturingController.isChainBeforeRecordManufacturingValid(manufacturingId);
 
-        if (response == 200) {
+        if (isChainBeforeRecManufacturingValidResp == 200) {
+          var response = await manufacturingController.recordManufacturing(manufacturingId);
+
+          if (response == 200) {
+            Navigator.pop(context);
+            showRecordManufacturingSuccessAlert();
+            
+          } else if (response == 500) {
+            showRecordManufacturingError();
+          } else if (response == 409) {
+            showRecordManufacturingErrorBecauseEncryptionCodeNotMatch();
+          }
+        } else if (isChainBeforeRecManufacturingValidResp == 409) {
           Navigator.pop(context);
-          showRecordManufacturingSuccessAlert();
-          
-        } else if (response == 500) {
-          showRecordManufacturingError();
-        } else if (response == 409) {
-          showRecordManufacturingErrorBecauseEncryptionCodeNotMatch();
+          showError("ไม่สามารถบันทึกการผลิตสินค้าได้ เนื่องจากการเข้ารหัสข้อมูลก่อนหน้าไม่ตรงกัน");
         }
       }
     );

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -13,6 +14,8 @@ import 'package:http/http.dart' as http;
 import 'package:mju_food_trace_app/controller/manufacturer_controller.dart';
 import 'package:mju_food_trace_app/controller/raw_material_shipping_controller.dart';
 import 'package:mju_food_trace_app/model/manufacturer.dart';
+import 'package:mju_food_trace_app/model/raw_material_shipping.dart';
+import 'package:mju_food_trace_app/screen/farmer/show_send_result.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../constant/constant.dart';
@@ -87,6 +90,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
     });
 
     print(manuftNames?.length);
+  }
+
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
   }
 
   void fetchDateTimeNow () {
@@ -674,18 +690,19 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                       }
 
                                       if (formKey.currentState!.validate()) {
+                                        String? manuftId = "";
+                                
+                                        manufacturers?.forEach((manufacturer) {
+                                          if (manufacturer.manuftName == selectedManuftName) {
+                                            manuftId = manufacturer.manuftId;
+                                          }
+                                        });
+                                
+                                        //print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
 
-                                        
-                                          String? manuftId = "";
-                                  
-                                          manufacturers?.forEach((manufacturer) {
-                                            if (manufacturer.manuftName == selectedManuftName) {
-                                              manuftId = manufacturer.manuftId;
-                                            }
-                                          });
-                                  
-                                          //print("actual: ${rawMatShpQtyTextController.text}, ptQty: ${planting?.netQuantity}");
-                                  
+                                        var isChainBeforeRmsValidResponse = await rawMaterialShippingController.isChainBeforeRmsValid(planting?.plantingId??"", manuftId??"");
+
+                                        if (isChainBeforeRmsValidResponse == 200) {
                                           http.Response response = await rawMaterialShippingController.addRawMaterialShipping(
                                                 manuftId??"",
                                                 rawMatShpDateTextController.text,
@@ -693,18 +710,23 @@ class _SendAgriculturalProductsState extends State<SendAgriculturalProducts> {
                                                 selected_rawMatShpQtyUnit_items??"",
                                                 planting?.plantingId??"");
                                   
+                                          var secResponse = response;
+
                                           if (response.statusCode == 200) {
                                             print("Add rms successfully!");
                                             Navigator.of(context).pushReplacement(
                                                 MaterialPageRoute(builder:
                                                     (BuildContext context) {
-                                              return const ListPlantingScreen();
+                                              return ShowSendResultScreen(rawMaterialShipping: RawMaterialShipping.fromJsonToRawMaterialShipping(json.decode(utf8.decode(response.bodyBytes))));
                                             }));
                                           } else if (response.statusCode == 480) {
                                             print("Sum of rawMatShpQty greater than plantingNetQty");
                                           } else {
                                             print("Error!");
                                           }
+                                        } else if (isChainBeforeRmsValidResponse == 409) {
+                                          showError("ไม่สามารถส่งผลผลิตได้ เนื่องจากการเข้ารหัสของข้อมูลก่อนหน้าไม่ตรงกัน");
+                                        }
                                       }
                                     },
                                     child: Row(

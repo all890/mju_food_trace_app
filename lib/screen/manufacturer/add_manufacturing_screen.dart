@@ -175,6 +175,19 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
     );
   }
 
+  void showError (String errorPrompt) {
+    QuickAlert.show(
+      context: context,
+      title: "เกิดข้อผิดพลาด",
+      text: errorPrompt,
+      type: QuickAlertType.error,
+      confirmBtnText: "ตกลง",
+      onConfirmBtnTap: () {
+        Navigator.pop(context);
+      }
+    );
+  }
+
   void showFailToSaveManufacuringAlert() {
     QuickAlert.show(
       context: context,
@@ -626,8 +639,11 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                       if (value!.isEmpty) {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้";
                                       }
+                                      if (value.contains(" ")) {
+                                        return "ปริมาณสินค้าต้องไม่ประกอบไปด้วยช่องว่าง";
+                                      }
                                       if (!productQtyRegEx.hasMatch(value)) {
-                                        return "ปริมาณสินค้าที่ผลิตได้ต้องไม่ประกอบไปด้วยช่องว่าง";
+                                        return "ปริมาณสินค้าต้องเป็นตัวเลขจำนวนเต็มบวกเท่านั้น";
                                       }
                                       if (int.parse(value) > 100000 || int.parse(value) <= 0) {
                                         return "กรุณากรอกปริมาณสินค้าที่ผลิตได้ให้มีค่าตั้งแต่ 1 - 100,000";
@@ -727,29 +743,38 @@ class _AddManufacturingState extends State<AddManufacturingScreen> {
                                               }
                                             });
                                           
-                                            http.Response response =
-                                                await manufacturingController
-                                                    .addManufacturing(
-                                                      manufactureDateTextController.text,
-                                                      expireDateTextController.text,
-                                                      productQtyTextController.text,
-                                                      selected_productUnit_items!,
-                                                      usedRawMatQtyTextController.text,
-                                                      selected_usedRawMatQtyUnit_items!,
-                                                      widget.rawMatShpId,
-                                                        productId??"");
+                                            var isChainBeforeManufacturingValidResp = await manufacturingController
+                                            .isChainBeforeManufacturingValid(productId??"", widget.rawMatShpId);
 
-                                            //print("Status code is " + code.toString());
+                                            if (isChainBeforeManufacturingValidResp == 200) {
+                                              http.Response response =
+                                                  await manufacturingController
+                                                      .addManufacturing(
+                                                        manufactureDateTextController.text,
+                                                        expireDateTextController.text,
+                                                        productQtyTextController.text,
+                                                        selected_productUnit_items!,
+                                                        usedRawMatQtyTextController.text,
+                                                        selected_usedRawMatQtyUnit_items!,
+                                                        widget.rawMatShpId,
+                                                          productId??"");
 
-                                            if (response.statusCode == 500) {
-                                              print("Error!");
-                                              //showUsernameDuplicationAlert();
-                                            } else {
-                                              print(
-                                                  "Add manufacuring successfully!");
-                                              // showSavePlantingSuccessAlert();
-                                              showSaveManufacuringSuccessAlert();
+                                              //print("Status code is " + code.toString());
+
+                                              if (response.statusCode == 500) {
+                                                print("Error!");
+                                                //showUsernameDuplicationAlert();
+                                              } else {
+                                                print(
+                                                    "Add manufacuring successfully!");
+                                                // showSavePlantingSuccessAlert();
+                                                showSaveManufacuringSuccessAlert();
+                                              }
+                                            } else if (isChainBeforeManufacturingValidResp == 409) {
+                                              showError("ไม่สามารถเพิ่มการผลิตสินค้าได้ เนื่องจากการเข้ารหัสข้อมูลก่อนหน้าไม่ตรงกัน");
                                             }
+
+                                            
                                           }
                                         }
                                       },
