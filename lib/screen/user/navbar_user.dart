@@ -22,7 +22,7 @@ class _UserNavbarState extends State<UserNavbar> {
             decoration: BoxDecoration(
                 color: kClipPathColorAM,
                 image: DecorationImage(
-                    image: AssetImage('images/ftmju_header_logo.png'))),
+                    image: AssetImage('images/ftmju.png'))),
           ),
           ListTile(
             leading: const Icon(Icons.add,color:  Color.fromARGB(255, 13, 69, 6)),

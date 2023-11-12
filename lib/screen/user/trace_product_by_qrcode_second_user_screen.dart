@@ -153,7 +153,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        title: Center(child: Text("การส่งผลผลิต",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
+        title: Center(child: Text("การส่งผลผลิต",style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),)),
         content: showProductDetails == true?
         Container(
           width: MediaQuery.of(context).size.width,
@@ -164,7 +164,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "รายละเอียดการส่งผลผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -257,7 +257,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า",style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
+        title: Center(child: Text("ข้อมูลทางโภชนาการของสินค้า",style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),)),
         content: showProductDetails == true?
         Container(
           width: MediaQuery.of(context).size.width,
@@ -480,7 +480,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
           ),
         ],
         title: Center(child: Text("ผู้ผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),)),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),)),
         content:
         mnPage == 0 && showManufacturerDetails == true? 
         Container(
@@ -492,7 +492,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ข้อมูลผู้ผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -587,7 +587,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ใบรับรอง GMP",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -686,7 +686,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "รายละเอียดการผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -830,7 +830,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
             ],
           ),
         ],
-        title: Center(child: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim'),)),
+        title: Center(child: Text("เกษตรกร",style: TextStyle(fontFamily: 'Itim',fontWeight: FontWeight.bold),)),
         content: page == 0 && showFarmerDetails == true? 
         Container(
           width: MediaQuery.of(context).size.width,
@@ -841,7 +841,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ข้อมูลเกษตรกร",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -936,7 +936,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "ใบรับรอง IFOAM",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 Align(
@@ -1036,7 +1036,7 @@ class _TraceProductByQRCodeSecondScreenState extends State<TraceProductByQRCodeS
                   alignment: Alignment.topLeft,
                   child: Text(
                     "รายละเอียดการปลูกผลผลิต",
-                    style: TextStyle(fontFamily: 'Itim',fontSize: 20),
+                    style: TextStyle(fontFamily: 'Itim',fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 10),

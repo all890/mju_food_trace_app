@@ -106,12 +106,24 @@ class _ShowSendResultScreenState extends State<ShowSendResultScreen> {
                                       padding: const EdgeInsets.only(left: 50),
                                       child: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text(
-                                          "ผลผลิตที่ส่ง : ${widget.rawMaterialShipping?.planting?.plantName}",
-                                          style: TextStyle(
-                                            fontFamily: 'Itim',
-                                            fontSize: 16
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "ผลผลิตที่ส่ง : ",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                             Text(
+                                              "${widget.rawMaterialShipping?.planting?.plantName}",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -119,12 +131,24 @@ class _ShowSendResultScreenState extends State<ShowSendResultScreen> {
                                       padding: const EdgeInsets.only(left: 50),
                                       child: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text(
-                                          "วันที่ส่งผลผลิต : ${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.rawMaterialShipping?.rawMatShpDate)}",
-                                          style: TextStyle(
-                                            fontFamily: 'Itim',
-                                            fontSize: 16
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "วันที่ส่งผลผลิต : ",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                             Text(
+                                              "${buddhistYearConverter.convertDateTimeToBuddhistDate(widget.rawMaterialShipping?.rawMatShpDate)}",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -132,12 +156,24 @@ class _ShowSendResultScreenState extends State<ShowSendResultScreen> {
                                       padding: const EdgeInsets.only(left: 50),
                                       child: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text(
-                                          "ปริมาณผลผลิตที่ส่ง : ${widget.rawMaterialShipping?.rawMatShpQty} ${widget.rawMaterialShipping?.rawMatShpQtyUnit}",
-                                          style: TextStyle(
-                                            fontFamily: 'Itim',
-                                            fontSize: 16
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "ปริมาณผลผลิตที่ส่ง : ",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                              Text(
+                                              "${widget.rawMaterialShipping?.rawMatShpQty} ${widget.rawMaterialShipping?.rawMatShpQtyUnit}",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -145,12 +181,24 @@ class _ShowSendResultScreenState extends State<ShowSendResultScreen> {
                                       padding: const EdgeInsets.only(left: 50, bottom: 30),
                                       child: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Text(
-                                          "ผู้รับปลายทาง : ${widget.rawMaterialShipping?.manufacturer?.manuftName}",
-                                          style: TextStyle(
-                                            fontFamily: 'Itim',
-                                            fontSize: 16
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "ผู้รับปลายทาง : ",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                            Text(
+                                              "${widget.rawMaterialShipping?.manufacturer?.manuftName}",
+                                              style: TextStyle(
+                                                fontFamily: 'Itim',
+                                                fontSize: 16
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),

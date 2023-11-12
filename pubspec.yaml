@@ -67,6 +67,8 @@ flutter:
     - images/manuft_drawer_bg2.png
     - images/farmer_drawer_bg2.png
     - images/truckrun.gif
+    - images/ftmju.png
+    - images/navbar_admin.png
 
   fonts:
     - family: Itim
